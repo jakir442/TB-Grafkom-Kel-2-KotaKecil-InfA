@@ -4,24 +4,23 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <cmath>
 
-// ---------- Kamera ----------
+// Kamera 
 float camX = 0.0f, camY = 1.0f, camZ = 5.0f;
-float yaw = -90.0f;
-float pitch = 0.0f;
-float lastX = 400, lastY = 300;
+float cameraYaw = -90.0f; // (-) lihat ke depan, (+) lihat ke belakang
+float cameraPitch = 0.0f; // (-) lihat ke bawah, (+) lihat ke atas
+float lastMouseX = 0, lastMouseY = 0;
 bool firstMouse = true;
 float roadOffset = 0.0f;
-
 float speed = 0.2f;
 
-// ---------- Hitung arah kamera ----------
+// hitung arah kamera
 void getCameraDirection(float &dirX, float &dirY, float &dirZ) {
-    dirX = cosf(glm::radians(yaw)) * cosf(glm::radians(pitch));
-    dirY = sinf(glm::radians(pitch));
-    dirZ = sinf(glm::radians(yaw)) * cosf(glm::radians(pitch));
+    dirX = cosf(glm::radians(cameraYaw)) * cosf(glm::radians(cameraPitch));
+    dirY = sinf(glm::radians(cameraPitch));
+    dirZ = sinf(glm::radians(cameraYaw)) * cosf(glm::radians(cameraPitch));
 }
 
-// ---------- Infinite Road ----------
+// jalan tanpa batas
 void drawRoad() {
     glColor3f(0.2, 0.2, 0.2);
 
@@ -29,7 +28,7 @@ void drawRoad() {
     float start = -visibleDist;
     float end   =  visibleDist;
 
-    // offset supaya tidak ada ujung jalan
+    // offset agar tidak ada ujung jalan
     float baseShift = fmod(roadOffset, 10.0f);
 
     glBegin(GL_QUADS);
@@ -43,7 +42,7 @@ void drawRoad() {
     }
     glEnd();
 
-    // Garis putus-putus
+    // garis putus-putus dengan warna kuning
     glColor3f(1, 1, 0);
     glLineWidth(3);
 
@@ -76,23 +75,23 @@ void display() {
     glutSwapBuffers();
 }
 
-// ---------- WASD Movement BENAR ----------
+// WASD pergerakan
 void keyboard(unsigned char key, int x, int y) {
-    float forwardX = cos(glm::radians(yaw));
-    float forwardZ = sin(glm::radians(yaw));
+    float forwardX = cos(glm::radians(cameraYaw));
+    float forwardZ = sin(glm::radians(cameraYaw));
 
-    // right vector
+    // kanan vector
     float rightX = -forwardZ;
     float rightZ =  forwardX;
 
     switch (key) {
 
         case 'w':  // maju
-            roadOffset += speed * 5;   // jalan bergerak mundur
+            roadOffset += speed * 5;
             break;
 
         case 's':  // mundur
-            roadOffset -= speed * 5;   // jalan bergerak naik
+            roadOffset -= speed * 5;
             break;
 
         case 'a':  // geser kiri
@@ -113,28 +112,28 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 
-// ---------- Mouse Look 360° ----------
+// penglihatan mouse 360° 
 void mouseMotion(int x, int y) {
     if (firstMouse) {
-        lastX = x;
-        lastY = y;
+        lastMouseX = x;
+        lastMouseY = y;
         firstMouse = false;
     }
 
-    float offsetX = x - lastX;
-    float offsetY = lastY - y;
-    lastX = x;
-    lastY = y;
+    float offsetX = x - lastMouseX;
+    float offsetY = lastMouseY - y;
+    lastMouseX = x;
+    lastMouseY = y;
 
     float sensitivity = 0.15f;
     offsetX *= sensitivity;
     offsetY *= sensitivity;
 
-    yaw += offsetX;
-    pitch += offsetY;
+    cameraYaw += offsetX;
+    cameraPitch += offsetY;
 
-    if (pitch > 89.0f) pitch = 89.0f;
-    if (pitch < -89.0f) pitch = -89.0f;
+    // if (cameraPitch > 89.0f) cameraPitch = 89.0f;
+    // if (cameraPitch < -89.0f) cameraPitch = -89.0f;
 
     glutPostRedisplay();
 }
