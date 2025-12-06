@@ -1,37 +1,142 @@
 {
   "version": "2.0.0",
   "tasks": [
+    // Render semua file
     {
-      "label": "build active file",
+      "label": "build all",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [
         "-std=c++17",
         "-g",
-
-        "${file}",
-
+        "${workspaceFolder}/src/*.cpp",
         "-o",
-        "${workspaceFolder}/bin/${fileBasenameNoExtension}.exe",
-
-        // ===== LIBRARY =====
+        "${workspaceFolder}/bin/app.exe",
         "-lfreeglut",
         "-lopengl32",
         "-lglu32",
-
-        // ===== PATH INCLUDE =====
         "-IC:/freeglut/include",
-        "-IC:/glm", // <----- TAMBAHKAN GLM
+        "-IC:/glm",
         "-I${workspaceFolder}/include",
-
-        // ===== PATH LIB =====
         "-LC:/freeglut/lib",
         "-L${workspaceFolder}/lib"
       ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$gcc"]
+    },
+
+    //  Render satu file Jalan
+    {
+      "label": "build road only",
+      "type": "shell",
+      "command": "C:/MinGW/bin/g++.exe",
+      "args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/src/road.cpp",
+        "-o",
+        "${workspaceFolder}/bin/road.exe",
+        "-lfreeglut",
+        "-lopengl32",
+        "-lglu32",
+        "-IC:/freeglut/include",
+        "-IC:/glm",
+        "-I${workspaceFolder}/include",
+        "-LC:/freeglut/lib",
+        "-L${workspaceFolder}/lib"
+      ],
+      "problemMatcher": ["$gcc"]
+    },
+
+    // Render satu file Pohon
+    {
+      "label": "build pohon only",
+      "type": "shell",
+      "command": "C:/MinGW/bin/g++.exe",
+      "args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/src/pohon.cpp",
+        "-o",
+        "${workspaceFolder}/bin/pohon.exe",
+        "-lfreeglut",
+        "-lopengl32",
+        "-lglu32",
+        "-IC:/freeglut/include",
+        "-IC:/glm",
+        "-I${workspaceFolder}/include",
+        "-LC:/freeglut/lib",
+        "-L${workspaceFolder}/lib"
+      ],
+      "problemMatcher": ["$gcc"]
+    },
+
+    // Render satu file Gedung
+    {
+      "label": "build pohon only",
+      "type": "shell",
+      "command": "C:/MinGW/bin/g++.exe",
+      "args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/src/gedung.cpp",
+        "-o",
+        "${workspaceFolder}/bin/gedung.exe",
+        "-lfreeglut",
+        "-lopengl32",
+        "-lglu32",
+        "-IC:/freeglut/include",
+        "-IC:/glm",
+        "-I${workspaceFolder}/include",
+        "-LC:/freeglut/lib",
+        "-L${workspaceFolder}/lib"
+      ],
+      "problemMatcher": ["$gcc"]
+    },
+
+    // Render satu file Mobile
+    {
+      "label": "build pohon only",
+      "type": "shell",
+      "command": "C:/MinGW/bin/g++.exe",
+      "args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/src/mobile.cpp",
+        "-o",
+        "${workspaceFolder}/bin/mobile.exe",
+        "-lfreeglut",
+        "-lopengl32",
+        "-lglu32",
+        "-IC:/freeglut/include",
+        "-IC:/glm",
+        "-I${workspaceFolder}/include",
+        "-LC:/freeglut/lib",
+        "-L${workspaceFolder}/lib"
+      ],
+      "problemMatcher": ["$gcc"]
+    },
+
+    // Render satu file Lampu Jalan
+    {
+      "label": "build pohon only",
+      "type": "shell",
+      "command": "C:/MinGW/bin/g++.exe",
+      "args": [
+        "-std=c++17",
+        "-g",
+        "${workspaceFolder}/src/lampu.cpp",
+        "-o",
+        "${workspaceFolder}/bin/lampu.exe",
+        "-lfreeglut",
+        "-lopengl32",
+        "-lglu32",
+        "-IC:/freeglut/include",
+        "-IC:/glm",
+        "-I${workspaceFolder}/include",
+        "-LC:/freeglut/lib",
+        "-L${workspaceFolder}/lib"
+      ],
       "problemMatcher": ["$gcc"]
     }
   ]
