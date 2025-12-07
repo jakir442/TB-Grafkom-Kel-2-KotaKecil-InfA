@@ -1,28 +1,28 @@
 #include <GL/freeglut.h>
 #include <cmath>
-#include "road.h"
+#include "jakir-jalan.h"
 
-float roadOffset = 0.0f;
+float jalanOffset = 0.0f;
 
-// Inisialisasi khusus objek jalan
-void initRoad() {
-    // kosong jika tidak diperlukan
+// inisialisasi objek jalan
+void initJalan() {
+    // kosong 
 }
 
-// Update offset jalan
-void updateRoad(float speed) {
-    roadOffset += speed;
+// update offset jalan
+void updateJalan(float speed) {
+    jalanOffset += speed;
 }
 
-// Gambar jalan tanpa batas + garis kuning putus-putus
-void drawRoad() {
+// gambar jalan tanpa batas + garis kuning putus-putus
+void drawJalan() {
     glColor3f(0.2f, 0.2f, 0.2f);
 
     float visibleDist = 300.0f;
     float start = -visibleDist;
     float end   =  visibleDist;
 
-    float baseShift = fmod(roadOffset, 10.0f);
+    float baseShift = fmod(jalanOffset, 10.0f);
 
     glBegin(GL_QUADS);
     for (float z = start; z < end; z += 10.0f) {
@@ -35,7 +35,7 @@ void drawRoad() {
     }
     glEnd();
 
-    // Garis kuning putus-putus
+    // garis kuning putus-putus
     glColor3f(1, 1, 0);
     glLineWidth(3);
 
@@ -48,3 +48,7 @@ void drawRoad() {
     }
     glEnd();
 }
+
+// int main() {
+//     drawJalan();
+// }

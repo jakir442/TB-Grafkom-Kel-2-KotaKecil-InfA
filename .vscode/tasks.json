@@ -1,9 +1,8 @@
 {
   "version": "2.0.0",
   "tasks": [
-    // Render semua file
     {
-      "label": "build all",
+      "label": "build all (main.cpp)",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [
@@ -21,21 +20,19 @@
         "-LC:/freeglut/lib",
         "-L${workspaceFolder}/lib"
       ],
-      "group": { "kind": "build", "isDefault": true },
+      "group": { "kind": "build" },
       "problemMatcher": ["$gcc"]
     },
-
-    //  Render satu file Jalan
     {
-      "label": "build road only",
+      "label": "build Jalan only",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [
         "-std=c++17",
         "-g",
-        "${workspaceFolder}/src/road.cpp",
+        "${workspaceFolder}/src/jakir-jalan.cpp",
         "-o",
-        "${workspaceFolder}/bin/road.exe",
+        "${workspaceFolder}/bin/jakir-jalan.exe",
         "-lfreeglut",
         "-lopengl32",
         "-lglu32",
@@ -47,10 +44,8 @@
       ],
       "problemMatcher": ["$gcc"]
     },
-
-    // Render satu file Pohon
     {
-      "label": "build pohon only",
+      "label": "build Pohon only",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [
@@ -70,10 +65,8 @@
       ],
       "problemMatcher": ["$gcc"]
     },
-
-    // Render satu file Gedung
     {
-      "label": "build pohon only",
+      "label": "build Gedung only",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [
@@ -93,10 +86,8 @@
       ],
       "problemMatcher": ["$gcc"]
     },
-
-    // Render satu file Mobile
     {
-      "label": "build pohon only",
+      "label": "build Mobile only",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [
@@ -116,10 +107,8 @@
       ],
       "problemMatcher": ["$gcc"]
     },
-
-    // Render satu file Lampu Jalan
     {
-      "label": "build pohon only",
+      "label": "build Lampu only",
       "type": "shell",
       "command": "C:/MinGW/bin/g++.exe",
       "args": [

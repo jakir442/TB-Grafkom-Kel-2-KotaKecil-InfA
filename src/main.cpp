@@ -3,9 +3,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "road.h"
+#include "jakir-jalan.h"
 
-// Kamera 
+// kamera 
 float camX = 0.0f, camY = 1.0f, camZ = 5.0f;
 float cameraYaw = -90.0f;
 float cameraPitch = 0.0f;
@@ -33,12 +33,12 @@ void display() {
         0, 1, 0
     );
 
-    drawRoad();
+    drawJalan();
 
     glutSwapBuffers();
 }
 
-// WASD
+// WASD untuk translasi
 void keyboard(unsigned char key, int x, int y) {
     float forwardX = cos(glm::radians(cameraYaw));
     float forwardZ = sin(glm::radians(cameraYaw));
@@ -48,11 +48,11 @@ void keyboard(unsigned char key, int x, int y) {
 
     switch (key) {
         case 'w':
-            updateRoad(speed * 5);
+            updateJalan(speed * 5);
             break;
 
         case 's':
-            updateRoad(-speed * 5);
+            updateJalan(-speed * 5);
             break;
 
         case 'a':
@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
     glutCreateWindow("Kota Kecil - Jalan Tanpa Batas");
 
     init();
-    initRoad();
+    initJalan();
 
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
