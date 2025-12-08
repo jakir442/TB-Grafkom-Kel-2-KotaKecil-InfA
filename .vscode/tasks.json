@@ -20,7 +20,7 @@
         "-LC:/freeglut/lib",
         "-L${workspaceFolder}/lib"
       ],
-      "group": { "kind": "build" },
+      // "group": { "kind": "build" },
       "problemMatcher": ["$gcc"]
     },
     {
@@ -30,6 +30,7 @@
       "args": [
         "-std=c++17",
         "-g",
+        "-DSTANDALONE",
         "${workspaceFolder}/src/jakir-jalan.cpp",
         "-o",
         "${workspaceFolder}/bin/jakir-jalan.exe",
@@ -51,6 +52,7 @@
       "args": [
         "-std=c++17",
         "-g",
+        "-DSTANDALONE",
         "${workspaceFolder}/src/pohon.cpp",
         "-o",
         "${workspaceFolder}/bin/pohon.exe",
@@ -72,6 +74,7 @@
       "args": [
         "-std=c++17",
         "-g",
+        "-DSTANDALONE",
         "${workspaceFolder}/src/gedung.cpp",
         "-o",
         "${workspaceFolder}/bin/gedung.exe",
@@ -93,6 +96,7 @@
       "args": [
         "-std=c++17",
         "-g",
+        "-DSTANDALONE",
         "${workspaceFolder}/src/mobile.cpp",
         "-o",
         "${workspaceFolder}/bin/mobile.exe",
@@ -114,6 +118,7 @@
       "args": [
         "-std=c++17",
         "-g",
+        "-DSTANDALONE",
         "${workspaceFolder}/src/lampu.cpp",
         "-o",
         "${workspaceFolder}/bin/lampu.exe",

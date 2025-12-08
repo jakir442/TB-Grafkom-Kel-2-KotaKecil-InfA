@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "d:/2406004 - KULIAH TEKNIK INFORMATIKA A/semester_3/Praktikum Grafik Komputer - 1 SKS/UAS/UAS-KotaKecil/src",
+      "program": "d:/2406004 - KULIAH TEKNIK INFORMATIKA A/semester_3/Praktikum Grafik Komputer - 1 SKS/UAS/UAS-KotaKecil/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

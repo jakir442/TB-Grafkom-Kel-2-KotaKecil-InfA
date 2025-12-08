@@ -2,7 +2,7 @@
 #include <cmath>
 #include "jakir-jalan.h"
 
-float jalanOffset = 0.0f;
+float jalanOffset = 0.0f; // untuk perubahan posisi kamera di jalan
 
 // inisialisasi objek jalan
 void initJalan() {
@@ -16,7 +16,7 @@ void updateJalan(float speed) {
 
 // gambar jalan tanpa batas + garis kuning putus-putus
 void drawJalan() {
-    glColor3f(0.2f, 0.2f, 0.2f);
+    glColor3f(0.2f, 0.2f, 0.2f); // abu gelap
 
     float visibleDist = 300.0f;
     float start = -visibleDist;
@@ -49,6 +49,35 @@ void drawJalan() {
     glEnd();
 }
 
-// int main() {
-//     drawJalan();
-// }
+#ifdef STANDALONE
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Test Jalan");
+
+    // Set kamera + proyeksi
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0, 800.0 / 600.0, 0.1, 1000.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(
+        0, 5, 20,
+        0, 0, 0,
+        0, 1, 0
+    );
+
+    glEnable(GL_DEPTH_TEST);
+
+    glutDisplayFunc([](){
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        drawJalan();
+        glutSwapBuffers();
+    });
+
+    glutMainLoop();
+    return 0;
+}
+#endif

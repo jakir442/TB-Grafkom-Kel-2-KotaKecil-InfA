@@ -2,7 +2,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include "jakir-jalan.h"
 
 // kamera 
@@ -10,7 +9,7 @@ float camX = 0.0f, camY = 1.0f, camZ = 5.0f;
 float cameraYaw = -90.0f;
 float cameraPitch = 0.0f;
 float lastMouseX = 0, lastMouseY = 0;
-bool firstMouse = true;
+bool firstMouse = true; 
 
 float speed = 0.2f;
 
@@ -80,7 +79,7 @@ void mouseMotion(int x, int y) {
         firstMouse = false;
     }
 
-    float offsetX = x - lastMouseX;
+    float offsetX = x - lastMouseX; // offset = jarak atau pergeseran dari titik awal
     float offsetY = lastMouseY - y;
 
     lastMouseX = x;
