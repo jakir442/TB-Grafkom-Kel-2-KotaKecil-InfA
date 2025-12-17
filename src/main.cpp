@@ -1,36 +1,36 @@
-#include <GL/freeglut.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <cmath>
+#include <GL/freeglut.h> // fungsi utama window OpenGL
+#include <cmath> // fungsi matematika untuk floor
 
 #include "header/jakir-jalan.h"
 #include "header/putri-mobil.h"
 #include "header/azhari-gedung.h"
 #include "header/erika-pohon.h"
-
+#include "header/jakir-lampu.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
-// float camYaw = 0.0f;
-// float camPitch = 0.0f;
+// =====================
+// KONFIGURASI LINGKUNGAN
+// =====================
+const float JARAK_TILE      = 8.0f;   // satu segmen dunia
+const int   JUMLAH_TILE     = 14;     // segmen aktif
+
+const float LAMPU_X         = 3.0f;
+const float POHON_X         = 4.5f;
+const float GEDUNG_X        = 7.0f;
+
 
 bool keyState[256] = { false };
 
-static int lastMouseX = 0;
-static int lastMouseY = 0;
-static bool firstMouse = true;
-static float mouseSensitivity = 0.15f;
+// static int lastMouseX = 0;
+// static int lastMouseY = 0;
+// static bool firstMouse = true;
+// static float mouseSensitivity = 0.15f;
 
-static float clampf(float v, float lo, float hi) {
-    if (v < lo) return lo;
-    if (v > hi) return hi;
-    return v;
-}
 
-// void keyboardDispatcher(unsigned char key, int x, int y) {
+// void handleKeyboard(unsigned char key, int x, int y) {
 //     controlMobil(key);
 //     handleKeyboardGedung(key);
 //     glutPostRedisplay();
@@ -38,6 +38,8 @@ static float clampf(float v, float lo, float hi) {
 
 void keyDown(unsigned char key, int x, int y) {
     keyState[key] = true;
+
+    keyboardLampu(key);
 
     if (key == 27) exit(0); // ESC
 }
@@ -48,111 +50,100 @@ void keyUp(unsigned char key, int x, int y) {
 
 
 void update() {
-
-    // ===== MOBIL =====
+    // mobil (translasi)
     if (keyState['w'] || keyState['W']) controlMobil('w');
     if (keyState['s'] || keyState['S']) controlMobil('s');
     if (keyState['a'] || keyState['A']) controlMobil('a');
     if (keyState['d'] || keyState['D']) controlMobil('d');
 
-    // ===== GEDUNG =====
+    // gedung (scaling)
     if (keyState['+'] || keyState['=']) handleKeyboardGedung('+');
     if (keyState['-'] || keyState['_']) handleKeyboardGedung('-');
 
     glutPostRedisplay();
 }
 
-
-void mouseMotion(int x, int y) {
-    if (firstMouse) {
-        lastMouseX = x;
-        lastMouseY = y;
-        firstMouse = false;
-    }
-
-    int dx = x - lastMouseX;
-    int dy = lastMouseY - y;
-
-    lastMouseX = x;
-    lastMouseY = y;
-
-    float offsetX = dx * mouseSensitivity;
-    float offsetY = dy * mouseSensitivity;
-
-    // camYaw += offsetX;
-    // camPitch += offsetY;
-
-    // camPitch = clampf(camPitch, -89.0f, 89.0f);
-
-    glutPostRedisplay();
-}
-
 void drawGedungInfinite() {
-    const float jarakSamping = 6.0f;   // kiri / kanan jalan
-    const float jarakAntar   = 8.0f;   // jarak antar gedung
-    const int   jumlahTile   = 14;     // jumlah segmen aktif
+    int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
 
-    int baseIndex = (int)floor(mobilPosZ / jarakAntar);
+    for (int i = baseIndex - JUMLAH_TILE / 2;
+             i <= baseIndex + JUMLAH_TILE / 2; i++) {
 
-    for (int i = baseIndex - jumlahTile / 2;
-             i <= baseIndex + jumlahTile / 2; i++) {
+        float z = i * JARAK_TILE;
 
-        float z = i * jarakAntar;
-
-        // ===== GEDUNG KIRI =====
+        // kiri
         glPushMatrix();
-            glTranslatef(-jarakSamping, 1.5f, z);
-            glScalef( // zoom in/out gedung kiri
-                1.5f * scaleFactor,
-                1.5f * scaleFactor,
-                1.5f * scaleFactor
-            );
-            drawBuilding();
+            glTranslatef(-GEDUNG_X, 1.5f, z);
+            glScalef(1.5f * scaleFactor,
+                     1.5f * scaleFactor,
+                     1.5f * scaleFactor);
+            drawGedung();
         glPopMatrix();
 
-        // ===== GEDUNG KANAN =====
+        // kanan
         glPushMatrix();
-            glTranslatef(jarakSamping, 1.5f, z);
+            glTranslatef( GEDUNG_X, 1.5f, z);
             glRotatef(180, 0, 1, 0);
-            glScalef( // zoom in/out gedung kanan
-                1.5f * scaleFactor,
-                1.5f * scaleFactor,
-                1.5f * scaleFactor
-            );
-            drawBuilding();
+            glScalef(1.5f * scaleFactor,
+                     1.5f * scaleFactor,
+                     1.5f * scaleFactor);
+            drawGedung();
         glPopMatrix();
     }
 }
 
-void drawTreeInfinite() {
-    const float jarakSamping = 3.0f;   // posisi pohon lebih jauh dari jalan
-    const float jarakAntar   = 6.0f;  // jarak antar pohon
-    const int jumlahTile     = 14;     // jumlah pohon aktif di layar
 
-    int baseIndex = (int)floor(mobilPosZ / jarakAntar);
+void drawPohonInfinite() {
+    int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
 
-    for (int i = baseIndex - jumlahTile / 2;
-             i <= baseIndex + jumlahTile / 2; i++) {
+    for (int i = baseIndex - JUMLAH_TILE / 2;
+             i <= baseIndex + JUMLAH_TILE / 2; i++) {
 
-        float z = i * jarakAntar;
+        float z = i * JARAK_TILE;
 
-        // ===== POHON KIRI =====
+        // kiri
         glPushMatrix();
-            glTranslatef(-jarakSamping, 0.0f, z);
-            glRotatef(90, 0, 1, 0);   // pohon menghadap jalan
+            glTranslatef(-POHON_X, 0.0f, z);
+            glRotatef(90, 0, 1, 0);
             glScalef(0.8f, 0.8f, 0.8f);
-            drawTree();
+            drawPohon();
         glPopMatrix();
 
-        // ===== POHON KANAN =====
+        // kanan
         glPushMatrix();
-            glTranslatef(jarakSamping, 0.0f, z);
-            glRotatef(-90, 0, 1, 0);  // pohon menghadap jalan
+            glTranslatef( POHON_X, 0.0f, z);
+            glRotatef(-90, 0, 1, 0);
             glScalef(0.8f, 0.8f, 0.8f);
-            drawTree();
+            drawPohon();
         glPopMatrix();
     }
 }
+
+
+void drawLampuInfinite() {
+    int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
+
+    for (int i = baseIndex - JUMLAH_TILE / 2;
+             i <= baseIndex + JUMLAH_TILE / 2; i++) {
+
+        float z = i * JARAK_TILE;
+
+        // ===== LAMPU KIRI (MENGHADAP KE JALAN) =====
+        glPushMatrix();
+            glTranslatef(-LAMPU_X, 0.0f, z);
+            glRotatef( 90, 0, 1, 0);   // hadap ke +X (ke jalan)
+            drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
+        glPopMatrix();
+
+        // ===== LAMPU KANAN (MENGHADAP KE JALAN) =====
+        glPushMatrix();
+            glTranslatef( LAMPU_X, 0.0f, z);
+            glRotatef(-90, 0, 1, 0);   // hadap ke -X (ke jalan)
+            drawLampuJalan(0.0f, 0.0f, GL_LIGHT1);
+        glPopMatrix();
+    }
+}
+
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -160,7 +151,7 @@ void display() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // ===== KAMERA FOLLOW DARI BELAKANG (TIDAK IKUT BELOK) =====
+    //  kamera ikut dari belakang (tapi tidak ikut belok) 
     float camX = mobilPosX;
     float camY = 3.0f; // ketinggian kamera dengan mobil
     float camZ = mobilPosZ + 6.0f;   // kedekatan kamera dengan mobil di belakang (sumbu Z)
@@ -171,16 +162,15 @@ void display() {
         0.0f, 1.0f, 0.0f
     );
 
-    drawJalan();
-    drawMobil();
-    drawGedungInfinite();
-    drawTreeInfinite();
+    drawJalan();           // dasar
+    drawLampuInfinite();   // dekat jalan
+    drawPohonInfinite();   // transisi
+    drawGedungInfinite();  // background
+    drawMobil();           // terakhir (fokus utama)
 
 
     glutSwapBuffers();
 }
-
-
 
 void initGL() {
     glEnable(GL_DEPTH_TEST);
@@ -199,16 +189,14 @@ int main(int argc, char** argv) {
 
     initGL();
 
-    // initJalan();   // WAJIB
-    initMobil();   // WAJIB
-    // initLighting();
+    initMobil();
+    initLampuLighting();
 
     glutDisplayFunc(display);
-    // glutKeyboardFunc(keyboardDispatcher);
+    // glutKeyboardFunc(handleKeyboard);
     glutKeyboardFunc(keyDown);
     glutKeyboardUpFunc(keyUp);
     glutIdleFunc(update);
-    glutPassiveMotionFunc(mouseMotion);
 
     glutMainLoop();
     return 0;

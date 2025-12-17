@@ -24,18 +24,18 @@ void drawCylinder(float radius, float height) {
     gluDeleteQuadric(quad);
 }
 
-void drawTree() {
+void drawPohon() {
     glPushMatrix();
     glScalef(0.9f, 0.9f, 0.9f); // mengecilkan ukuran pohon
 
-    // 1. BATANG UTAMA
+    // 1. batang utama
     glColor3f(0.45f, 0.22f, 0.05f); // lebih gelap sedikit
     glPushMatrix();
         glRotatef(-90, 1, 0, 0);
         drawCylinder(0.22f, 2.0f);
     glPopMatrix();
 
-    // 2. RANTING TENGAH ? DAUN TENGAH
+    // 2. ranting & daun tengah
     glColor3f(0.55f, 0.30f, 0.1f); // warna lebih terang agar terlihat
     glPushMatrix();
         glTranslatef(0.0f, 2.0f, 0.0f);
@@ -50,7 +50,7 @@ void drawTree() {
         glutSolidSphere(0.80f, 32, 32);
     glPopMatrix();
 
-    // 3. RANTING KIRI
+    // 3. ranting kiri
     glColor3f(0.55f, 0.30f, 0.1f);
     glPushMatrix();
         glTranslatef(0.0f, 1.7f, 0.0f);
@@ -59,14 +59,14 @@ void drawTree() {
         drawCylinder(0.10f, 1.1f);  // lebih panjang + lebih besar
     glPopMatrix();
 
-    // daun kiri � digeser lebih keluar
+    // daun kiri + digeser lebih keluar
     glColor3f(0.1f, 0.8f, 0.1f);
     glPushMatrix();
         glTranslatef(-1.1f, 2.2f, 0.0f);
         glutSolidSphere(0.73f, 32, 32);
     glPopMatrix();
 
-    // 4. RANTING KANAN
+    // 4. ranting kanan
     glColor3f(0.55f, 0.30f, 0.1f);
     glPushMatrix();
         glTranslatef(0.0f, 1.7f, 0.0f);
@@ -75,7 +75,7 @@ void drawTree() {
         drawCylinder(0.10f, 1.1f);
     glPopMatrix();
 
-    // daun kanan � digeser lebih keluar
+    // daun kanan + digeser lebih keluar
     glColor3f(0.1f, 0.8f, 0.1f);
     glPushMatrix();
         glTranslatef(1.1f, 2.2f, 0.0f);
@@ -98,7 +98,7 @@ void display() {
     // rotasi animasi
     glRotatef(angle, 0, 1, 0);
 
-    drawTree();
+    drawPohon();
 
     glutSwapBuffers();
 }

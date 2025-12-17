@@ -1,9 +1,9 @@
-#ifndef GEDUNG3D_H
-#define GEDUNG3D_H
+#ifndef AZHARI_GEDUNG_H
+#define AZHARI_GEDUNG_H
 
 extern float scaleFactor;
 
-void drawBuilding();
+void drawGedung();
 void handleKeyboardGedung(unsigned char key);
 
 #endif

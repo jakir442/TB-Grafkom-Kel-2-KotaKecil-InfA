@@ -1,7 +1,7 @@
-#ifndef TREE_H
-#define TREE_H
+#ifndef ERIKA_POHON_H
+#define ERIKA_POHON_H
 
 void initLighting();
-void drawTree();
+void drawPohon();
 
 #endif

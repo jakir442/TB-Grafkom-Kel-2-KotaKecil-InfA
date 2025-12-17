@@ -8,18 +8,18 @@
 #include "header/azhari-gedung.h"
 
 
-// Transform controls
+// control transformasi
 static float angleX = 20.0f;    // rotasi X (derajat)
 static float angleY = -25.0f;   // rotasi Y (derajat)
 float scaleFactor = 1.0f;
 
-// Increment settings
+// pengaturan peningkatan
 const float ROT_STEP = 5.0f;
 const float SCALE_STEP = 0.1f;
 const float SCALE_MIN = 0.1f;
 const float SCALE_MAX = 10.0f;
 
-// Window / door colors
+// warna jendela/pintu
 GLfloat wallColor[]   = {0.85f, 0.9f, 0.95f, 1.0f}; // terang putih kebiruan
 GLfloat windowColor[] = {0.2f, 0.6f, 1.0f, 1.0f};   // biru jendela
 GLfloat doorColor[]   = {1.0f, 0.45f, 0.0f, 1.0f};  // oranye pintu
@@ -50,11 +50,11 @@ void initRendering() {
 }
 
 void drawUnitCube() {
-    // Draw a unit cube centered at origin with normals
+    // gambar kubus satuan yang berpusat di titik asal
     glutSolidCube(1.0f);
 }
 
-// Draw a rectangular prism (width, height, depth) centered on origin
+// gambar prisma(prism) persegi panjang(rectangular) (width, height, depth) yang berpusat di titik asal
 void drawPrism(float width, float height, float depth) {
     glPushMatrix();
     glScalef(width, height, depth);
@@ -62,9 +62,9 @@ void drawPrism(float width, float height, float depth) {
     glPopMatrix();
 }
 
-// Draw one window as slightly inset rectangle on face
+// gambar satu jandela yang sedikit menjorok ke permukaan
 void drawWindow(float w, float h, float depthOffset) {
-    // A thin box as window
+    // kotak tipis sebagai jendela
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, depthOffset);
     glScalef(w, h, 0.02f);
@@ -72,12 +72,12 @@ void drawWindow(float w, float h, float depthOffset) {
     glPopMatrix();
 }
 
-void drawBuilding() {
-    // Building main block
+void drawGedung() {
+    // gedung blok utama
     glColor3fv(wallColor);
     drawPrism(2.0f, 3.0f, 1.2f); // width, height, depth
 
-    // Roof (slight overhang)
+    // atap (sedikit menjorok)
     glPushMatrix();
     glTranslatef(0.0f, 1.6f, 0.0f);
     glColor3f(0.9f, 0.9f, 0.95f);
@@ -85,7 +85,7 @@ void drawBuilding() {
     glutSolidCube(1.0f);
     glPopMatrix();
 
-    // Door - bottom center
+    // pintu - tengah bawah
     glPushMatrix();
     glTranslatef(0.0f, -0.9f, 0.62f + 0.01f); // slightly in front
     glColor3fv(doorColor);
@@ -93,7 +93,7 @@ void drawBuilding() {
     glutSolidCube(1.0f);
     glPopMatrix();
 
-    // Windows: grid 3x2 on front face
+    // jendela: grid 3x2 pada permukaan depan
     int rows = 4;
     int cols = 2;
     float startY = 0.9f;
@@ -107,16 +107,16 @@ void drawBuilding() {
             glPushMatrix();
             float x = startX + c * stepX;
             float y = startY - r * stepY;
-            // Place window slightly inset on front face (z = depth/2 + small)
+            // tempat jendela sedikit menjorok ke dalam permukaan depan (z=kedalaman/2+kecil)
             glTranslatef(x, y, 0.62f + 0.011f);
-            // Windows are thin boxes
+            // Jendela
             glScalef(0.45f, 0.35f, 0.02f);
             glutSolidCube(1.0f);
             glPopMatrix();
         }
     }
 
-    // Also put windows on one side for 3D feel (right side)
+    // jendela di sisi lainnya agar terlihat 3D
     for (int r = 0; r < rows; ++r) {
         for (int c = 0; c < cols; ++c) {
             glPushMatrix();
@@ -162,7 +162,7 @@ void handleKeyboardGedung(unsigned char key) {
 
             break;
         case '+':
-        case '=': // in case user pressed without shift
+        case '=': // jika user menekan tombol shift
             scaleFactor += SCALE_STEP;
             if (scaleFactor > SCALE_MAX) scaleFactor = SCALE_MAX;
             break;
@@ -201,13 +201,13 @@ void display() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Position the camera to view the scene
-    // We'll use a simple static camera (gluLookAt)
+    // arah kamera untuk melihat sekitar
+    // menggunakan kamera statis
     gluLookAt(4.0, 3.0, 6.0,    // eye pos
               0.0, 0.0, 0.0,    // center
               0.0, 1.0, 0.0);   // up
 
-    // Apply global transforms for object
+    // transformasi global untuk object
     glPushMatrix();
     glScalef(scaleFactor, scaleFactor, scaleFactor);
 
@@ -215,8 +215,8 @@ void display() {
     glRotatef(angleX, 1.0f, 0.0f, 0.0f);
     glRotatef(angleY, 0.0f, 1.0f, 0.0f);
 
-    // Draw axis helpers (optional subtle)
-    // X axis red, Y axis green, Z axis blue (very dim)
+    // gambar garis sumbu
+    // sumbu x merah, sumbu y hijau sumbu z biru
     glDisable(GL_LIGHTING);
     glLineWidth(2.0f);
     glBegin(GL_LINES);
@@ -226,8 +226,8 @@ void display() {
     glEnd();
     glEnable(GL_LIGHTING);
 
-    // Draw building
-    drawBuilding();
+    // gambar gedung
+    drawGedung();
 
     glPopMatrix();
 
@@ -240,7 +240,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(900, 600);
     glutInitWindowPosition(200, 100);
-    glutCreateWindow("Gedung 3D - OpenGL FreeGLUT");
+    glutCreateWindow("Azhari - Gedung 3D");
 
     initRendering();
 
