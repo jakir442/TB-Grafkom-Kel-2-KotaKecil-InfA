@@ -1,83 +1,95 @@
-// File: gedung3d.cpp
-// Compile: g++ gedung3d.cpp -o gedung3d -lGL -lGLU -lglut
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <cstdio>
 
-#include "header/azhari-gedung.h"
+// Variabel transformasi objek
+float angleX = 0.0f;    // Rotasi terhadap sumbu X (derajat)
+float angleY = 0.0f;   // Rotasi terhadap sumbu Y (derajat)
+float scaleFactor = 1.0f; // Faktor skala objek
 
+// Konstanta kontrol transformasi
+float ROT_STEP   = 5.0f;   // Besar perubahan rotasi
+float SCALE_STEP = 0.1f;   // Besar perubahan skala
+float SCALE_MIN  = 0.1f;   // Skala minimum
+float SCALE_MAX  = 10.0f;  // Skala maksimum
 
-// control transformasi
-static float angleX = 20.0f;    // rotasi X (derajat)
-static float angleY = -25.0f;   // rotasi Y (derajat)
-float scaleFactor = 1.0f;
-
-// pengaturan peningkatan
-const float ROT_STEP = 5.0f;
-const float SCALE_STEP = 0.1f;
-const float SCALE_MIN = 0.1f;
-const float SCALE_MAX = 10.0f;
-
-// warna jendela/pintu
-GLfloat wallColor[]   = {0.85f, 0.9f, 0.95f, 1.0f}; // terang putih kebiruan
-GLfloat windowColor[] = {0.2f, 0.6f, 1.0f, 1.0f};   // biru jendela
-GLfloat doorColor[]   = {1.0f, 0.45f, 0.0f, 1.0f};  // oranye pintu
+// Warna material objek
+GLfloat wallColor[]   = {0.85f, 0.9f, 0.95f, 1.0f}; // Warna dinding gedung
+GLfloat windowColor[] = {0.2f, 0.6f, 1.0f, 1.0f};  // Warna jendela
+GLfloat doorColor[]   = {1.0f, 0.45f, 0.0f, 1.0f}; // Warna pintu
 
 void initRendering() {
+    // Mengaktifkan depth test agar objek memiliki kedalaman
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
 
-    // Light0 (simple white)
-    GLfloat lightPos[]    = {4.0f, 6.0f, 6.0f, 1.0f};
-    GLfloat lightAmbient[]  = {0.15f, 0.15f, 0.15f, 1.0f};
-    GLfloat lightDiffuse[]  = {0.85f, 0.85f, 0.85f, 1.0f};
-    GLfloat lightSpecular[] = {0.9f, 0.9f, 0.9f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmbient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  lightDiffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
-
-    // Material
-    GLfloat spec[] = {0.2f, 0.2f, 0.2f, 1.0f};
-    glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
-    glMateriali(GL_FRONT, GL_SHININESS, 16);
-
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // background hitam
+    // Warna latar belakang
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
+//  FUNGSI PRIMITIF OBJEK 3D
+
+// Kubus satuan sebagai dasar pemodelan
 void drawUnitCube() {
-    // gambar kubus satuan yang berpusat di titik asal
     glutSolidCube(1.0f);
 }
 
-// gambar prisma(prism) persegi panjang(rectangular) (width, height, depth) yang berpusat di titik asal
-void drawPrism(float width, float height, float depth) {
+// Balok (prisma segi empat) dengan ukuran tertentu
+void Prisma(float width, float height, float depth) {
     glPushMatrix();
     glScalef(width, height, depth);
     drawUnitCube();
     glPopMatrix();
 }
-
-// gambar satu jandela yang sedikit menjorok ke permukaan
-void drawWindow(float w, float h, float depthOffset) {
-    // kotak tipis sebagai jendela
+// Fungsi jendela Depan
+void jendelaDepan(float x, float y) {
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, depthOffset);
-    glScalef(w, h, 0.02f);
+    glTranslatef(x, y, 0.63f);   // Posisi di depan gedung
+    glScalef(0.60f, 0.45f, 0.02f); // Ukuran jendela
     glutSolidCube(1.0f);
     glPopMatrix();
 }
+// Fungsi jendela Belakang
+void jendelaBelakang(float x, float y) {
+    glPushMatrix();
+    glTranslatef(x, y, -0.63f);   // Posisi di depan gedung
+    glScalef(0.60f, 0.45f, 0.02f); // Ukuran jendela
+    glutSolidCube(1.0f);
+    glPopMatrix();
+}
+void Tabung() {
+    GLUquadric* quad = gluNewQuadric();
 
-void drawGedung() {
-    // gedung blok utama
+    glPushMatrix();
+    // Posisi cerobong di atas atap (kanan)
+    glTranslatef(0.6f, 1.50f, 0.3f);
+    // Putar agar tabung berdiri ke atas
+    glRotatef(-90.0f, 1, 0, 0);
+    // Warna cerobong
+    glColor3f(0.6f, 0.6f, 0.6f);
+
+    // Gambar tabung
+    gluCylinder(
+        quad,
+        0.12f,  // radius bawah
+        0.12f,  // radius atas
+        0.6f,   // tinggi
+        20,     
+        20     
+    );
+
+    glPopMatrix();
+    gluDeleteQuadric(quad);
+}
+
+//  PEMODELAN OBJEK GEDUNG 3D
+
+void drawBuilding() {
+    // Badan utama gedung
     glColor3fv(wallColor);
-    drawPrism(2.0f, 3.0f, 1.2f); // width, height, depth
+    Prisma(2.0f, 3.0f, 1.2f);
 
-    // atap (sedikit menjorok)
+    // Atap gedung
     glPushMatrix();
     glTranslatef(0.0f, 1.6f, 0.0f);
     glColor3f(0.9f, 0.9f, 0.95f);
@@ -85,158 +97,123 @@ void drawGedung() {
     glutSolidCube(1.0f);
     glPopMatrix();
 
-    // pintu - tengah bawah
+    // Pintu gedung
     glPushMatrix();
-    glTranslatef(0.0f, -0.9f, 0.62f + 0.01f); // slightly in front
+    glTranslatef(0.0f, -0.98f, 0.63f);
     glColor3fv(doorColor);
     glScalef(0.5f, 0.8f, 0.02f);
     glutSolidCube(1.0f);
     glPopMatrix();
 
-    // jendela: grid 3x2 pada permukaan depan
-    int rows = 4;
-    int cols = 2;
-    float startY = 0.9f;
-    float startX = -0.6f;
-    float stepY = 0.6f;
-    float stepX = 0.8f;
-    glColor3fv(windowColor);
+    // Jendela depan gedung
+     glColor3fv(windowColor);
 
-    for (int r = 0; r < rows; ++r) {
-        for (int c = 0; c < cols; ++c) {
-            glPushMatrix();
-            float x = startX + c * stepX;
-            float y = startY - r * stepY;
-            // tempat jendela sedikit menjorok ke dalam permukaan depan (z=kedalaman/2+kecil)
-            glTranslatef(x, y, 0.62f + 0.011f);
-            // Jendela
-            glScalef(0.45f, 0.35f, 0.02f);
-            glutSolidCube(1.0f);
-            glPopMatrix();
-        }
-    }
+    // Baris atas
+	jendelaDepan(-0.45f,  0.98f);
+	jendelaDepan( 0.45f,  0.98f);
+	
+	// Baris tengah
+	jendelaDepan(-0.45f,  0.4f);
+	jendelaDepan( 0.45f,  0.4f);
+	
+	// Baris bawah 
+	jendelaDepan(-0.45f, -0.2f);
+	jendelaDepan( 0.45f, -0.2f);
+	
+	// Jendela depan belakang
+     glColor3fv(windowColor);
 
-    // jendela di sisi lainnya agar terlihat 3D
-    for (int r = 0; r < rows; ++r) {
-        for (int c = 0; c < cols; ++c) {
-            glPushMatrix();
-            float x = 0.62f + 0.011f;
-            float y = startY - r * stepY;
-            float z = -0.4f + c * 0.8f;
-            glTranslatef(x, y, z);
-            glRotatef(90.0f, 0, 1, 0); // orient to face outward
-            glScalef(0.45f, 0.35f, 0.02f);
-            glColor3fv(windowColor);
-            glutSolidCube(1.0f);
-            glPopMatrix();
-        }
-    }
+    // Baris atas
+	jendelaBelakang(-0.45f,  0.98f);
+	jendelaBelakang( 0.45f,  0.98f);
+	
+	// Baris tengah
+	jendelaBelakang(-0.45f,  0.4f);
+	jendelaBelakang( 0.45f,  0.4f);
+	
+	// Baris bawah 
+	jendelaBelakang(-0.45f, -0.2f);
+	jendelaBelakang( 0.45f, -0.2f);
+	
+	Tabung();
 }
 
-void handleSpecialKeypress(int key, int x, int y) {
-    switch (key) {
-        case GLUT_KEY_RIGHT:
-            angleY += ROT_STEP;
-            if (angleY >= 360.0f) angleY -= 360.0f;
-            break;
-        case GLUT_KEY_LEFT:
-            angleY -= ROT_STEP;
-            if (angleY < 0.0f) angleY += 360.0f;
-            break;
-        case GLUT_KEY_UP:
-            angleX -= ROT_STEP;
-            if (angleX < -360.0f) angleX += 360.0f;
-            break;
-        case GLUT_KEY_DOWN:
-            angleX += ROT_STEP;
-            if (angleX > 360.0f) angleX -= 360.0f;
-            break;
-    }
-    glutPostRedisplay();
-}
+//  FUNGSI DISPLAY
 
-void handleKeyboardGedung(unsigned char key) {
-    switch (key) {
-        case 27: // ESC
-            exit(0);
-
-            break;
-        case '+':
-        case '=': // jika user menekan tombol shift
-            scaleFactor += SCALE_STEP;
-            if (scaleFactor > SCALE_MAX) scaleFactor = SCALE_MAX;
-            break;
-        case '-':
-        case '_':
-            scaleFactor -= SCALE_STEP;
-            if (scaleFactor < SCALE_MIN) scaleFactor = SCALE_MIN;
-            break;
-        case 'r':
-        case 'R':
-            // reset view
-            angleX = 20.0f;
-            angleY = -25.0f;
-            scaleFactor = 1.0f;
-            break;
-    }
-    glutPostRedisplay();
-}
-
-void reshape(int w, int h) {
-    if (h == 0) h = 1;
-    float aspect = (float)w / (float)h;
-    glViewport(0, 0, w, h);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    // Perspective projection
-    gluPerspective(45.0, aspect, 0.1, 100.0);
-    glMatrixMode(GL_MODELVIEW);
-}
-
-#ifdef STANDALONE
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // arah kamera untuk melihat sekitar
-    // menggunakan kamera statis
-    gluLookAt(4.0, 3.0, 6.0,    // eye pos
-              0.0, 0.0, 0.0,    // center
-              0.0, 1.0, 0.0);   // up
+    // Kamera menggunakan proyeksi perspektif
+    gluLookAt(4.0, 3.0, 6.0,
+              0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0);
 
-    // transformasi global untuk object
     glPushMatrix();
-    glScalef(scaleFactor, scaleFactor, scaleFactor);
 
-    // Rotate object
+    // Transformasi skala dan rotasi
+    glScalef(scaleFactor, scaleFactor, scaleFactor);
     glRotatef(angleX, 1.0f, 0.0f, 0.0f);
     glRotatef(angleY, 0.0f, 1.0f, 0.0f);
 
-    // gambar garis sumbu
-    // sumbu x merah, sumbu y hijau sumbu z biru
-    glDisable(GL_LIGHTING);
-    glLineWidth(2.0f);
-    glBegin(GL_LINES);
-      glColor3f(0.3f, 0.0f, 0.0f); glVertex3f(0,0,0); glVertex3f(1.0f,0,0);
-      glColor3f(0.0f,0.3f,0.0f); glVertex3f(0,0,0); glVertex3f(0,1.0f,0);
-      glColor3f(0.0f,0.0f,0.3f); glVertex3f(0,0,0); glVertex3f(0,0,1.0f);
-    glEnd();
-    glEnable(GL_LIGHTING);
-
-    // gambar gedung
-    drawGedung();
+    // Menggambar objek gedung
+    drawBuilding();
 
     glPopMatrix();
-
     glutSwapBuffers();
 }
 
+//  INTERAKSI KEYBOARD
+
+void rotasi(int key, int x, int y) {
+    switch (key) {
+        case GLUT_KEY_RIGHT: angleY += ROT_STEP; break;
+        case GLUT_KEY_LEFT:  angleY -= ROT_STEP; break;
+        case GLUT_KEY_UP:    angleX -= ROT_STEP; break;
+        case GLUT_KEY_DOWN:  angleX += ROT_STEP; break;
+    }
+    glutPostRedisplay();
+}
+
+void scaling(unsigned char key, int x, int y) {
+    switch (key) {
+        case 27: exit(0); break; // Tombol ESC
+        case '+': case '=':
+            scaleFactor += SCALE_STEP;
+            if (scaleFactor > SCALE_MAX) scaleFactor = SCALE_MAX;
+            break;
+        case '-': case '_':
+            scaleFactor -= SCALE_STEP;
+            if (scaleFactor < SCALE_MIN) scaleFactor = SCALE_MIN;
+            break;
+        case 'r': case 'R':
+            angleX = 0.0f;
+            angleY = 0.0f;
+            scaleFactor = 1.0f;
+            break;
+    }
+    glutPostRedisplay();
+}
+
+//  PENGATURAN PROYEKSI & WINDOW
+
+void reshape(int w, int h) {
+    if (h == 0) h = 1;
+    float aspect = (float)w / (float)h;
+
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, aspect, 0.1, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+//  FUNGSI UTAMA PROGRAM
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
-    // Double buffering, RGBA, Depth buffer
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(900, 600);
     glutInitWindowPosition(200, 100);
@@ -246,18 +223,9 @@ int main(int argc, char** argv) {
 
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(handleKeyboardGedung);
-    glutSpecialFunc(handleSpecialKeypress);
-
-    printf("Kontrol:\n");
-    printf("  Panah kanan/kiri: rotasi Y\n");
-    printf("  Panah atas/bawah: rotasi X\n");
-    printf("  + / = : memperbesar\n");
-    printf("  - / _ : memperkecil\n");
-    printf("  r : reset posisi dan scale\n");
-    printf("  ESC : keluar\n");
+    glutKeyboardFunc(scaling);
+    glutSpecialFunc(rotasi);
 
     glutMainLoop();
     return 0;
 }
-#endif
