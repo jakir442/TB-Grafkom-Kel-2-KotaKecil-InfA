@@ -5,14 +5,13 @@ float sudutDaunX = 0.0f;
 float sudutDaunY = 0.0f;
 float sudutDaunZ = 0.0f;
 
-/* ================= SILINDER ================= */
 void gambarSilinder(float radius, float tinggi) {
     GLUquadric *objek = gluNewQuadric();
     gluCylinder(objek, radius, radius, tinggi, 32, 32);
     gluDeleteQuadric(objek);
 }
 
-/* ================= POHON ================= */
+	//pohon//
 void gambarPohon() {
     glPushMatrix();
 
@@ -36,14 +35,25 @@ void gambarPohon() {
 
     // DAUN TENGAH
     glColor3f(0.1f, 0.75f, 0.1f);
-    glPushMatrix();
-        glTranslatef(0.0f, 2.7f, 0.0f);
-        glRotatef(sudutDaunX, 1, 0, 0);
-		glRotatef(sudutDaunY, 0, 1, 0);
-		glRotatef(sudutDaunZ, 0, 0, 1);
-        glScalef(0.55f, 0.55f, 0.55f);
-        glutSolidDodecahedron();
-    glPopMatrix();
+	glPushMatrix();
+    glTranslatef(0.0f, 2.7f, 0.0f);
+    glRotatef(sudutDaunX, 1, 0, 0);
+    glRotatef(sudutDaunY, 0, 1, 0);
+    glRotatef(sudutDaunZ, 0, 0, 1);
+    glScalef(0.55f, 0.55f, 0.55f);
+
+    // ISI DAUN
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+    glColor3f(0.1f, 0.75f, 0.1f);
+    glutSolidDodecahedron();
+    glDisable(GL_POLYGON_OFFSET_FILL);
+
+    // GARIS DAUN
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 0.4f, 0.0f);
+    glutWireDodecahedron();
+	glPopMatrix();
 
     // RANTING KIRI
     glColor3f(0.55f, 0.30f, 0.1f);
@@ -56,14 +66,25 @@ void gambarPohon() {
 
     // DAUN KIRI
     glColor3f(0.1f, 0.8f, 0.1f);
-    glPushMatrix();
-        glTranslatef(-1.0f, 2.2f, 0.0f);
-        glRotatef(sudutDaunX, 1, 0, 0);
-		glRotatef(sudutDaunY, 0, 1, 0);
-		glRotatef(sudutDaunZ, 0, 0, 1);
-        glScalef(0.45f, 0.45f, 0.45f);
-        glutSolidDodecahedron();
-    glPopMatrix();
+	glPushMatrix();
+    glTranslatef(-1.0f, 2.2f, 0.0f);
+    glRotatef(sudutDaunX, 1, 0, 0);
+    glRotatef(sudutDaunY, 0, 1, 0);
+    glRotatef(sudutDaunZ, 0, 0, 1);
+    glScalef(0.45f, 0.45f, 0.45f);
+
+    // ISI DAUN
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+    glColor3f(0.1f, 0.8f, 0.1f);
+    glutSolidDodecahedron();
+    glDisable(GL_POLYGON_OFFSET_FILL);
+
+    // GARIS DAUN
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 0.4f, 0.0f);
+    glutWireDodecahedron();
+	glPopMatrix();
 
     // RANTING KANAN
     glColor3f(0.55f, 0.30f, 0.1f);
@@ -77,18 +98,28 @@ void gambarPohon() {
     // DAUN KANAN
     glColor3f(0.1f, 0.8f, 0.1f);
     glPushMatrix();
-        glTranslatef(1.0f, 2.2f, 0.0f);
-        glRotatef(sudutDaunX, 1, 0, 0);
-		glRotatef(sudutDaunY, 0, 1, 0);
-		glRotatef(sudutDaunZ, 0, 0, 1);
-        glScalef(0.45f, 0.45f, 0.45f);
-        glutSolidDodecahedron();
-    glPopMatrix();
+    glTranslatef(1.0f, 2.2f, 0.0f);
+    glRotatef(sudutDaunX, 1, 0, 0);
+    glRotatef(sudutDaunY, 0, 1, 0);
+    glRotatef(sudutDaunZ, 0, 0, 1);
+    glScalef(0.45f, 0.45f, 0.45f);
+
+    // ISI DAUN
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+    glColor3f(0.1f, 0.8f, 0.1f);
+    glutSolidDodecahedron();
+    glDisable(GL_POLYGON_OFFSET_FILL);
+
+    // GARIS DAUN
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 0.4f, 0.0f);
+    glutWireDodecahedron();
+	glPopMatrix();
 
     glPopMatrix();
 }
 
-/* ================= TAMPILAN ================= */
 void tampilLayar() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -103,10 +134,10 @@ void tampilLayar() {
 
 void inputKeyboard(unsigned char tombol, int x, int y) {
     switch (tombol) {
-        case 'i': 
+        case 'k': 
 			sudutDaunX += 5; 
 			break;
-        case 'k': 
+        case 'i': 
 			sudutDaunX -= 5; 
 			break;
 
@@ -129,7 +160,6 @@ void inputKeyboard(unsigned char tombol, int x, int y) {
     glutPostRedisplay();
 }
 
-/* ================= RESIZE ================= */
 void ubahUkuran(int lebar, int tinggi) {
     if (tinggi == 0) tinggi = 1;
     float rasio = (float)lebar / tinggi;
@@ -141,7 +171,6 @@ void ubahUkuran(int lebar, int tinggi) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-/* ================= MAIN ================= */
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -149,7 +178,8 @@ int main(int argc, char** argv) {
     glutCreateWindow("pohon dede");
 
     glEnable(GL_NORMALIZE);
-
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_POLYGON_OFFSET_FILL);
     glutDisplayFunc(tampilLayar);
     glutReshapeFunc(ubahUkuran);
     glutKeyboardFunc(inputKeyboard);
