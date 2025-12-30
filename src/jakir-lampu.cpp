@@ -8,6 +8,7 @@ int  levelLampu = 0;
 float rotLampuY = 0.0f; // kiri-kanan
 float rotLampuX = 0.0f; // atas-bawah
 
+// untuk private
 float rotSceneY = 0.0f; // kiri-kanan
 float rotSceneX = 0.0f; // atas-bawah
 
