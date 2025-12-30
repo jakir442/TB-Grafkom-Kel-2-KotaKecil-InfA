@@ -87,14 +87,6 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidCube(1.0f);
     glPopMatrix();
 
-    // penutup bawah
-    glPushMatrix();
-        glTranslatef(0.0f, 2.6f, 0.75f);
-        glColor3f(0.1f, 0.1f, 0.1f);
-        glScalef(0.65f, 0.06f, 0.85f);
-        glutSolidCube(1.0f);
-    glPopMatrix();
-
     // bohlam
     glPushMatrix();
         glTranslatef(0.0f, 2.58f, 0.75f);
@@ -170,21 +162,21 @@ void keyboardLampu(unsigned char key) {
         glutPostRedisplay();
     }
 
-    void specialKeyboardView(int key, int x, int y) {
+    void specialKeyboardRotasi(int key, int x, int y) {
         switch (key) {
-        case GLUT_KEY_LEFT:
-            rotSceneY -= 5.0f;
-            break;
-        case GLUT_KEY_RIGHT:
-            rotSceneY += 5.0f;
-            break;
-        case GLUT_KEY_UP:
-            rotSceneX -= 5.0f;
-            break;
-        case GLUT_KEY_DOWN:
-            rotSceneX += 5.0f;
-            break;
-        }
+            case GLUT_KEY_LEFT:
+                rotSceneY -= 5.0f;
+                break;
+            case GLUT_KEY_RIGHT:
+                rotSceneY += 5.0f;
+                break;
+            case GLUT_KEY_UP:
+                rotSceneX -= 5.0f;
+                break;
+            case GLUT_KEY_DOWN:
+                rotSceneX += 5.0f;
+                break;
+            }
         glutPostRedisplay();
     }
 
@@ -226,10 +218,6 @@ void keyboardLampu(unsigned char key) {
             0.0f, 1.0f, 0.0f
         );
 
-        // rotasi untuk melihat 3D
-        glRotatef(rotSceneX, 1.0f, 0.0f, 0.0f);
-        glRotatef(rotSceneY, 0.0f, 1.0f, 0.0f);
-
         GLfloat matDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
         GLfloat matAmbient[] = {0.3f, 0.3f, 0.3f, 1.0f};
         GLfloat matSpec[]    = {0.8f, 0.8f, 0.8f, 1.0f};
@@ -246,17 +234,18 @@ void keyboardLampu(unsigned char key) {
         glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
         glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 40.0f);
         glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 12.0f);
-
-        // lantai
+        
         glPushMatrix();
-            glColor3f(0.1f, 0.1f, 0.1f);
-            glTranslatef(0.0f, -0.01f, 0.0f);
-            glScalef(6.0f, 0.05f, 6.0f);
-            glutSolidCube(1.0);
+            // rotasi untuk melihat 3D
+            glRotatef(rotSceneX, 1.0f, 0.0f, 0.0f);
+            glRotatef(rotSceneY, 0.0f, 1.0f, 0.0f);
+
+            drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
         glPopMatrix();
 
-        drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
-        drawGrid3D();
+        glPushMatrix();
+            drawGrid3D();
+        glPopMatrix();
 
         glutSwapBuffers();
     }
@@ -272,7 +261,7 @@ void keyboardLampu(unsigned char key) {
         glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
 
         glutKeyboardFunc(keyboardPrivate);
-        glutSpecialFunc(specialKeyboardView);
+        glutSpecialFunc(specialKeyboardRotasi);
         glutDisplayFunc(display);
         glutReshapeFunc(reshape);
         glutIdleFunc(display);
