@@ -243,9 +243,7 @@ void keyboardLampu(unsigned char key) {
             drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
         glPopMatrix();
 
-        glPushMatrix();
-            drawGrid3D();
-        glPopMatrix();
+        drawGrid3D();
 
         glutSwapBuffers();
     }
@@ -262,9 +260,8 @@ void keyboardLampu(unsigned char key) {
 
         glutKeyboardFunc(keyboardPrivate);
         glutSpecialFunc(specialKeyboardRotasi);
-        glutDisplayFunc(display);
         glutReshapeFunc(reshape);
-        glutIdleFunc(display);
+        glutDisplayFunc(display);
 
         glutMainLoop();
         return 0;
