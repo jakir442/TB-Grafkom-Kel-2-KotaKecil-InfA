@@ -11,15 +11,22 @@
         "${workspaceFolder}/src/*.cpp",
         "-o",
         "${workspaceFolder}/bin/app.exe",
+
         "-lfreeglut",
         "-lopengl32",
         "-lglu32",
+        "-lFreeImage",
+
         "-IC:/freeglut/include",
         "-IC:/glm",
         "-I${workspaceFolder}/include",
+        "-IC:/FreeImage/include",
+
         "-LC:/freeglut/lib",
+        "-LC:/FreeImage/lib",
         "-L${workspaceFolder}/lib"
       ],
+
       // "group": { "kind": "build" },
       "problemMatcher": ["$gcc"]
     },

@@ -5,88 +5,159 @@
 
 float angle = 2.3f;
 
-void initLighting() {
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_COLOR_MATERIAL);
+float sudutDaunX = 0.0f;
+float sudutDaunY = 0.0f;
+float sudutDaunZ = 0.0f;
 
-    GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-
-    GLfloat lightPos[] = {5.0f, 10.0f, 5.0f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-}
-
-void drawCylinder(float radius, float height) {
-    GLUquadric *quad = gluNewQuadric();
-    gluCylinder(quad, radius, radius, height, 32, 32);
-
-    gluDeleteQuadric(quad);
+void gambarSilinder(float radius, float tinggi) {
+    GLUquadric *objek = gluNewQuadric();
+    gluCylinder(objek, radius, radius, tinggi, 32, 32);
+    gluDeleteQuadric(objek);
 }
 
 void drawPohon() {
     glPushMatrix();
-    glScalef(0.9f, 0.9f, 0.9f); // mengecilkan ukuran pohon
 
-    // 1. batang utama
-    glColor3f(0.45f, 0.22f, 0.05f); // lebih gelap sedikit
+    float tinggiBatang = 1.4f;
+
+    // BATANG UTAMA
+    glColor3f(0.45f, 0.22f, 0.05f);
     glPushMatrix();
-        glRotatef(-90, 1, 0, 0);
-        drawCylinder(0.22f, 2.0f);
+        glTranslatef(0.0f, 2.1f, 0.0f);
+        glRotatef(90, 1, 0, 0);
+        gambarSilinder(0.22f, tinggiBatang);
     glPopMatrix();
 
-    // 2. ranting & daun tengah
-    glColor3f(0.55f, 0.30f, 0.1f); // warna lebih terang agar terlihat
+    // RANTING TENGAH
+    glColor3f(0.55f, 0.30f, 0.1f);
     glPushMatrix();
         glTranslatef(0.0f, 2.0f, 0.0f);
         glRotatef(-90, 1, 0, 0);
-        drawCylinder(0.11f, 0.6f);
+        gambarSilinder(0.11f, 0.6f);
     glPopMatrix();
 
-    // daun tengah
+    // DAUN TENGAH
     glColor3f(0.1f, 0.75f, 0.1f);
-    glPushMatrix();
-        glTranslatef(0.0f, 2.7f, 0.0f);
-        glutSolidSphere(0.80f, 32, 32);
-    glPopMatrix();
+	glPushMatrix();
+    glTranslatef(0.0f, 2.7f, 0.0f);
+    glRotatef(sudutDaunX, 1, 0, 0);
+    glRotatef(sudutDaunY, 0, 1, 0);
+    glRotatef(sudutDaunZ, 0, 0, 1);
+    glScalef(0.55f, 0.55f, 0.55f);
 
-    // 3. ranting kiri
+    // ISI DAUN
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+    glColor3f(0.1f, 0.75f, 0.1f);
+    glutSolidDodecahedron();
+    glDisable(GL_POLYGON_OFFSET_FILL);
+
+    // GARIS DAUN
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 0.4f, 0.0f);
+    glutWireDodecahedron();
+	glPopMatrix();
+
+    // RANTING KIRI
     glColor3f(0.55f, 0.30f, 0.1f);
     glPushMatrix();
         glTranslatef(0.0f, 1.7f, 0.0f);
-        glRotatef(55, 0, 0, 1);      // lebih condong ke kiri
+        glRotatef(55, 0, 0, 1);
         glRotatef(-90, 1, 0, 0);
-        drawCylinder(0.10f, 1.1f);  // lebih panjang + lebih besar
+        gambarSilinder(0.10f, 1.1f);
     glPopMatrix();
 
-    // daun kiri + digeser lebih keluar
+    // DAUN KIRI
     glColor3f(0.1f, 0.8f, 0.1f);
-    glPushMatrix();
-        glTranslatef(-1.1f, 2.2f, 0.0f);
-        glutSolidSphere(0.73f, 32, 32);
-    glPopMatrix();
+	glPushMatrix();
+    glTranslatef(-1.0f, 2.2f, 0.0f);
+    glRotatef(sudutDaunX, 1, 0, 0);
+    glRotatef(sudutDaunY, 0, 1, 0);
+    glRotatef(sudutDaunZ, 0, 0, 1);
+    glScalef(0.45f, 0.45f, 0.45f);
 
-    // 4. ranting kanan
+    // ISI DAUN
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+    glColor3f(0.1f, 0.8f, 0.1f);
+    glutSolidDodecahedron();
+    glDisable(GL_POLYGON_OFFSET_FILL);
+
+    // GARIS DAUN
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 0.4f, 0.0f);
+    glutWireDodecahedron();
+	glPopMatrix();
+
+    // RANTING KANAN
     glColor3f(0.55f, 0.30f, 0.1f);
     glPushMatrix();
         glTranslatef(0.0f, 1.7f, 0.0f);
-        glRotatef(-55, 0, 0, 1);    // lebih condong ke kanan
+        glRotatef(-55, 0, 0, 1);
         glRotatef(-90, 1, 0, 0);
-        drawCylinder(0.10f, 1.1f);
+        gambarSilinder(0.10f, 1.1f);
     glPopMatrix();
 
-    // daun kanan + digeser lebih keluar
+    // DAUN KANAN
     glColor3f(0.1f, 0.8f, 0.1f);
     glPushMatrix();
-        glTranslatef(1.1f, 2.2f, 0.0f);
-        glutSolidSphere(0.73f, 32, 32);
-    glPopMatrix();
+    glTranslatef(1.0f, 2.2f, 0.0f);
+    glRotatef(sudutDaunX, 1, 0, 0);
+    glRotatef(sudutDaunY, 0, 1, 0);
+    glRotatef(sudutDaunZ, 0, 0, 1);
+    glScalef(0.45f, 0.45f, 0.45f);
 
+    // ISI DAUN
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(1.0f, 1.0f);
+    glColor3f(0.1f, 0.8f, 0.1f);
+    glutSolidDodecahedron();
+    glDisable(GL_POLYGON_OFFSET_FILL);
+
+    // GARIS DAUN
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 0.4f, 0.0f);
+    glutWireDodecahedron();
+	glPopMatrix();
 
     glPopMatrix();
 }
 
+void keyboardPohon(unsigned char key) {
+    switch (key) {
+        case 'f': 
+			sudutDaunX += 5; 
+			break;
+        case 'h': 
+			sudutDaunX -= 5; 
+			break;
+
+        case 't': 
+			sudutDaunY += 5; 
+			break;
+        case 'g': 
+			sudutDaunY -= 5; 
+			break;
+
+        case 'r': 
+			sudutDaunZ += 5; 
+			break;
+        case 'y': 
+			sudutDaunZ -= 5; 
+			break;
+
+        case 27: exit(0);
+    }
+    glutPostRedisplay();
+}
+
 #ifdef STANDALONE
+void keyboard(unsigned char key, int x, int y) {
+    keyboardPohon(key);
+
+    glutPostRedisplay();
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -103,23 +174,14 @@ void display() {
     glutSwapBuffers();
 }
 
-void timer(int value) {
-    angle += 0.5f;
-    if (angle > 360) angle -= 360;
-    glutPostRedisplay();
-    glutTimerFunc(16, timer, 0);
-}
+void reshape(int lebar, int tinggi) {
+    if (tinggi == 0) tinggi = 1;
+    float rasio = (float)lebar / tinggi;
 
-void reshape(int w, int h) {
-    if (h == 0) h = 1;
-    float aspect = (float)w / h;
-
-    glViewport(0, 0, w, h);
-
+    glViewport(0, 0, lebar, tinggi);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, aspect, 0.1, 100);
-
+    gluPerspective(45, rasio, 0.1, 100);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -129,12 +191,14 @@ int main(int argc, char** argv) {
     glutInitWindowSize(800, 600);
     glutCreateWindow("pohon dede");
 
-    glEnable(GL_DEPTH_TEST);
-    initLighting();
+    glEnable(GL_NORMALIZE);
 
-    glutDisplayFunc(display);
-    glutReshapeFunc(reshape);
-    glutTimerFunc(0, timer, 0);
+    glEnable(GL_NORMALIZE);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_POLYGON_OFFSET_FILL);
+    glutDisplayFunc(display); // tampilan layar
+    glutReshapeFunc(reshape); // ubah ukuran
+    glutKeyboardFunc(keyboard);
 
     glutMainLoop();
     return 0;

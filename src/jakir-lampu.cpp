@@ -2,13 +2,16 @@
 #include <GL/glu.h>
 #include <cmath>
 
-
 bool lampuNyala = true;
 int  levelLampu = 0;
 
-// =================================================
-// INIT LIGHTING
-// =================================================
+float rotLampuY = 0.0f; // kiri-kanan
+float rotLampuX = 0.0f; // atas-bawah
+
+float rotSceneY = 0.0f; // kiri-kanan
+float rotSceneX = 0.0f; // atas-bawah
+
+// inisialisasi lighting
 void initLampuLighting() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
@@ -31,9 +34,7 @@ void initLampuLighting() {
     glDisable(GL_LIGHT7);
 }
 
-// =================================================
-// GAMBAR 1 LAMPU JALAN
-// =================================================
+// gambar 1 lampu jalan
 void drawLampuJalan(float x, float z, GLenum lightID) {
     float intensitasDiffuse;
     float intensitasAmbient;
@@ -62,9 +63,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
     glPushMatrix();
     glTranslatef(x, 0.0f, z);
 
-    // ======================
-    // TIANG LAMPU
-    // ======================
+    // tiang lampu
     glPushMatrix();
         glColor3f(0.45f, 0.45f, 0.45f);
         glTranslatef(0.0f, 0.0f, 0.0f);
@@ -72,9 +71,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         gluCylinder(quad, 0.12, 0.12, 2.7, 20, 20);
     glPopMatrix();
 
-    // ======================
-    // LENGAN LAMPU
-    // ======================
+    // tangan lampu
     glPushMatrix();
         glColor3f(0.35f, 0.35f, 0.35f);
         glTranslatef(0.0f, 2.7f, 0.3f);
@@ -82,9 +79,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidCube(1.0f);
     glPopMatrix();
 
-    // ======================
-    // KEPALA LAMPU (RUMAH)
-    // ======================
+    // kepala lampu (RUMAH)
     glPushMatrix();
         glTranslatef(0.0f, 2.7f, 0.75f);
         glColor3f(0.18f, 0.18f, 0.18f);
@@ -92,9 +87,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidCube(1.0f);
     glPopMatrix();
 
-    // ======================
-    // PENUTUP BAWAH
-    // ======================
+    // penutup bawah
     glPushMatrix();
         glTranslatef(0.0f, 2.6f, 0.75f);
         glColor3f(0.1f, 0.1f, 0.1f);
@@ -102,9 +95,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidCube(1.0f);
     glPopMatrix();
 
-    // ======================
-    // BOHLAM
-    // ======================
+    // bohlam
     glPushMatrix();
         glTranslatef(0.0f, 2.58f, 0.75f);
         if (lampuNyala)
@@ -114,9 +105,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidSphere(0.17f, 20, 20);
     glPopMatrix();
 
-    // ======================
-    // LIGHTING (SETELAH OBJEK)
-    // ======================
+    // lighting - setelah objek
     if (!lampuNyala) {
         glDisable(lightID);
         glPopMatrix();
@@ -127,7 +116,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
     // posisi bohlam (lokal lampu)
     GLfloat pos[] = { 0.0f, 2.58f, 0.75f, 1.0f };
 
-    // arah cahaya → KE DEPAN & KE BAWAH
+    // arah cahaya ke depan & ke bawah
     GLfloat dir[] = { 0.0f, -0.8f, 0.6f };
 
     GLfloat diffuse[] = {
@@ -156,19 +145,14 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
 }
 
 void keyboardLampu(unsigned char key) {
-
-    // ======================
-    // L → TAMBAH TERANG
-    // ======================
+    // tombol L untuk menaikan levelLampu
     if (key == 'l' || key == 'L') {
         if (levelLampu < 3) {
             levelLampu++;
         }
     }
 
-    // ======================
-    // O → KURANG TERANG
-    // ======================
+    // tombol O untuk menurunkan levelLampu
     if (key == 'o' || key == 'O') {
         if (levelLampu > 0) {
             levelLampu--;
@@ -178,84 +162,122 @@ void keyboardLampu(unsigned char key) {
     lampuNyala = (levelLampu > 0);
 }
 
-
-
+// AKSES PRIVATE
 #ifdef STANDALONE
+    void keyboardPrivate(unsigned char key, int x, int y) {
+        keyboardLampu(key);
 
-// =================================================
-// STANDALONE DISPLAY
-// =================================================
-void display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glutPostRedisplay();
+    }
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    void specialKeyboardView(int key, int x, int y) {
+        switch (key) {
+        case GLUT_KEY_LEFT:
+            rotSceneY -= 5.0f;
+            break;
+        case GLUT_KEY_RIGHT:
+            rotSceneY += 5.0f;
+            break;
+        case GLUT_KEY_UP:
+            rotSceneX -= 5.0f;
+            break;
+        case GLUT_KEY_DOWN:
+            rotSceneX += 5.0f;
+            break;
+        }
+        glutPostRedisplay();
+    }
 
-    gluLookAt(
-        0.0f, 3.0f, 8.0f,
-        0.0f, 1.5f, 0.0f,
-        0.0f, 1.0f, 0.0f
-    );
+    // grid 3D (GARIS BACKGROUND)
+    void drawGrid3D() {
+        glColor3f(0.3f, 0.3f, 0.3f); // warna line gridnyaa
+        glLineWidth(1.0f);     //ketebalan garis
 
-    GLfloat matDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat matAmbient[] = {0.3f, 0.3f, 0.3f, 1.0f};
-    GLfloat matSpec[]    = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat matShine[]   = {32.0f};
+        glBegin(GL_LINES);
+        for (int i = -20; i <= 20; i++) {      //lantai XZ (nu kotak kotak)
+            // garis sejajar sumbu Z
+            glVertex3f(i, 0, -20);   //titik awal
+            glVertex3f(i, 0,  20);   //titik akhir
 
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiffuse);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, matAmbient);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
-    glMaterialfv(GL_FRONT, GL_SHININESS, matShine);
+            // garis sejajar sumbu X
+            glVertex3f(-20, 0, i);    
+            glVertex3f( 20, 0, i);
+        }
+        glEnd();
+    }
 
+    void reshape(int w, int h) {
+        glViewport(0, 0, w, h);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(60.0, (float)w / h, 0.1f, 100.0f);
+        glMatrixMode(GL_MODELVIEW);
+    }
 
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 40.0f);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 12.0f);
+    void display() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // lantai
-    glPushMatrix();
-        glColor3f(0.1f, 0.1f, 0.1f);
-        glTranslatef(0.0f, -0.01f, 0.0f);
-        glScalef(6.0f, 0.05f, 6.0f);
-        glutSolidCube(1.0);
-    glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
-    drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
+        gluLookAt(
+            0.0f, 3.0f, 8.0f,
+            0.0f, 1.5f, 0.0f,
+            0.0f, 1.0f, 0.0f
+        );
 
-    glutSwapBuffers();
-}
+        // rotasi untuk melihat 3D
+        glRotatef(rotSceneX, 1.0f, 0.0f, 0.0f);
+        glRotatef(rotSceneY, 0.0f, 1.0f, 0.0f);
 
+        GLfloat matDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+        GLfloat matAmbient[] = {0.3f, 0.3f, 0.3f, 1.0f};
+        GLfloat matSpec[]    = {0.8f, 0.8f, 0.8f, 1.0f};
+        GLfloat matShine[]   = {32.0f};
 
-// =================================================
-// RESHAPE
-// =================================================
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(60.0, (float)w / h, 0.1f, 100.0f);
-    glMatrixMode(GL_MODELVIEW);
-}
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, matDiffuse);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, matAmbient);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
+        glMaterialfv(GL_FRONT, GL_SHININESS, matShine);
 
-// =================================================
-// MAIN (STANDALONE)
-// =================================================
-int main(int argc, char** argv) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
-    glutCreateWindow("Lampu Jalan - Standalone");
+        // arah cahaya ke depan & ke bawah
+        GLfloat dir[] = { 0.0f, -0.8f, 0.6f };
 
-    initLampuLighting();
+        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+        glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 40.0f);
+        glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 12.0f);
 
-    glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
+        // lantai
+        glPushMatrix();
+            glColor3f(0.1f, 0.1f, 0.1f);
+            glTranslatef(0.0f, -0.01f, 0.0f);
+            glScalef(6.0f, 0.05f, 6.0f);
+            glutSolidCube(1.0);
+        glPopMatrix();
 
-    glutKeyboardFunc(keyboard);
-    glutDisplayFunc(display);
-    glutReshapeFunc(reshape);
-    glutIdleFunc(display);
+        drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
+        drawGrid3D();
 
-    glutMainLoop();
-    return 0;
-}
+        glutSwapBuffers();
+    }
+
+    int main(int argc, char** argv) {
+        glutInit(&argc, argv);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+        glutInitWindowSize(800, 600);
+        glutCreateWindow("Jakir - Lampu Jalan 3D");
+
+        initLampuLighting();
+
+        glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
+
+        glutKeyboardFunc(keyboardPrivate);
+        glutSpecialFunc(specialKeyboardView);
+        glutDisplayFunc(display);
+        glutReshapeFunc(reshape);
+        glutIdleFunc(display);
+
+        glutMainLoop();
+        return 0;
+    }
 #endif

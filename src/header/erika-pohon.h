@@ -4,4 +4,6 @@
 void initLighting();
 void drawPohon();
 
+void keyboardPohon(unsigned char key);
+
 #endif

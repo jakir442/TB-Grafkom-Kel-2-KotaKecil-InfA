@@ -32,11 +32,16 @@ void drawWheel() {
 
     glPushMatrix();
         glRotatef(90, 0, 1, 0);      //pergerakan roda
-        glColor3f(1.0f, 1.0f, 1.0f); // ban putih
-        gluCylinder(quad, 0.2, 0.2, 0.2, 20, 20);     //buat badan roda (objek quadric,atas,bawah,panjang,jumlah melingkar,jumlah mmemanjang)
+        glColor3f(0.3f, 0.3f, 0.3f); // warna ban bagian luar
+        gluCylinder(quad,     //badan roda, quadric
+		0.2,                 //ats
+		0.2,                 //bawah
+		0.2,                 //panjang
+		20,                  //jumlah melingkar
+		20);                //jumlah memanjang
 
         // GARIS PENANDA ROTASI BAN
-        glColor3f(1.0f, 0.0f, 0.0f); // hitam
+        glColor3f(1.0f, 1.0f, 1.0f); // warna ban bagian dalam
         glBegin(GL_LINES);
             glVertex3f(0.2f, 0.0f, 0.0f);
             glVertex3f(0.2f, 0.0f, 0.2f);
@@ -52,7 +57,7 @@ void drawWheel() {
 
 // MOBIL
 void drawMobil() {
-    glPushMatrix();                                      //simpan ttransformasi mobil
+    glPushMatrix();                                      //simpan transformasi mobil
         glTranslatef(mobilPosX, mobilPosY, mobilPosZ);   //posisi mobil (mobil pindah, roda ikut pindah boz)
         glRotatef(mobilYaw, 0, 1, 0);                    //arah hadap mobil (mobil belok, roda ikut belok)
 
@@ -60,14 +65,40 @@ void drawMobil() {
         glPushMatrix();
             glTranslatef(0, 0.5, 0);       //geser keatas body (perubahan)
             glScalef(1.0, 0.5, 1.0);      //ukuran atap 
-            drawCube(0.8, 0.8, 1.0);
+            drawCube(0.0, 0.0, 1.0);
+        glPopMatrix();
+        
+        //kaca
+        glPushMatrix();
+        	glColor3f(0.5f, 0.8f, 1.0f);   //warnaaaaaaaa
+            glTranslatef(0.0f, 0.55f, 0.55f);     //geser keatas body (perubahan)
+            glScalef(0.8f, 0.3f, 0.05f);      //ukuran atap 
+            drawCube(1.0f, 1.0f, 1.0f);
         glPopMatrix();
 
         // body
         glPushMatrix();
             glScalef(1.0, 0.6, 2.0);
-            drawCube(1.2, 0.6, 1.0); //warna
+            drawCube(0.6f, 0.0f, 0.0f); //warna
         glPopMatrix();
+		
+		
+
+        glPushMatrix();
+			glColor3f(1, 1, 0);
+			glTranslatef(-0.5f, 0.4f, 0.0f);
+    		glScalef(0.1f, 0.002f, 0.002f);
+    		glRotatef(-90, 0, 1, 0); // Rotate(angle, x, y, z)
+    		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'R');
+		glPopMatrix();
+
+        glPushMatrix();
+    		glColor3f(1, 1, 0);
+    		glTranslatef(0.5f, 0.4f, 0.0f);
+    		glScalef(0.002f, 0.002f, 0.002f);
+    		glRotatef(90, 0, 1, 0); 
+    		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
+		glPopMatrix();
 
 
         // posisi roda
@@ -89,14 +120,16 @@ void drawMobil() {
 
 		// Lampu depan kanan
 		glPushMatrix();
-    		glTranslatef(0.4f, 0.0f, 1.05f); // kanan - depan
+            // glTranslatef(0.4f, 0.0f, 1.05f); // kanan - depan
+    		glTranslatef(0.27f, 0.22f, 1.05f); // kanan - depan
     		glRotatef(90, 0, 0, 1);          // PUTAR AGAR SEJAJAR SUMBU X
     		glutSolidTorus(0.03, 0.12, 20, 30);
 		glPopMatrix();
 
 		// Lampu depan kiri
 		glPushMatrix();
-    		glTranslatef(-0.4f, 0.0f, 1.05f); // kiri - depan
+            // glTranslatef(-0.4f, 0.0f, 1.05f); // kanan - depan
+    		glTranslatef(-0.27f, 0.22f, 1.05f); // kiri - depan
     		glRotatef(90, 0, 0, 1);           // PUTAR AGAR SEJAJAR SUMBU X
     		glutSolidTorus(0.03, 0.12, 20, 30);
 		glPopMatrix();
@@ -127,9 +160,15 @@ void controlMobil(unsigned char key) {
 }
 
 #ifdef STANDALONE
+void keyboard (unsigned char key, int x, int y) {
+    controlMobil(key);
+
+    glutPostRedisplay();
+}
+
 // GRID 3D (GARIS BACKGROUND)
 void drawGrid3D() {
-    glColor3f(0.3f, 0.3f, 0.3f); // warna garis abu-abu
+    glColor3f(0.3f, 0.3f, 0.3f); // warna line gridnyaa
     glLineWidth(1.0f);     //ketebalan garis
 
     glBegin(GL_LINES);
@@ -178,13 +217,13 @@ int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("like blue like u muach");
+    glutCreateWindow("Putri - Mobil 3D");
 
     initMobil();
 
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(controlMobil);
+    glutKeyboardFunc(keyboard);
 
     glutMainLoop();
     return 0;

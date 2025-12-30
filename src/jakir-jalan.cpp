@@ -112,9 +112,8 @@ void updateCamera() {
 void keyboard(unsigned char key, int x, int y) { keys[key] = true; }
 void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
 
-
 // rotasi kamera
-void rotasiKamera(int key, int x, int y){
+void keyboardArrow(int key, int x, int y){
     switch(key){
         case GLUT_KEY_LEFT: cameraYaw -= kecepatanBelok; break;
         case GLUT_KEY_RIGHT: cameraYaw += kecepatanBelok; break;
@@ -169,7 +168,7 @@ int main(int argc,char** argv){
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboardUp);
-    glutSpecialFunc(rotasiKamera);
+    glutSpecialFunc(keyboardArrow);
     glutIdleFunc(display);
     
     glutMainLoop();
