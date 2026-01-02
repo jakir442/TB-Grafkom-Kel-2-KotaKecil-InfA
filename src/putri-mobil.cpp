@@ -23,7 +23,7 @@ void initMobil() {
 // KUBUS
 void drawCube(float r, float g, float b) {
     glColor3f(r, g, b);     //warna objek
-    glutSolidCube(1.0);     //kubus solid uk 1x1x1 (ke diubah di scale)
+    glutSolidCube(1.0);     //kubus solid uk 1x1x1 (ke diubah di scale) -> Objek Mobil 1 
 }
 
 // RODA
@@ -33,7 +33,7 @@ void drawWheel() {
     glPushMatrix();
         glRotatef(90, 0, 1, 0);      //pergerakan roda
         glColor3f(0.3f, 0.3f, 0.3f); // warna ban bagian luar
-        gluCylinder(quad,     //badan roda, quadric
+        gluCylinder(quad,     //badan roda, quadric -> Objek Mobil 2
 		0.2,                 //ats
 		0.2,                 //bawah
 		0.2,                 //panjang
@@ -42,13 +42,13 @@ void drawWheel() {
 
         // GARIS PENANDA ROTASI BAN
         glColor3f(1.0f, 1.0f, 1.0f); // warna ban bagian dalam
-        glBegin(GL_LINES);
+        glBegin(GL_LINES); // -> Objek Mobil 3
             glVertex3f(0.2f, 0.0f, 0.0f);
             glVertex3f(0.2f, 0.0f, 0.2f);
         glEnd();
 
-        gluDisk(quad, 0.0, 0.2, 20, 20);          //tutup depan roda
-        glTranslatef(0, 0, 0.2);                  //pergeseran roda
+        gluDisk(quad, 0.0, 0.2, 20, 20);    //tutup depan roda -> Objek Mobil 4
+        glTranslatef(0, 0, 0.2);            //pergeseran roda
         gluDisk(quad, 0.0, 0.2, 20, 20);
     glPopMatrix();
 
@@ -63,9 +63,9 @@ void drawMobil() {
 
         // atap
         glPushMatrix();
-            glTranslatef(0, 0.5, 0);       //geser keatas body (perubahan)
-            glScalef(1.0, 0.5, 1.0);      //ukuran atap 
-            drawCube(0.0, 0.0, 1.0);
+            glTranslatef(0, 0.5, 0);     //geser keatas body (perubahan)
+            glScalef(1.0, 0.5, 1.0);     //ukuran atap 
+            drawCube(0.0, 0.0, 1.0);   
         glPopMatrix();
         
         //kaca
@@ -81,15 +81,13 @@ void drawMobil() {
             glScalef(1.0, 0.6, 2.0);
             drawCube(0.6f, 0.0f, 0.0f); //warna
         glPopMatrix();
-		
-		
 
         glPushMatrix();
 			glColor3f(1, 1, 0);
 			glTranslatef(-0.5f, 0.4f, 0.0f);
     		glScalef(0.1f, 0.002f, 0.002f);
     		glRotatef(-90, 0, 1, 0); // Rotate(angle, x, y, z)
-    		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'R');
+    		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'R'); // -> Objek untuk menggambar huruf
 		glPopMatrix();
 
         glPushMatrix();
@@ -97,9 +95,17 @@ void drawMobil() {
     		glTranslatef(0.5f, 0.4f, 0.0f);
     		glScalef(0.002f, 0.002f, 0.002f);
     		glRotatef(90, 0, 1, 0); 
-    		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
+    	    glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
 		glPopMatrix();
 
+        // Huruf T di atas
+        glPushMatrix();
+            glColor3f(1, 1, 0);          // warna kuning
+            glTranslatef(-0.13f, 0.76f, -0.22f);  // posisi di atas
+            glScalef(0.0037f, 0.0037f, 0.0037f); // skala agar sesuai
+            glRotatef(90, 1, 0, 0);            // rotasi di sumbu Z, huruf tidur
+            glutStrokeCharacter(GLUT_STROKE_ROMAN, 'T');
+        glPopMatrix();
 
         // posisi roda
         float x[2] = {0.7f, -0.85f};   //kanan, kiri 
@@ -123,7 +129,7 @@ void drawMobil() {
             // glTranslatef(0.4f, 0.0f, 1.05f); // kanan - depan
     		glTranslatef(0.27f, 0.22f, 1.05f); // kanan - depan
     		glRotatef(90, 0, 0, 1);          // PUTAR AGAR SEJAJAR SUMBU X
-    		glutSolidTorus(0.03, 0.12, 20, 30);
+    		glutSolidTorus(0.03, 0.12, 20, 30); // -> Objek 5
 		glPopMatrix();
 
 		// Lampu depan kiri
@@ -141,12 +147,12 @@ void drawMobil() {
 void updateMobil(float speed) {
     mobilPosX -= sin(mobilYaw * M_PI / 180.0f) * speed;     //sumbu X
     mobilPosZ -= cos(mobilYaw * M_PI / 180.0f) * speed;     //sumbu Z
-    mobilWheelAngle -= speed * 300.0f; //roda jalan ea
+    mobilWheelAngle -= speed * 300.0f; // roda jalan
 }
 
 //  KEYBOARD 
 void controlMobil(unsigned char key) {
-    float moveSpeed = 0.15f;       //kecepatan maju mundur
+    float moveSpeed = 0.25f;       //kecepatan maju mundur
     float turnSpeed = 3.0f;        //kecepatan kanan kiri
 
     switch (key) {
@@ -159,73 +165,104 @@ void controlMobil(unsigned char key) {
     glutPostRedisplay();
 }
 
+// AKSES PRIVATE
 #ifdef STANDALONE
-void keyboard (unsigned char key, int x, int y) {
-    controlMobil(key);
+    // untuk keyboard Arrow
+    float rotSceneY = 0.0f; // kiri-kanan
+    float rotSceneX = 0.0f; // atas-bawah
 
-    glutPostRedisplay();
-}
+    void keyboardPrivate(unsigned char key, int x, int y) {
+        controlMobil(key);
 
-// GRID 3D (GARIS BACKGROUND)
-void drawGrid3D() {
-    glColor3f(0.3f, 0.3f, 0.3f); // warna line gridnyaa
-    glLineWidth(1.0f);     //ketebalan garis
-
-    glBegin(GL_LINES);
-    for (int i = -20; i <= 20; i++) {      //lantai XZ (nu kotak kotak)
-        // garis sejajar sumbu Z
-        glVertex3f(i, 0, -20);   //titik awal
-        glVertex3f(i, 0,  20);   //titik akhir
-
-        // garis sejajar sumbu X
-        glVertex3f(-20, 0, i);    
-        glVertex3f( 20, 0, i);
+        glutPostRedisplay();
     }
-    glEnd();
-}
 
-// FUNGSI WINDOW
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);       //area gambar sesuai uk window
-    glMatrixMode(GL_PROJECTION);  //mode proyeksi kamera
-    glLoadIdentity();
-    gluPerspective(60, (float)w / h, 1, 100);   //sudut pandang kameraa (kek zoom in out bgituloo)1 jarak dekat, 100 terjaoh
-    glMatrixMode(GL_MODELVIEW);
-}
+    void specialKeyboardRotasi(int key, int x, int y) {
+        switch (key) {
+            // case GLUT_KEY_LEFT:
+            //     rotSceneY -= 5.0f;
+            //     break;
+            // case GLUT_KEY_RIGHT:
+            //     rotSceneY += 5.0f;
+            //     break;
+            case GLUT_KEY_UP:
+                rotSceneX -= 5.0f;
+                break;
+            case GLUT_KEY_DOWN:
+                rotSceneX += 5.0f;
+                break;
+            }
+        glutPostRedisplay();
+    }
 
-// DISPLAY
-void display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // background hitam
+    // GRID 3D (GARIS BACKGROUND)
+    void drawGrid3D() {
+        glColor3f(0.3f, 0.3f, 0.3f); // warna line gridnyaa
+        glLineWidth(1.0f);     //ketebalan garis
 
-    glLoadIdentity();
+        glBegin(GL_LINES); // Objek Private
+        for (int i = -20; i <= 20; i++) {      //lantai XZ (nu kotak kotak)
+            // garis sejajar sumbu Z
+            glVertex3f(i, 0, -20);   //titik awal
+            glVertex3f(i, 0,  20);   //titik akhir
 
-    gluLookAt(
-        6.0f, 5.0f, 8.0f,  // posisi kamera
-        0.0f, 0.0f, 0.0f,  // titik yang dilihat
-        0.0f, 1.0f, 0.0f   // arah atas
-    );
-    
-    drawGrid3D();  // BACKGROUND GARIS 3D
-    drawMobil();   // MOBIL
+            // garis sejajar sumbu X
+            glVertex3f(-20, 0, i);    
+            glVertex3f( 20, 0, i);
+        }
+        glEnd();
+    }
 
-    glutSwapBuffers();
-}
+    // FUNGSI WINDOW
+    void reshape(int w, int h) {
+        glViewport(0, 0, w, h);       //area gambar sesuai uk window
+        glMatrixMode(GL_PROJECTION);  //mode proyeksi kamera
+        glLoadIdentity();
+        gluPerspective(60, (float)w / h, 1, 100);   //sudut pandang kameraa (kek zoom in out bgituloo)1 jarak dekat, 100 terjaoh
+        glMatrixMode(GL_MODELVIEW);
+    }
 
-// MAIN
-int main(int argc, char **argv) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
-    glutCreateWindow("Putri - Mobil 3D");
+    // DISPLAY
+    void display() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // background hitam
 
-    initMobil();
+        glLoadIdentity();
 
-    glutDisplayFunc(display);
-    glutReshapeFunc(reshape);
-    glutKeyboardFunc(keyboard);
+        gluLookAt(
+            6.0f, 5.0f, 8.0f,  // posisi kamera
+            0.0f, 0.0f, 0.0f,  // titik yang dilihat
+            0.0f, 1.0f, 0.0f   // arah atas
+        );
+        
+        glPushMatrix();
+            // rotasi untuk melihat 3D
+            glRotatef(rotSceneX, 1.0f, 0.0f, 0.0f);
+            glRotatef(rotSceneY, 0.0f, 1.0f, 0.0f);
 
-    glutMainLoop();
-    return 0;
-}
+            drawMobil();   // MOBIL
+        glPopMatrix();
+
+        drawGrid3D();  // BACKGROUND GARIS 3D
+
+        glutSwapBuffers();
+    }
+
+    // MAIN
+    int main(int argc, char **argv) {
+        glutInit(&argc, argv);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+        glutInitWindowSize(800, 600);
+        glutCreateWindow("Putri - Mobil 3D");
+
+        initMobil();
+
+        glutKeyboardFunc(keyboardPrivate);
+        glutSpecialFunc(specialKeyboardRotasi);
+        glutDisplayFunc(display);
+        glutReshapeFunc(reshape);
+
+        glutMainLoop();
+        return 0;
+    }
 #endif

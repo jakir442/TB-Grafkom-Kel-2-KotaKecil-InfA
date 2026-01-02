@@ -2,14 +2,19 @@
 #include <cmath>
 
 #include "header/jakir-jalan.h"
+#include "header/putri-mobil.h"
+
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
 // variabel global
-float cameraPosX = 0.0f, cameraPosY = 3.0f, cameraPosZ = 15.0f;
-float cameraYaw = 0.0f, cameraPitch = 0.0f;
+float camX = 0, camY = 3, camZ = 15;
+float camYaw = 0, camPitch = 0;
+
+float speedMove = 0.15f;
+float speedTurn = 1.0f;
 bool keys[256] = { false };
 
 float kecepatanGerak = 0.03f;
@@ -17,161 +22,200 @@ float kecepatanBelok  = 1.0f;
 
 float jalanOffset = 0.0f;
 
+void getCameraDir(float &dx, float &dy, float &dz) {
+    float yaw   = camYaw   * M_PI / 180.0f;
+    float pitch = camPitch * M_PI / 180.0f;
+
+    dx = sin(yaw) * cos(pitch);
+    dy = sin(pitch);
+    dz = -cos(yaw) * cos(pitch);
+}
+
+void drawConeBelang(float x, float z) {
+    glPushMatrix();
+        glTranslatef(x, 0.01f, z);
+        glRotatef(-90, 1, 0, 0); // tegakkan cone
+
+        // BAGIAN BAWAH (ORANGE)
+        glTranslatef(0.0f, 0.6f, 0.0f);
+        glColor3f(1.0f, 0.5f, 0.0f);
+        glutSolidCone(0.25f, 0.5f, 24, 24);
+
+        // bagian tengah STRIP PUTIH
+        glTranslatef(0.0f, 0.0f, 0.18f);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glutSolidCone(0.20f, 0.25f, 24, 24);
+
+        // BAGIAN ATAS (ORANGE)
+        glTranslatef(0.0f, 0.0f, 0.15f);
+        glColor3f(1.0f, 0.5f, 0.0f);
+        glutSolidCone(0.15f, 0.25f, 24, 24);
+
+    glPopMatrix();
+}
+
+void drawQuad(
+    float x1,float y1,float z1,
+    float x2,float y2,float z2,
+    float x3,float y3,float z3,
+    float x4,float y4,float z4
+) {
+    glBegin(GL_QUADS);
+        glVertex3f(x1,y1,z1);
+        glVertex3f(x2,y2,z2);
+        glVertex3f(x3,y3,z3);
+        glVertex3f(x4,y4,z4);
+    glEnd();
+}
+
 // draw jalan infinite
 void drawJalan() {
-    float lebarJalan  = 4.0f;
-    float setengahJalan   = lebarJalan / 2.0f;
-    float ketebalanJalan  = 0.3f;
-    float lebarTrotoar  = 0.3f;
-    float jarakTrotoar = 0.0001f;
+    float lebarJalan = 4.0f;
+    float setengahJalan = lebarJalan / 2.0f;
+    float ketebalanJalan = 0.3f;
+    float lebarTrotoar = 0.4f;
+    float jarakTrotoar = 0.0001f; 
 
     float jarakPandang = 200.0f;
+
+    float jarakConeZ = 20.0f;
+
+    // kamera ngambil dari objek mobil
     float baseZ = std::floor(mobilPosZ  / 10.0f) * 10.0f - jarakPandang;
-    // float baseZ = std::floor(cameraPosZ  / 10.0f) * 10.0f - jarakPandang; 
+
+    // langsung kamera yang gerak
+    // float baseZ = std::floor(camZ / 10.0f) * 10.0f - jarakPandang; 
     // jika mau build file mobil saja, aktif kan yg cameraPosZ
     // Untuk pergerakan kamera agar jalannya tanpa batas saat di running sendiri
 
-    for (float z = baseZ; z < baseZ + jarakPandang*2; z += 10.0f) {
-        float z1 = z;
-        float z2 = z1 + 10.0f;
+    for(float z = baseZ; z < baseZ + jarakPandang*2; z += 10.0f){
+        float z2 = z + 10;
 
         // badan jalan
         glColor3f(0.15f,0.15f,0.15f);
-        glBegin(GL_QUADS);
-            glVertex3f(-setengahJalan,0,z1); glVertex3f( setengahJalan,0,z1);
-            glVertex3f( setengahJalan,0,z2); glVertex3f(-setengahJalan,0,z2);
-        glEnd();
+        drawQuad(
+            -setengahJalan, 0, z, setengahJalan,0,z,
+            setengahJalan, 0, z2, -setengahJalan,0,z2
+        );
 
         // sisi jalan
         glColor3f(0.1f,0.1f,0.1f);
-        glBegin(GL_QUADS);
-            glVertex3f(-setengahJalan,-ketebalanJalan,z1); glVertex3f(-setengahJalan,0,z1);
-            glVertex3f(-setengahJalan,0,z2); glVertex3f(-setengahJalan,-ketebalanJalan,z2);
-            glVertex3f( setengahJalan,-ketebalanJalan,z1); glVertex3f( setengahJalan,0,z1);
-            glVertex3f( setengahJalan,0,z2); glVertex3f( setengahJalan,-ketebalanJalan,z2);
-        glEnd();
+        drawQuad(
+            -setengahJalan, -ketebalanJalan, z, -setengahJalan, 0, z,
+            -setengahJalan, 0, z2, -setengahJalan, -ketebalanJalan, z2
+        );
+        drawQuad( 
+            setengahJalan, -ketebalanJalan, z, setengahJalan, 0, z,
+            setengahJalan, 0, z2, setengahJalan, -ketebalanJalan, z2
+        );
 
         // trotoar
         glColor3f(0.32f,0.32f,0.32f);
-        glBegin(GL_QUADS);
-            glVertex3f(-(setengahJalan+lebarTrotoar),0,z1); glVertex3f(-setengahJalan+jarakTrotoar,0,z1);
-            glVertex3f(-setengahJalan+jarakTrotoar,0,z2); glVertex3f(-(setengahJalan+lebarTrotoar),0,z2);
-            glVertex3f( setengahJalan-jarakTrotoar,0,z1); glVertex3f( setengahJalan+lebarTrotoar,0,z1);
-            glVertex3f( setengahJalan+lebarTrotoar,0,z2); glVertex3f( setengahJalan-jarakTrotoar,0,z2);
-        glEnd();
+        drawQuad(
+            -(setengahJalan + lebarTrotoar), 0, z, -setengahJalan, 0, z,
+            -setengahJalan, 0, z2, -(setengahJalan + lebarTrotoar), 0, z2
+        );
+        drawQuad( 
+            setengahJalan, 0, z, (setengahJalan+lebarTrotoar), 0, z,
+            (setengahJalan + lebarTrotoar), 0, z2, setengahJalan, 0, z2
+        );
 
-        // garis putus-putus
-        glColor3f(1,1,0); 
+        // cone
+        float tx = setengahJalan + lebarTrotoar * 0.5f;
+        drawConeBelang( tx, z+3);
+        drawConeBelang(-tx, z+6);
+
+        // garis putus
+        glColor3f(1,1,0);
         glLineWidth(4);
-        glBegin(GL_LINES); 
-            glVertex3f(0,0.02f,z1+3); 
-            glVertex3f(0,0.02f,z1+6); 
+        glBegin(GL_LINES);
+            glVertex3f(0,0.02f,z+3);
+            glVertex3f(0,0.02f,z+6);
         glEnd();
     }
 }
 
 #ifdef STANDALONE
-// update kamera
-void updateCamera() {
-    float yawRad   = cameraYaw * M_PI / 180.0f;
-    float pitchRad = cameraPitch * M_PI / 180.0f;
+    // update kamera
+    void updateCamera() {
+        float dx, dy, dz;
+        getCameraDir(dx, dy, dz);
 
-    // maju / kanan vector
-    float majuX = sinf(yawRad) * cosf(pitchRad);
-    float majuY = sinf(pitchRad);
-    float majuZ = -cosf(yawRad) * cosf(pitchRad);
-    float kananX   = sinf(yawRad + M_PI/2.0f);
-    float kananZ   = -cosf(yawRad + M_PI/2.0f);
+        float rightX = sin((camYaw + 90) * M_PI / 180.0f);
+        float rightZ = -cos((camYaw + 90) * M_PI / 180.0f);
 
-    if (keys['w'] || keys['W']) { 
-    cameraPosX += majuX * kecepatanGerak; 
-    cameraPosY += majuY * kecepatanGerak; 
-    cameraPosZ += majuZ * kecepatanGerak; // majuZ
-    jalanOffset += kecepatanGerak*3; 
-    }
-    if (keys['s'] || keys['S']) { 
-        cameraPosX -= majuX * kecepatanGerak; 
-        cameraPosY -= majuY * kecepatanGerak; 
-        cameraPosZ -= majuZ * kecepatanGerak; //  majuZ
-        jalanOffset -= kecepatanGerak*3; 
-    }
-    if (keys['a'] || keys['A']) { 
-        cameraPosX -= kananX * kecepatanGerak; 
-        cameraPosZ -= kananZ * kecepatanGerak; 
-    }
-    if (keys['d'] || keys['D']) { 
-        cameraPosX += kananX * kecepatanGerak; 
-        cameraPosZ += kananZ * kecepatanGerak; 
+        if (keys['w']) { camX += dx*speedMove; camY += dy*speedMove; camZ += dz*speedMove; }
+        if (keys['s']) { camX -= dx*speedMove; camY -= dy*speedMove; camZ -= dz*speedMove; }
+        if (keys['a']) { camX -= rightX*speedMove; camZ -= rightZ*speedMove; }
+        if (keys['d']) { camX += rightX*speedMove; camZ += rightZ*speedMove; }
+
+        if (keys[' ']) camY += speedMove;
+        if (keys['c']) camY -= speedMove;
     }
 
-    if (keys[' ']) cameraPosY += kecepatanGerak;
-    if (keys['c'] || keys['C']) cameraPosY -= kecepatanGerak;
-}
+    // keyboard
+    void keyboard(unsigned char key, int x, int y) { keys[key] = true; }
+    void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
 
-// keyboard
-void keyboard(unsigned char key, int x, int y) { keys[key] = true; }
-void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
+    // rotasi kamera
+    void specialKeyboardRotasi(int key, int x, int y){
+        if (key == GLUT_KEY_LEFT)  camYaw   -= speedTurn;
+        if (key == GLUT_KEY_RIGHT) camYaw   += speedTurn;
 
-// rotasi kamera
-void keyboardArrow(int key, int x, int y){
-    switch(key){
-        case GLUT_KEY_LEFT: cameraYaw -= kecepatanBelok; break;
-        case GLUT_KEY_RIGHT: cameraYaw += kecepatanBelok; break;
-        case GLUT_KEY_UP: cameraPitch -= kecepatanBelok; break;
-        case GLUT_KEY_DOWN: cameraPitch += kecepatanBelok; break;
+        if (key == GLUT_KEY_UP)    camPitch += speedTurn;
+        if (key == GLUT_KEY_DOWN)  camPitch -= speedTurn;
+
+        // agar kamera tidak terbalik 
+        if (camPitch > 89)  camPitch = 89;
+        if (camPitch < -89) camPitch = -89;
     }
-    if(cameraPitch>89) cameraPitch=89;
-    if(cameraPitch<-89) cameraPitch=-89;
-    glutPostRedisplay();
-}
 
-// display
-void display(){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    updateCamera();
+    void reshape(int w, int h) {
+            glViewport(0, 0, w, h);
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            gluPerspective(60.0, (float)w / h, 0.1f, 100.0f);
+            glMatrixMode(GL_MODELVIEW);
+        }
 
-    glMatrixMode(GL_PROJECTION); glLoadIdentity();
-    gluPerspective(60.0, 1000.0/700.0, 0.1, 2000.0);
+    // display
+    void display(){
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+        updateCamera();
 
-    //  maju vector sama seperti di updateCamera 
-    float yawRad   = cameraYaw * M_PI / 180.0f;
-    float pitchRad = cameraPitch * M_PI / 180.0f;
-    float majuX = sinf(yawRad) * cosf(pitchRad);
-    float majuY = sinf(pitchRad);
-    float majuZ = -cosf(yawRad) * cosf(pitchRad);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
-    float lookX = cameraPosX + majuX;
-    float lookY = cameraPosY + majuY;
-    float lookZ = cameraPosZ + majuZ;
+        float dx, dy, dz;
+        getCameraDir(dx, dy, dz);
 
-    gluLookAt(
-        cameraPosX,cameraPosY,cameraPosZ,
-        lookX,lookY,lookZ,
-        0,1,0
-    );
+        gluLookAt(
+            camX, camY, camZ,
+            camX + dx, camY + dy, camZ + dz,
+            0, 1, 0
+        );
 
-    drawJalan();
+        drawJalan();
+        glutSwapBuffers();
+    }
 
-    glutSwapBuffers();
-}
+    // main
+    int main(int argc,char** argv){
+        glutInit(&argc,argv);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+        glutInitWindowSize(1000,700);
+        glutCreateWindow("Jakir - Jalan Infinite");
+        glEnable(GL_DEPTH_TEST);
 
-// main
-int main(int argc,char** argv){
-    glutInit(&argc,argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowSize(1000,700);
-    glutCreateWindow("Jakir - Jalan Infinite");
-    glEnable(GL_DEPTH_TEST);
-
-    glutDisplayFunc(display);
-    glutKeyboardFunc(keyboard);
-    glutKeyboardUpFunc(keyboardUp);
-    glutSpecialFunc(keyboardArrow);
-    glutIdleFunc(display);
-    
-    glutMainLoop();
-    return 0;
-}
+        glutKeyboardFunc(keyboard);
+        glutKeyboardUpFunc(keyboardUp);
+        glutSpecialFunc(specialKeyboardRotasi);
+        glutReshapeFunc(reshape);
+        glutDisplayFunc(display);
+        glutIdleFunc(display);
+        
+        glutMainLoop();
+        return 0;
+    }
 #endif

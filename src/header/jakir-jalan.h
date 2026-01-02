@@ -8,6 +8,8 @@ void drawJalan();
 // void updateCamera();
 // void handleKeyboard(unsigned char key, int x, int y);
 // void rotasiKamera(int key, int x, int y);
+void updateLampuGlobal();
+
 extern float jalanOffset;
 extern float mobilPosX;
 extern float mobilPosZ;

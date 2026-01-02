@@ -254,7 +254,7 @@ void drawLampuInfinite() {
     int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
 
     for (int i = baseIndex - JUMLAH_TILE / 2;
-             i <= baseIndex + JUMLAH_TILE / 2; i++) {
+            i <= baseIndex + JUMLAH_TILE / 2; i++) {
 
         float z = i * JARAK_TILE;
 
@@ -379,13 +379,16 @@ void display() {
 
     drawJalan();           // dasar
     drawAlasKotaGlobal();
-    drawLampuInfinite();   // dekat jalan
     drawPohonInfinite();   // transisi
     drawGedungInfinite();  // background  
     drawMobil();
     drawBulan(mobilPosX, mobilPosZ);
-    drawBintang();
 
+    drawBintang();
+    updateBintangJatuh();
+    drawBintangJatuh();
+
+    drawLampuInfinite();   // dekat jalan
 
     glutSwapBuffers();
 }
@@ -411,6 +414,8 @@ int main(int argc, char** argv) {
 
     initMobil();
     initLampuLighting();
+
+    glutTimerFunc(DELAY_ANTAR_HUJAN, mulaiHujanBintang, 0);
 
     glutDisplayFunc(display);
     // glutKeyboardFunc(handleKeyboard);

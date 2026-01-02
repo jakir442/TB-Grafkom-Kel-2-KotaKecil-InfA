@@ -2,15 +2,11 @@
 #include <GL/glu.h>
 #include <cmath>
 
-bool lampuNyala = true;
+bool lampuNyala = false; // pengaturan nyala lampu awal
 int  levelLampu = 0;
 
 float rotLampuY = 0.0f; // kiri-kanan
 float rotLampuX = 0.0f; // atas-bawah
-
-// untuk private
-float rotSceneY = 0.0f; // kiri-kanan
-float rotSceneX = 0.0f; // atas-bawah
 
 // inisialisasi lighting
 void initLampuLighting() {
@@ -27,7 +23,7 @@ void initLampuLighting() {
     glShadeModel(GL_SMOOTH);
 
     glEnable(GL_LIGHT0);
-    glDisable(GL_LIGHT2);
+    glDisable(GL_LIGHT1);
     glDisable(GL_LIGHT3);
     glDisable(GL_LIGHT4);
     glDisable(GL_LIGHT5);
@@ -35,27 +31,63 @@ void initLampuLighting() {
     glDisable(GL_LIGHT7);
 }
 
+void drawConeCahaya() {
+    if (!lampuNyala || levelLampu == 0) return;
+
+    glDisable(GL_LIGHTING);       // cone tidak kena lighting
+    glEnable(GL_BLEND);           // cone nyatu dengan cahaya (transparan)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthMask(GL_FALSE);        // biar halus tembusnya
+
+    glColor4f(1.0f, 1.0f, 0.8f, 0.1f); // warna cahaya
+
+    glPushMatrix();
+        // posisi sama dengan bohlam
+        glTranslatef(0.0f, 0.1f, 0.0f);
+
+        // arah ke bawah + depan
+        glRotatef(90, 1, 0, 0); // ke bawah
+        glRotatef(-15, 1, 0, 0); // ke depan jalan
+
+        GLUquadric* q = gluNewQuadric();
+        gluCylinder(
+            q,
+            0.05f,   // ujung atas (kecil)
+            2.1f,    // bawah (lebar ke jalan)
+            3.5f,    // panjang cone
+            20,
+            20
+        );
+        gluDeleteQuadric(q);
+    glPopMatrix();
+
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
+    glEnable(GL_LIGHTING);
+}
+
+
 // gambar 1 lampu jalan
 void drawLampuJalan(float x, float z, GLenum lightID) {
     float intensitasDiffuse;
     float intensitasAmbient;
 
     switch (levelLampu) {
-    case 1:
-        intensitasDiffuse = 0.6f;
-        intensitasAmbient = 0.05f;
-        break;
-    case 2:
-        intensitasDiffuse = 1.0f;
-        intensitasAmbient = 0.12f;
-        break;
-    case 3:
-        intensitasDiffuse = 1.6f;
-        intensitasAmbient = 0.25f;
-        break;
-    default:
-        intensitasDiffuse = 0.0f;
-        intensitasAmbient = 0.0f;
+        case 1:
+            intensitasDiffuse = 0.6f;
+            intensitasAmbient = 0.05f;
+            break;
+        case 2:
+            intensitasDiffuse = 1.0f;
+            intensitasAmbient = 0.12f;
+            break;
+        case 3:
+            intensitasDiffuse = 1.6f;
+            intensitasAmbient = 0.25f;
+            break;
+        default:
+            intensitasDiffuse = 0.0f;
+            intensitasAmbient = 0.0f;
     }
 
     GLUquadric* quad = gluNewQuadric();
@@ -96,6 +128,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         else
             glColor3f(0.2f, 0.2f, 0.2f);
         glutSolidSphere(0.17f, 20, 20);
+        drawConeCahaya(); 
     glPopMatrix();
 
     // lighting - setelah objek
@@ -157,6 +190,10 @@ void keyboardLampu(unsigned char key) {
 
 // AKSES PRIVATE
 #ifdef STANDALONE
+    // untuk keyboard Arrow
+    float rotSceneY = 0.0f; // kiri-kanan
+    float rotSceneX = 0.0f; // atas-bawah
+
     void keyboardPrivate(unsigned char key, int x, int y) {
         keyboardLampu(key);
 
