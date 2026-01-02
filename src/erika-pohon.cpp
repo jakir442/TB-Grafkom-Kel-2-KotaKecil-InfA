@@ -163,17 +163,17 @@ void drawPohon() {
 
 void keyboardPohon(unsigned char key) {
     switch (key) {
-        case 'f': 
+        case 'g': 
 			sudutDaunX += 5; 
 			break;
-        case 'h': 
+        case 't': 
 			sudutDaunX -= 5; 
 			break;
 
-        case 't': 
+        case 'h': 
 			sudutDaunY += 5; 
 			break;
-        case 'g': 
+        case 'f': 
 			sudutDaunY -= 5; 
 			break;
 
