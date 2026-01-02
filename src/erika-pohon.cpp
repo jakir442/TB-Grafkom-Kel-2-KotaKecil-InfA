@@ -5,9 +5,9 @@
 
 float angle = 2.3f;
 
-float angleX = 0.0f;
-float angleY = 0.0f;
-float angleZ = 0.0f;
+float sudutDaunX = 0.0f;
+float sudutDaunY = 0.0f;
+float sudutDaunZ = 0.0f;
 
 void drawSilinder(float radius, float tinggi) {
     GLUquadric *objek = gluNewQuadric();
@@ -17,7 +17,8 @@ void drawSilinder(float radius, float tinggi) {
 
 void drawApel() { 
 	glColor3f(1.0f, 0.0f, 0.0f); // merah 
-	glutSolidSphere(0.15f, 30, 30); }
+	glutSolidSphere(0.15f, 30, 30); // -> Objek Pohon 2
+}
 
 void drawPohon() {
     glPushMatrix();
@@ -60,7 +61,7 @@ void drawPohon() {
         glEnable(GL_POLYGON_OFFSET_FILL);
         glPolygonOffset(1.0f, 1.0f);
         glColor3f(0.1f, 0.75f, 0.1f);
-        glutSolidDodecahedron(); // -> Objek Pohon 2
+        glutSolidDodecahedron(); // -> Objek Pohon 3
         glDisable(GL_POLYGON_OFFSET_FILL);
 
         // GARIS DAUN
@@ -79,8 +80,15 @@ void drawPohon() {
     glPopMatrix();
     
     // ================= APEL KIRI ================= 
+    // buahnya ke atas
 	glPushMatrix(); 
-		glTranslatef(-1.2f, 2.4f, 0.6f); // geser ke kiri, atas, ke depan 
+		glTranslatef(-1.2f, 2.0f, 0.5f); // geser ke kiri, atas, ke depan 
+		drawApel(); 
+	glPopMatrix();
+
+    // buahnya ke bawah
+	glPushMatrix(); 
+		glTranslatef(-1.3f, 1.8f, -0.1f); // geser ke kiri, atas, ke depan 
 		drawApel(); 
 	glPopMatrix();
 
@@ -116,8 +124,15 @@ void drawPohon() {
     glPopMatrix();
 	
 	// ================= APEL KANAN ================= 
+    // buahnya ke atas
 	glPushMatrix(); 
-		glTranslatef(1.2f, 2.4f, 0.6f); 
+		glTranslatef(1.2f, 2.2f, 0.6f); 
+		drawApel(); 
+	glPopMatrix();
+
+    // buahnya ke bawah
+    glPushMatrix(); 
+		glTranslatef(1.3f, 1.9f, 0.1f); // geser ke kiri, atas, ke depan 
 		drawApel(); 
 	glPopMatrix();
 	
@@ -149,24 +164,24 @@ void drawPohon() {
 void keyboardPohon(unsigned char key) {
     switch (key) {
         case 'f': 
-			angleX += 5; 
+			sudutDaunX += 5; 
 			break;
         case 'h': 
-			angleX -= 5; 
+			sudutDaunX -= 5; 
 			break;
 
         case 't': 
-			angleY += 5; 
+			sudutDaunY += 5; 
 			break;
         case 'g': 
-			angleY -= 5; 
+			sudutDaunY -= 5; 
 			break;
 
         case 'r': 
-			angleZ += 5; 
+			sudutDaunZ += 5; 
 			break;
         case 'y': 
-			angleZ -= 5; 
+			sudutDaunZ -= 5; 
 			break;
 
         case 27: exit(0);
