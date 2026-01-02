@@ -5,15 +5,19 @@
 
 float angle = 2.3f;
 
-float sudutDaunX = 0.0f;
-float sudutDaunY = 0.0f;
-float sudutDaunZ = 0.0f;
+float angleX = 0.0f;
+float angleY = 0.0f;
+float angleZ = 0.0f;
 
-void gambarSilinder(float radius, float tinggi) {
+void drawSilinder(float radius, float tinggi) {
     GLUquadric *objek = gluNewQuadric();
     gluCylinder(objek, radius, radius, tinggi, 32, 32); // -> Objek Pohon 1
     gluDeleteQuadric(objek);
 }
+
+void drawApel() { 
+	glColor3f(1.0f, 0.0f, 0.0f); // merah 
+	glutSolidSphere(0.15f, 30, 30); }
 
 void drawPohon() {
     glPushMatrix();
@@ -25,7 +29,7 @@ void drawPohon() {
     glPushMatrix();
         glTranslatef(0.0f, 2.1f, 0.0f);
         glRotatef(90, 1, 0, 0);
-        gambarSilinder(0.22f, tinggiBatang);
+        drawSilinder(0.22f, tinggiBatang);
     glPopMatrix();
 
     // RANTING TENGAH
@@ -33,16 +37,29 @@ void drawPohon() {
     glPushMatrix();
         glTranslatef(0.0f, 2.0f, 0.0f);
         glRotatef(-90, 1, 0, 0);
-        gambarSilinder(0.11f, 0.6f);
+        drawSilinder(0.11f, 0.6f);
     glPopMatrix();
-
+    
+    // ================= APEL TENGAH  =================
+//	glPushMatrix();
+//    	glTranslatef(0.18f, 2.72f, 0.8f); 
+//    	glColor3f(1.0f, 0.0f, 0.0f);
+//    	glutSolidSphere(0.15f, 32, 32);
+//	glPopMatrix();
+	
     // DAUN TENGAH
     glColor3f(0.1f, 0.75f, 0.1f);
 	glPushMatrix();
         glTranslatef(0.0f, 2.78f, 0.0f);
+<<<<<<< HEAD
         glRotatef(sudutDaunX, 1, 0, 0);
         glRotatef(sudutDaunY, 0, 1, 0);
         glRotatef(sudutDaunZ, 0, 0, 1);
+=======
+        glRotatef(angleX, 1, 0, 0);
+        glRotatef(angleY, 0, 1, 0);
+        glRotatef(angleZ, 0, 0, 1);
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glScalef(0.55f, 0.55f, 0.55f);
 
         // ISI DAUN
@@ -64,16 +81,28 @@ void drawPohon() {
         glTranslatef(0.0f, 1.7f, 0.0f);
         glRotatef(55, 0, 0, 1);
         glRotatef(-90, 1, 0, 0);
-        gambarSilinder(0.10f, 1.1f);
+        drawSilinder(0.10f, 1.1f);
     glPopMatrix();
+    
+    // ================= APEL KIRI ================= 
+	glPushMatrix(); 
+		glTranslatef(-1.2f, 2.4f, 0.6f); // geser ke kiri, atas, ke depan 
+		drawApel(); 
+	glPopMatrix();
 
     // DAUN KIRI
     glColor3f(0.1f, 0.8f, 0.1f);
 	glPushMatrix();
         glTranslatef(-1.0f, 2.4f, 0.0f);
+<<<<<<< HEAD
         glRotatef(sudutDaunX, 1, 0, 0);
         glRotatef(sudutDaunY, 0, 1, 0);
         glRotatef(sudutDaunZ, 0, 0, 1);
+=======
+        glRotatef(angleX, 1, 0, 0);
+        glRotatef(angleY, 0, 1, 0);
+        glRotatef(angleZ, 0, 0, 1);
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glScalef(0.45f, 0.45f, 0.45f);
 
         // ISI DAUN
@@ -95,16 +124,28 @@ void drawPohon() {
         glTranslatef(0.0f, 1.7f, 0.0f);
         glRotatef(-55, 0, 0, 1);
         glRotatef(-90, 1, 0, 0);
-        gambarSilinder(0.10f, 1.1f);
+        drawSilinder(0.10f, 1.1f);
     glPopMatrix();
-
+	
+	// ================= APEL KANAN ================= 
+	glPushMatrix(); 
+		glTranslatef(1.2f, 2.4f, 0.6f); 
+		drawApel(); 
+	glPopMatrix();
+	
     // DAUN KANAN
     glColor3f(0.1f, 0.8f, 0.1f);
     glPushMatrix();
         glTranslatef(1.0f, 2.4f, 0.0f);
+<<<<<<< HEAD
         glRotatef(sudutDaunX, 1, 0, 0);
         glRotatef(sudutDaunY, 0, 1, 0);
         glRotatef(sudutDaunZ, 0, 0, 1);
+=======
+        glRotatef(angleX, 1, 0, 0);
+        glRotatef(angleY, 0, 1, 0);
+        glRotatef(angleZ, 0, 0, 1);
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glScalef(0.45f, 0.45f, 0.45f);
 
         // ISI DAUN
@@ -126,24 +167,24 @@ void drawPohon() {
 void keyboardPohon(unsigned char key) {
     switch (key) {
         case 'f': 
-			sudutDaunX += 5; 
+			angleX += 5; 
 			break;
         case 'h': 
-			sudutDaunX -= 5; 
+			angleX -= 5; 
 			break;
 
         case 't': 
-			sudutDaunY += 5; 
+			angleY += 5; 
 			break;
         case 'g': 
-			sudutDaunY -= 5; 
+			angleY -= 5; 
 			break;
 
         case 'r': 
-			sudutDaunZ += 5; 
+			angleZ += 5; 
 			break;
         case 'y': 
-			sudutDaunZ -= 5; 
+			angleZ -= 5; 
 			break;
 
         case 27: exit(0);
@@ -254,4 +295,8 @@ void keyboardPohon(unsigned char key) {
         glutMainLoop();
         return 0;
     }
+<<<<<<< HEAD
 #endif
+=======
+#endif
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa

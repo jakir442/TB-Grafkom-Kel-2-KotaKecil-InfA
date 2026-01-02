@@ -272,7 +272,11 @@ void keyboardLampu(unsigned char key) {
         glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
         glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 40.0f);
         glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 12.0f);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glPushMatrix();
             // rotasi untuk melihat 3D
             glRotatef(rotSceneX, 1.0f, 0.0f, 0.0f);
@@ -281,7 +285,13 @@ void keyboardLampu(unsigned char key) {
             drawLampuJalan(0.0f, 0.0f, GL_LIGHT0);
         glPopMatrix();
 
+<<<<<<< HEAD
         drawGrid3D();
+=======
+        glPushMatrix();
+            drawGrid3D();
+        glPopMatrix();
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
 
         glutSwapBuffers();
     }
@@ -298,6 +308,10 @@ void keyboardLampu(unsigned char key) {
 
         glutKeyboardFunc(keyboardPrivate);
         glutSpecialFunc(specialKeyboardRotasi);
+<<<<<<< HEAD
+=======
+        glutDisplayFunc(display);
+>>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glutReshapeFunc(reshape);
         glutDisplayFunc(display);
 
