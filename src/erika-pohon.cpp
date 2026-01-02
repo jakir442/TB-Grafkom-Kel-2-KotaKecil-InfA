@@ -51,15 +51,9 @@ void drawPohon() {
     glColor3f(0.1f, 0.75f, 0.1f);
 	glPushMatrix();
         glTranslatef(0.0f, 2.78f, 0.0f);
-<<<<<<< HEAD
         glRotatef(sudutDaunX, 1, 0, 0);
         glRotatef(sudutDaunY, 0, 1, 0);
         glRotatef(sudutDaunZ, 0, 0, 1);
-=======
-        glRotatef(angleX, 1, 0, 0);
-        glRotatef(angleY, 0, 1, 0);
-        glRotatef(angleZ, 0, 0, 1);
->>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glScalef(0.55f, 0.55f, 0.55f);
 
         // ISI DAUN
@@ -94,15 +88,9 @@ void drawPohon() {
     glColor3f(0.1f, 0.8f, 0.1f);
 	glPushMatrix();
         glTranslatef(-1.0f, 2.4f, 0.0f);
-<<<<<<< HEAD
         glRotatef(sudutDaunX, 1, 0, 0);
         glRotatef(sudutDaunY, 0, 1, 0);
         glRotatef(sudutDaunZ, 0, 0, 1);
-=======
-        glRotatef(angleX, 1, 0, 0);
-        glRotatef(angleY, 0, 1, 0);
-        glRotatef(angleZ, 0, 0, 1);
->>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glScalef(0.45f, 0.45f, 0.45f);
 
         // ISI DAUN
@@ -137,15 +125,9 @@ void drawPohon() {
     glColor3f(0.1f, 0.8f, 0.1f);
     glPushMatrix();
         glTranslatef(1.0f, 2.4f, 0.0f);
-<<<<<<< HEAD
         glRotatef(sudutDaunX, 1, 0, 0);
         glRotatef(sudutDaunY, 0, 1, 0);
         glRotatef(sudutDaunZ, 0, 0, 1);
-=======
-        glRotatef(angleX, 1, 0, 0);
-        glRotatef(angleY, 0, 1, 0);
-        glRotatef(angleZ, 0, 0, 1);
->>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
         glScalef(0.45f, 0.45f, 0.45f);
 
         // ISI DAUN
@@ -295,8 +277,4 @@ void keyboardPohon(unsigned char key) {
         glutMainLoop();
         return 0;
     }
-<<<<<<< HEAD
 #endif
-=======
-#endif
->>>>>>> 92da7736606bd74d78d167eaa525ddf9f1ef10aa
