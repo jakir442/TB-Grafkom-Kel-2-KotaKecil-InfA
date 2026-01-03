@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 #include <cstdio>
 
-//#include "header/azhari-gedung.h"
+#include "header/azhari-gedung.h"
 
 // Variabel transformasi objek
 float angleX = 0.0f;      // Rotasi terhadap sumbu X (derajat)
@@ -234,7 +234,7 @@ void handleKeyboardGedung(unsigned char key) {
 }
 
 // AKSES PRIVATE
-//#ifdef STANDALONE   
+#ifdef STANDALONE   
     // untuk keyboard Arrow
     float rotSceneY = 0.0f; // kiri-kanan
     float rotSceneX = 0.0f; // atas-bawah
@@ -342,4 +342,4 @@ void handleKeyboardGedung(unsigned char key) {
         glutMainLoop();
         return 0;
     }
-//#endif
+#endif
