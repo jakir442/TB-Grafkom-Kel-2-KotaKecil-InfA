@@ -1,9 +1,9 @@
 Judul Proyek: Kota Kecil 3D
 Kelompok: Kelompok 2
-Jumlah Anggota: -> Jakir Apriyan            - 2406004 <Objek Jalan, Lampu, Bintang, Bulan, Mainframe>(Ketua)
-                -> Putri Fitriani Azzahra   - 2406026 <Objek Mobil>
-                -> Azhari Ahmad Fauzani     - 2406107 <Objek Gedung>
-                -> Erika Alvia Nurfadilah   - 2406030 <Objek Pohon>
+Jumlah Anggota: -> Jakir Apriyan            - 2406004 <Objek Jalan, Lampu, Bintang, Bulan, Mainframe {🛣️,💡,⭐,🌕,🗂️}>(Ketua)
+                -> Putri Fitriani Azzahra   - 2406026 <Objek Mobil  🚗>
+                -> Azhari Ahmad Fauzani     - 2406107 <Objek Gedung 🏨>
+                -> Erika Alvia Nurfadilah   - 2406030 <Objek Pohon  🌳>
 
 Proyek Kota Kecil 3D ini merupakan sebuah simulasi lingkungan perkotaan sederhana berbasis grafika komputer menggunakan OpenGL (FreeGLUT) dan bahasa pemrograman C++. Aplikasi ini menampilkan suasana sebuah kota kecil dengan elemen utama berupa jalan raya, mobil, gedung, pohon, lampu jalan, serta objek langit seperti bulan dan bintang.
 
