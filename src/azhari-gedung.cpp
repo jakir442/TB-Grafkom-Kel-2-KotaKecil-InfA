@@ -21,6 +21,13 @@ GLfloat wallColor[]   = {0.85f, 0.9f, 0.95f, 1.0f}; // Warna dinding gedung
 GLfloat windowColor[] = {0.2f, 0.6f, 1.0f, 1.0f};   // Warna jendela
 GLfloat doorColor[]   = {1.0f, 0.45f, 0.0f, 1.0f};  // Warna pintu
 
+// WARNA ATAP & HELIPAD
+GLfloat roofSideColor[] = {0.60f, 0.72f, 0.62f, 1.0f}; // hijau sage lembut
+GLfloat roofTopColor[]  = {0.74f, 0.84f, 0.76f, 1.0f}; // hijau terang pastel
+
+GLfloat helipadRingColor[]= {1.0f, 0.85f, 0.1f, 1.0f};  // kuning helipad
+GLfloat helipadHColor[]   = {0.9f, 0.1f, 0.1f, 1.0f};   // merah tegas
+
 void initRendering() {
     // Mengaktifkan depth test agar objek memiliki kedalaman
     glEnable(GL_DEPTH_TEST);
@@ -67,44 +74,46 @@ void atapgedung() {
 
     glPushMatrix();
         // POSISI SAMA seperti atap kotak lama
-        glTranslatef(0.0f, 1.45f, 0.0f);
+        glTranslatef(0.0f, 1.40f, 0.0f);
 
         // Warna helipad
-        glColor3f(0.9f, 0.9f, 0.95f);
+        glColor3fv(roofSideColor);
 
         // BADAN SILINDER 
         glPushMatrix();
             glRotatef(-90.0f, 1, 0, 0); // silinder berdiri
             gluCylinder(
                 quad,
-                1.40f,   // radius bawah (lebar)
+                1.90f,   // radius bawah (lebar)
                 1.40f,   // radius atas
-                0.15f,  // tinggi (ketebalan atap)
+                0.35f,  // tinggi (ketebalan atap)
                 40,
                 5
             );
         glPopMatrix();
 
         // TUTUP ATAS (BIAR TIDAK BOLONG)
+        glColor3fv(roofTopColor);
         glPushMatrix();
             glTranslatef(0.0f, 0.15f, 0.0f);
             glRotatef(-90.0f, 1, 0, 0);
             gluDisk(
                 quad,
                 0.0f,
-                1.40f,
+                1.65f,
                 40,
                 1
             );
         glPopMatrix();
 
         // TUTUP BAWAH
+        glColor3fv(roofSideColor);
         glPushMatrix();
             glRotatef(-90.0f, 1, 0, 0);
             gluDisk(
                 quad,
                 0.0f,
-                1.40f,
+                1.65f,
                 40,
                 1
             );
@@ -122,7 +131,7 @@ void ringHelipadTorus() {
         
         glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
-        glColor3f(1.0f, 0.0f, 0.0f); // merah
+        glColor3fv(helipadRingColor); // merah
 
         glutSolidTorus(
             0.05f,  // radius kecil (ketebalan garis)
@@ -133,7 +142,7 @@ void ringHelipadTorus() {
     glPopMatrix();
 }
 void hurufHHelipad() {
-    glColor3f(1.0f, 0.0f, 0.0f); // merah
+    glColor3fv(helipadHColor); // merah
 
     // Kaki kiri H
     glPushMatrix();
