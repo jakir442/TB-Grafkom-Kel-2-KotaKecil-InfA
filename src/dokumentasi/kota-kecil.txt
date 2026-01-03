@@ -1,1 +1,66 @@
-Jakir Ganteng hehe
+Judul Proyek: Kota Kecil 3D
+Kelompok: Kelompok 2
+Jumlah Anggota: -> Jakir Apriyan            - 2406004 <Objek Jalan, Lampu, Bintang, Bulan, Mainframe>(Ketua)
+                -> Putri Fitriani Azzahra   - 2406026 <Objek Mobil>
+                -> Azhari Ahmad Fauzani     - 2406107 <Objek Gedung>
+                -> Erika Alvia Nurfadilah   - 2406030 <Objek Pohon>
+
+Proyek Kota Kecil 3D ini merupakan sebuah simulasi lingkungan perkotaan sederhana berbasis grafika komputer menggunakan OpenGL (FreeGLUT) dan bahasa pemrograman C++. Aplikasi ini menampilkan suasana sebuah kota kecil dengan elemen utama berupa jalan raya, mobil, gedung, pohon, lampu jalan, serta objek langit seperti bulan dan bintang.
+
+Konsep utama dari proyek ini adalah lingkungan kota yang bersifat infinite (tak terbatas). Efek ini dicapai dengan teknik pengulangan objek (tile system), sehingga saat mobil bergerak maju atau mundur, gedung, pohon, dan lampu jalan akan terus muncul secara berulang tanpa batas yang terlihat oleh pengguna.
+
+Fitur Utama Proyek
+
+Sistem Kamera Dinamis
+Proyek ini menyediakan beberapa mode kamera, yaitu:
+
+Kamera belakang mobil
+
+Kamera depan mobil
+
+Kamera kanan dan kiri mobil
+
+Kamera atas
+
+Kamera pengemudi (driver view)
+Selain itu, tersedia fitur kamera acak otomatis yang akan berpindah sudut pandang setiap 2 detik dengan menekan tombol Q.
+
+Objek Interaktif
+
+Mobil dapat digerakkan menggunakan tombol W, A, S, D
+
+Skala gedung dapat diubah menggunakan tombol + dan -
+
+Lampu jalan menggunakan sistem pencahayaan OpenGL
+
+Pohon, gedung, dan lampu tersusun simetris di kiri dan kanan jalan
+
+Efek Visual Lingkungan
+
+Bulan dengan tekstur sebagai objek langit
+
+Bintang statis dan bintang jatuh yang bergerak
+
+Transisi kamera halus (smooth camera movement) untuk meningkatkan kenyamanan visual
+
+Manajemen Scene 3D
+
+Menggunakan transformasi translasi, rotasi, dan skala
+
+Mengatur kedalaman objek dengan depth testing
+
+Menggunakan perspektif 3D agar tampilan terlihat realistis
+
+Tujuan Proyek
+
+Proyek ini bertujuan untuk:
+
+Menerapkan konsep dasar grafika komputer 3D
+
+Memahami penggunaan transformasi objek dalam OpenGL
+
+Mengimplementasikan sistem kamera dan pencahayaan
+
+Mengembangkan simulasi lingkungan virtual yang interaktif dan dinamis
+
+Secara keseluruhan, proyek Kota Kecil 3D ini menjadi media pembelajaran untuk menggabungkan logika pemrograman, matematika grafika, serta kreativitas visual dalam satu aplikasi grafis interaktif.
