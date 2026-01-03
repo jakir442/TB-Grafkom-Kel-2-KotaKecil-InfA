@@ -1,0 +1,149 @@
+NAMA	: ERIKA ALVIA NURFADILAH
+NIM	: 2406030
+MEMBUAT OBJEK POHON 3D
+objek pohon 3D. Pohon terdiri dari batang, ranting, daun berbentuk dodecahedron, serta buah apel berbentuk bola. Objek dapat dilihat dari berbagai sudut menggunakan keyboard dan sebagian objek memiliki interaksi rotasi.
+
+A. OBJEK PRIMITIF YANG DIGUNAKAN
+Program ini menggunakan beberapa objek primitif 3D OpenGL, yaitu:
+1.	Silinder (Cylinder)
+Digunakan untuk:
+⦁	Batang utama pohon
+⦁	Ranting tengah
+⦁	Ranting kiri
+⦁	Ranting kanan
+
+Dibuat menggunakan:
+gluCylinder()
+
+⦁	Fungsi:
+void gambarSilinder(float radius, float tinggi)
+
+⦁	Logika: 
+silinder diputar 90° pada sumbu X agar berdiri tegak sebagai batang pohon.
+
+2. Dodecahedron
+Digunakan untuk:
+⦁	Daun tengah
+⦁	Daun kiri
+⦁	Daun kanan
+
+Dibuat menggunakan:
+glutSolidDodecahedron();
+glutWireDodecahedron();
+
+Solid untuk isi daun.
+Wireframe untuk garis pinggir daun agar terlihat tegas.
+
+3. Sphere (Bola)
+Digunakan untuk:
+⦁	Buah apel kiri
+⦁	Buah apel kanan
+
+Dibuat menggunakan:
+glutSolidSphere()
+
+Apel tidak ikut rotasi daun, sehingga terlihat diam walaupun daun diputar.
+
+4. Garis (Lines)
+Digunakan untuk:
+Grid lantai 3D (background)
+
+Dibuat menggunakan:
+glBegin(GL_LINES)
+--> Memberi kesan ruang 3D dan kedalaman objek.
+
+WARNA OBJEK
+
+| Objek            | Warna   | Fungsi              |
+| ---------------- | ------- | ------------------- |
+| Batang & ranting | Coklat  | Menyerupai kayu     |
+| Daun             | Hijau   | Representasi daun   |
+| Apel             | Merah   | Buah apel           |
+| Grid             | Abu-abu | Lantai / background |
+
+Warna diatur menggunakan:
+glColor3f(r, g, b)
+
+B. TRANSFORMASI YANG DIGUNAKAN
+1.	Translasi (glTranslatef)
+Digunakan untuk:
+Mengatur posisi batang, daun, ranting, dan apel
+
+Contoh:
+glTranslatef(-1.0f, 2.4f, 0.0f);
+
+2. Rotasi (glRotatef)
+Digunakan untuk:
+⦁	Memutar daun
+⦁	Memutar scene (kamera)
+
+Contoh:
+glRotatef(sudutDaunX, 1, 0, 0);
+
+3. Skala (glScalef)
+Digunakan untuk:
+Mengecilkan atau membesarkan ukuran daun
+
+Contoh:
+glScalef(0.45f, 0.45f, 0.45f);
+
+3. INTERAKSI KEYBOARD
+
+⦁	Keyboard Huruf (Rotasi Daun)
+
+| Tombol | Fungsi                           |
+| ------ | -------------------------------- |
+| `f`    | Rotasi daun ke atas (sumbu X +)  |
+| `h`    | Rotasi daun ke bawah (sumbu X -) |
+| `t`    | Rotasi daun ke kanan (sumbu Y +) |
+| `g`    | Rotasi daun ke kiri (sumbu Y -)  |
+| `r`    | Rotasi daun searah Z             |
+| `y`    | Rotasi daun berlawanan Z         |
+| `ESC`  | Keluar program                   |
+
+Fungsi:
+void keyboardPohon(unsigned char key)
+
+⦁	Keyboard Panah (Rotasi Scene)
+
+| Tombol  | Fungsi               |
+| ------  | -------------------- |
+| ⬅️     | Putar scene ke kiri  |
+| ➡️     | Putar scene ke kanan |
+| ⬆️     | Putar scene ke atas  |
+| ⬇️     | Putar scene ke bawah |
+
+Fungsi:
+void specialKeyboardRotasi(int key, int x, int y)
+
+C. LOGIKA PENTING YANG DIGUNAKAN
+Hierarki Transformasi (Push & Pop Matrix)
+glPushMatrix();
+...
+glPopMatrix();
+
+Digunakan agar:
+⦁	Rotasi daun tidak mempengaruhi apel
+⦁	Setiap objek punya transformasi sendiri
+
+2. Apel Tidak Ikut Rotasi
+Logika:
+Apel digambar di luar blok rotasi daun
+Sehingga tidak mewarisi transformasi rotasi
+
+3. Depth Test
+glEnable(GL_DEPTH_TEST);
+--> Membuat objek depan menutupi objek belakang secara realistis.
+
+4. Polygon Offset
+glEnable(GL_POLYGON_OFFSET_FILL);
+--> Mencegah Z-fighting antara daun solid dan wireframe.
+
+D. KAMERA & PROYEKSI
+1.	Kamera:
+gluLookAt(4,4,6,  0,1,0,  0,1,0);
+--> Kamera melihat pohon dari sudut atas depan.
+
+2. Proyeksi:
+gluPerspective(45, rasio, 0.1, 100);
+--> Menggunakan perspective projection agar terlihat realistis 3D.
