@@ -1,0 +1,59 @@
+NAMA : Putri
+NIM  : 2406026
+
+MEMBUAT OBJEK MOBIL 3D [body,atap,kaca,roda,lampu depan]
+objek primitif : 
+1. Kubus (Cube)
+Body mobil
+Atap mobil
+Kaca depan mobil
+menggunkan : glutSolidCube(1.0);
+Penempatan fungsi : void drawCube(float r, float g, float b)
+dipanggil di fungsi : void drawMobil()
+Logika : Transformasi skala dan translasi
+
+2. Silinder (Cylinder)
+Badan roda mobil
+menggunkan : gluCylinder(quad, 0.2, 0.2, 0.2, 20, 20);
+Penempatan fungsi : void drawWheel()
+dipanggil di fungsi : void drawMobil()
+Logika : membentuk roda menyerupai ban (diputar 90 derajat) dan diberi rotasi agar terlihat berputar)
+
+2. Lingkaran (Disk)
+Penutup depan dan belakang roda
+menggunkan : gluDisk(quad, 0.0, 0.2, 20, 20);
+Penempatan fungsi : void drawWheel()
+dipanggil di fungsi : void drawMobil()
+Logika : menutup bagian depan dan belakang roda(kalo ga pake bakalan kliatan bolong)
+
+3. Garis (Lines)
+Penanda rotasi roda
+Gridlantai 3d/bg
+menggunkan : glBegin(GL_LINES);
+Penempatan fungsi : void drawWheel() [rotas roda], void drawGrid3D() [grid 3d]
+Logika : agar keiatan berputar pada roda si garisnya tuh, sama keliatan lebih 3d
+
+4. Torus (donat)
+Lampu depan mobil
+menggunkan : glutSolidTorus(0.03, 0.12, 20, 30);
+Penempatan fungsi : void drawMobil()
+Logika : agar keiatan seperti lampu depan mobil,biar lucu kaya aku
+
+5. Teks (Stroke Char)
+Penanda huruf Right dan Left
+menggunkan : glutStrokeCharacter(GLUT_STROKE_ROMAN, 'R');
+glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
+Penempatan fungsi : void drawMobil()
+Logika : sebagai penanda kanan dan kiri
+
+6. Transformasi
+glTranslatef() : posisi mobil, roda, kaca, dan lampu
+glRotatef()    : Arah hadap mobil,Rotasi roda, Rotasi scene
+glScalef()     : mengatur ukuran body, atap, kaca, dan teks
+
+
+
+
+
+
+	
