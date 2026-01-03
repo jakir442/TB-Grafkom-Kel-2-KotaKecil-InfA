@@ -136,7 +136,7 @@ void updateMobil(float speed) {
 
 //  KEYBOARD 
 void controlMobil(unsigned char key) {
-    float moveSpeed = 0.25f;       //kecepatan maju mundur
+    float moveSpeed = 0.35f;       //kecepatan maju mundur
     float turnSpeed = 3.0f;        //kecepatan kanan kiri
 
     switch (key) {
