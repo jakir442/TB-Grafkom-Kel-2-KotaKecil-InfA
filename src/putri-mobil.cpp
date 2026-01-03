@@ -98,15 +98,6 @@ void drawMobil() {
     	    glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
 		glPopMatrix();
 
-        // Huruf T di atas
-        glPushMatrix();
-            glColor3f(1, 1, 0);          // warna kuning
-            glTranslatef(-0.13f, 0.76f, -0.22f);  // posisi di atas
-            glScalef(0.0037f, 0.0037f, 0.0037f); // skala agar sesuai
-            glRotatef(90, 1, 0, 0);            // rotasi di sumbu Z, huruf tidur
-            glutStrokeCharacter(GLUT_STROKE_ROMAN, 'T');
-        glPopMatrix();
-
         // posisi roda
         float x[2] = {0.7f, -0.85f};   //kanan, kiri 
         float z[2] = {-0.85f, 0.7f};   //depan, belakang
@@ -121,27 +112,20 @@ void drawMobil() {
                 glPopMatrix();
             }
         } 
-		// LAMPU DEPAN (TORUS)
-		glColor3f(1.0f, 1.0f, 0.0f); // warna lampu kuning
-
-		// Lampu depan kanan
-		glPushMatrix();
-            // glTranslatef(0.4f, 0.0f, 1.05f); // kanan - depan
-    		glTranslatef(0.27f, 0.22f, 1.05f); // kanan - depan
-    		glRotatef(90, 0, 0, 1);          // PUTAR AGAR SEJAJAR SUMBU X
-    		glutSolidTorus(0.03, 0.12, 20, 30); // -> Objek 5
-		glPopMatrix();
-
-		// Lampu depan kiri
-		glPushMatrix();
-            // glTranslatef(-0.4f, 0.0f, 1.05f); // kanan - depan
-    		glTranslatef(-0.27f, 0.22f, 1.05f); // kiri - depan
-    		glRotatef(90, 0, 0, 1);           // PUTAR AGAR SEJAJAR SUMBU X
-    		glutSolidTorus(0.03, 0.12, 20, 30);
-		glPopMatrix();
         
-	glPopMatrix();
-}
+	// LAMPU DEPAN (TORUS)
+	glColor3f(1.0f, 1.0f, 0.0f); // warna lampu kuning
+	float lampuX[2] = {0.27f, -0.27f}; // kanan, kiri
+	for (int i = 0; i < 2; i++) {
+    	glPushMatrix();
+        	glTranslatef(lampuX[i], 0.22f, 1.05f); // posisi depan mobil
+        	glRotatef(90, 0, 0, 1);               // sejajar sumbu X
+        	glutSolidTorus(0.03, 0.12, 20, 30);   // uk lampu
+    	glPopMatrix();
+	}
+	glPopMatrix();   
+}         
+
 
 //  UPDATE 
 void updateMobil(float speed) {
@@ -167,7 +151,7 @@ void controlMobil(unsigned char key) {
 
 // AKSES PRIVATE
 #ifdef STANDALONE
-    // untuk keyboard Arrow
+    //keyboard 
     float rotSceneY = 0.0f; // kiri-kanan
     float rotSceneX = 0.0f; // atas-bawah
 
