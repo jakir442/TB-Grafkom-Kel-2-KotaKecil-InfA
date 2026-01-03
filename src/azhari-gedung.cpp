@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 #include <cstdio>
 
-#include "header/azhari-gedung.h"
+//#include "header/azhari-gedung.h"
 
 // Variabel transformasi objek
 float angleX = 0.0f;      // Rotasi terhadap sumbu X (derajat)
@@ -61,29 +61,100 @@ void jendelaBelakang(float x, float y) {
     glPopMatrix();
 }
 
-void Tabung() {
+// Atap gedung 
+void atapgedung() {
     GLUquadric* quad = gluNewQuadric();
 
     glPushMatrix();
-    // Posisi cerobong di atas atap (kanan)
-    glTranslatef(0.0f, 1.50f, 0.0f);
-    // Putar agar tabung berdiri ke atas
-    glRotatef(-90.0f, 1, 0, 0);
-    // Warna cerobong
-    glColor3f(0.6f, 0.6f, 0.6f);
+        // POSISI SAMA seperti atap kotak lama
+        glTranslatef(0.0f, 1.45f, 0.0f);
 
-    // Gambar tabung
-    gluCylinder( // -> Objek Gedung 2
-        quad,
-        0.12f,  // radius bawah
-        0.12f,  // radius atas
-        0.6f,   // tinggi
-        20,     
-        20     
-    );
+        // Warna helipad
+        glColor3f(0.9f, 0.9f, 0.95f);
+
+        // BADAN SILINDER 
+        glPushMatrix();
+            glRotatef(-90.0f, 1, 0, 0); // silinder berdiri
+            gluCylinder(
+                quad,
+                1.40f,   // radius bawah (lebar)
+                1.40f,   // radius atas
+                0.15f,  // tinggi (ketebalan atap)
+                40,
+                5
+            );
+        glPopMatrix();
+
+        // TUTUP ATAS (BIAR TIDAK BOLONG)
+        glPushMatrix();
+            glTranslatef(0.0f, 0.15f, 0.0f);
+            glRotatef(-90.0f, 1, 0, 0);
+            gluDisk(
+                quad,
+                0.0f,
+                1.40f,
+                40,
+                1
+            );
+        glPopMatrix();
+
+        // TUTUP BAWAH
+        glPushMatrix();
+            glRotatef(-90.0f, 1, 0, 0);
+            gluDisk(
+                quad,
+                0.0f,
+                1.40f,
+                40,
+                1
+            );
+        glPopMatrix();
 
     glPopMatrix();
     gluDeleteQuadric(quad);
+}
+
+void ringHelipadTorus() {
+    glPushMatrix();
+        
+        glTranslatef(0.0f, 1.60f, 0.0f);
+
+        
+        glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+
+        glColor3f(1.0f, 0.0f, 0.0f); // merah
+
+        glutSolidTorus(
+            0.05f,  // radius kecil (ketebalan garis)
+            0.8f,   // radius besar (jarak dari pusat)
+            40,     // detail kecil
+            60      // detail besar
+        );
+    glPopMatrix();
+}
+void hurufHHelipad() {
+    glColor3f(1.0f, 0.0f, 0.0f); // merah
+
+    // Kaki kiri H
+    glPushMatrix();
+        glTranslatef(-0.3f, 1.60f, 0.0f);
+        glScalef(0.15f, 0.02f, 0.6f);
+        glutSolidCube(1.0f);
+    glPopMatrix();
+
+    // Kaki kanan H
+    glPushMatrix();
+        glTranslatef(0.3f, 1.60f, 0.0f);
+        glScalef(0.15f, 0.02f, 0.6f);
+        glutSolidCube(1.0f);
+    glPopMatrix();
+
+    // Garis tengah H
+    glPushMatrix();
+        glTranslatef(0.0f, 1.60f, 0.0f);
+        glScalef(0.6f, 0.02f, 0.15f);
+        glutSolidCube(1.0f);
+    glPopMatrix();
 }
 
 //  PEMODELAN OBJEK GEDUNG 3D
@@ -91,14 +162,16 @@ void drawGedung() {
     // Badan utama gedung
     glColor3fv(wallColor);
     Prisma(2.0f, 3.0f, 1.2f);
+	
+	// Atap Gedung
+	atapgedung();
+	
+	// Lingkaran Helipad
+	ringHelipadTorus();
+	
+	//huruf H
+	hurufHHelipad();
 
-    // Atap gedung
-    glPushMatrix();
-        glTranslatef(0.0f, 1.6f, 0.0f);
-        glColor3f(0.9f, 0.9f, 0.95f);
-        glScalef(2.2f, 0.15f, 1.4f);
-        glutSolidCube(1.0f);
-    glPopMatrix();
 
     // Pintu gedung
     glPushMatrix();
@@ -109,7 +182,7 @@ void drawGedung() {
     glPopMatrix();
 
     // Jendela depan gedung
-    glColor3fv(windowColor);
+     glColor3fv(windowColor);
 
     // Baris atas
 	jendelaDepan(-0.45f,  0.98f);
@@ -124,7 +197,7 @@ void drawGedung() {
 	jendelaDepan( 0.45f, -0.2f);
 	
 	// Jendela depan belakang
-    glColor3fv(windowColor);
+     glColor3fv(windowColor);
 
     // Baris atas
 	jendelaBelakang(-0.45f,  0.98f);
@@ -138,7 +211,6 @@ void drawGedung() {
 	jendelaBelakang(-0.45f, -0.2f);
 	jendelaBelakang( 0.45f, -0.2f);
 	
-	Tabung();
 }
 
 void handleKeyboardGedung(unsigned char key) {
@@ -162,7 +234,7 @@ void handleKeyboardGedung(unsigned char key) {
 }
 
 // AKSES PRIVATE
-#ifdef STANDALONE   
+//#ifdef STANDALONE   
     // untuk keyboard Arrow
     float rotSceneY = 0.0f; // kiri-kanan
     float rotSceneX = 0.0f; // atas-bawah
@@ -270,4 +342,4 @@ void handleKeyboardGedung(unsigned char key) {
         glutMainLoop();
         return 0;
     }
-#endif
+//#endif
