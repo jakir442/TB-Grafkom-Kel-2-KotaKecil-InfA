@@ -1,67 +1,156 @@
 Judul Proyek: Kota Kecil 3D
 Kelompok: Kelompok 2
 Jumlah Anggota: 4
-    -> Jakir Apriyan            - 2406004 <Objek Jalan, Lampu, Bintang, Bulan, Mainframe {🛣️,💡,⭐,🌕,🗂️}>(Ketua)
-    -> Putri Fitriani Azzahra   - 2406026 <Objek Mobil  🚗>
-    -> Azhari Ahmad Fauzani     - 2406107 <Objek Gedung 🏨>
-    -> Erika Alvia Nurfadilah   - 2406030 <Objek Pohon  🌳>
+    -> Jakir Apriyan            - 2406004:
+        Peran: Objek Jalan, Lampu, Bintang, Bulan, dan Mainframe {🛣️,💡,⭐,🌕,🗂️}
+        Jabatan: Ketua Kelompok 2
+    -> Putri Fitriani Azzahra   - 2406026: 
+        Peran: Objek Mobil  🚗
+    -> Azhari Ahmad Fauzani     - 2406107: 
+        Peran: Objek Gedung 🏨
+    -> Erika Alvia Nurfadilah   - 2406030:
+        Peran: Objek Pohon  🌳
 
-Proyek Kota Kecil 3D ini merupakan sebuah simulasi lingkungan perkotaan sederhana berbasis grafika komputer menggunakan OpenGL (FreeGLUT) dan bahasa pemrograman C++. Aplikasi ini menampilkan suasana sebuah kota kecil dengan elemen utama berupa jalan raya, mobil, gedung, pohon, lampu jalan, serta objek langit seperti bulan dan bintang.
+Projek ini merupakan simulasi kota kecil 3D yang menampilkan Jalan Raya, Mobil, Gedung, Pohon, Lampu Jalan, 
+serta objek langit seperti Bulan dan Bintang. Lingkungan kota dibuat bersifat infinite (tak terbatas) dengan 
+teknik pengulangan objek berdasarkan posisi mobil. Pengguna dapat mengontrol mobil, berpindah mode kamera, 
+serta menikmati efek visual pencahayaan dan animasi langit.
 
-Konsep utama dari proyek ini adalah lingkungan kota yang bersifat infinite (tak terbatas). Efek ini dicapai dengan teknik pengulangan objek (tile system), sehingga saat mobil bergerak maju atau mundur, gedung, pohon, dan lampu jalan akan terus muncul secara berulang tanpa batas yang terlihat oleh pengguna.
-
-Fitur Utama Proyek
-
-Sistem Kamera Dinamis
+FITUR UTAMA PROJEK
+1. Sistem Kamera Dinamis
 Proyek ini menyediakan beberapa mode kamera, yaitu:
+    ⦁ Kamera belakang mobil
+    ⦁ Kamera depan mobil
+    ⦁ Kamera samping kanan dan kiri mobil
+    ⦁ Kamera atas
+    ⦁ Kamera pengemudi (driver view)
+Selain itu, tersedia fitur kamera acak otomatis(Random Camera) yang akan berpindah sudut pandang setiap 2 
+detik dengan menekan tombol Q.
 
-Kamera belakang mobil
+2. Objek Interaktif
+   a. Mobil 
+   Merupakan objek interaktif utama yang dapat dikendalikan menggunakan tombol W, A, S, dan D, dengan 
+   fungsi sebagai berikut:
+        W : Menggerakkan mobil ke depan
+        S : Menggerakkan mobil ke belakang
+        A : Membelokkan mobil ke kiri
+        D : Membelokkan mobil ke kanan
 
-Kamera depan mobil
+    b. Gedung
+    Gedung memiliki fitur interaktif berupa perubahan skala ukuran, yang dapat dikontrol menggunakan tombol:
+        ( + ) : Memperbesar ukuran gedung
+        ( − ) : Memperkecil ukuran gedung
 
-Kamera kanan dan kiri mobil
+    c. Lampu Jalan
+    Lampu jalan menggunakan sistem pencahayaan OpenGL Lighting dan memiliki 4 tingkat intensitas cahaya, 
+    yaitu level 0 hingga level 3. Pengaturan lampu dilakukan menggunakan tombol:
+        L : Menyalakan lampu atau menaikkan level pencahayaan secara bertahap
+        O : Mematikan lampu atau menurunkan level pencahayaan secara bertahap
+    Setiap penekanan tombol akan mengubah tingkat pencahayaan, sehingga pengguna dapat mengatur intensitas 
+    lampu sesuai kebutuhan.
 
-Kamera atas
+    d. Pohon
+    Pohon merupakan objek interaktif yang dapat digerakkan melalui rotasi daun pada tiga sumbu koordinat 
+    (X, Y, dan Z). Rotasi daun dikontrol menggunakan 6 tombol, dengan fungsi sebagai berikut:
+        | Tombol | Fungsi                           |
+        | ------ | -------------------------------- |
+        | `f`    | Rotasi daun ke atas (sumbu X +)  |
+        | `h`    | Rotasi daun ke bawah (sumbu X -) |
+        | `t`    | Rotasi daun ke kanan (sumbu Y +) |
+        | `g`    | Rotasi daun ke kiri (sumbu Y -)  |
+        | `r`    | Rotasi daun searah Z             |
+        | `y`    | Rotasi daun berlawanan Z         |
+        | `ESC`  | Keluar program                   |
+    
+    e. Tata Letak Objek
+    Pohon, gedung, dan lampu jalan disusun secara simetris di sisi kiri dan kanan jalan, sehingga 
+    menciptakan lingkungan visual yang rapi, seimbang, dan menyerupai kondisi jalan pada dunia nyata.
 
-Kamera pengemudi (driver view)
-Selain itu, tersedia fitur kamera acak otomatis yang akan berpindah sudut pandang setiap 2 detik dengan menekan tombol Q.
+3. Efek Visual Lingkungan
+Efek visual lingkungan dirancang untuk meningkatkan kesan realistis serta dinamika suasana malam pada 
+simulasi Kota Kecil 3D. Efek visual yang diterapkan meliputi:
+    a. Objek Langit (Sky Elements)
+    Bulan ditampilkan sebagai objek langit yang menggunakan tekstur (texture mapping), sehingga permukaannya 
+    terlihat lebih realistis dan tidak bersifat datar.
+    Bulan berfungsi sebagai elemen visual utama pada langit malam serta sebagai pendukung suasana pencahayaan 
+    lingkungan kota.
 
-Objek Interaktif
+    b. Bintang
+    Bintang pada langit dibagi menjadi dua jenis, yaitu bintang statis dan bintang jatuh.
+        ⦁ Bintang statis digunakan sebagai elemen dekoratif langit dengan posisi tetap. Bintang ini diulang 
+        secara infinite mengikuti pergerakan mobil, sehingga langit tetap terlihat penuh dan konsisten dari 
+        berbagai posisi.
+        ⦁ Bintang jatuh merupakan bintang yang dianimasikan menyerupai meteor yang melintas di langit. Animasi 
+        ini dibuat menggunakan perubahan posisi secara bertahap pada setiap frame, sehingga menghasilkan 
+        gerakan alami.
 
-Mobil dapat digerakkan menggunakan tombol W, A, S, D
+        Mekanisme bintang jatuh bekerja sebagai berikut:
+            ⦁ Hujan bintang terjadi setiap 20 detik
+            ⦁ Dalam satu sesi hujan, muncul 30 bintang jatuh
+            ⦁ Setiap bintang muncul secara bertahap dengan jeda 0,5 detik
+            ⦁ Bintang bergerak turun pada sumbu Y negatif dan maju ke arah Z negatif
+            ⦁ Setiap bintang memiliki efek ekor (trail) dan rotasi, sehingga terlihat lebih dinamis
+    Kehadiran bintang jatuh membuat langit malam terlihat hidup, dinamis, dan tidak monoton.
 
-Skala gedung dapat diubah menggunakan tombol + dan -
+    c. Transisi Kamera
+    Perpindahan antar mode kamera menggunakan transisi yang halus (smooth camera movement).
+    Transisi ini bertujuan untuk menghindari perubahan sudut pandang secara tiba-tiba, sehingga meningkatkan
+    kenyamanan visual dan pengalaman pengguna saat berpindah kamera.
 
-Lampu jalan menggunakan sistem pencahayaan OpenGL
+4. Manajemen Scene 3D
+Manajemen scene 3D berfungsi untuk mengatur posisi, orientasi, ukuran, serta hubungan antar objek dalam 
+lingkungan Kota Kecil 3D, sehingga seluruh objek dapat ditampilkan secara konsisten dan realistis.
+    a. Transformasi Objek
+    Program menggunakan tiga jenis transformasi utama dalam OpenGL, yaitu:
+        ⦁ Translasi (Translation)
+        Digunakan untuk mengatur posisi objek dalam ruang 3D, seperti penempatan jalan, gedung, pohon, 
+        lampu jalan, mobil, dan objek langit.
+        ⦁ Rotasi (Rotation)
+        Digunakan untuk mengatur arah dan orientasi objek, contohnya:
+            ⦁ Rotasi mobil saat berbelok
+            ⦁ Rotasi pohon (daun)
+            ⦁ Rotasi kamera dan scene
+        ⦁ Skala (Scaling)
+        Digunakan untuk mengatur ukuran objek, misalnya memperbesar atau memperkecil ukuran gedung agar 
+        proporsional terhadap lingkungan.
+    Transformasi ini dikombinasikan menggunakan hierarki transformasi dengan glPushMatrix() dan glPopMatrix(), 
+    sehingga setiap objek memiliki transformasi sendiri tanpa memengaruhi objek lain.
 
-Pohon, gedung, dan lampu tersusun simetris di kiri dan kanan jalan
+    b. Pengaturan Kedalaman Objek (Depth Testing)
+    Program mengaktifkan depth testing menggunakan:
+                glEnable(GL_DEPTH_TEST);
+    Fungsi depth testing adalah:
+        ⦁ Menentukan objek mana yang berada di depan dan di belakang
+        ⦁ Memastikan objek yang lebih dekat ke kamera menutupi objek yang berada di belakangnya
+        ⦁ Mencegah kesalahan visual seperti objek saling menembus
+    Dengan depth testing, tampilan scene 3D menjadi lebih realistis dan akurat secara visual.
+    
+    c. Proyeksi Perspektif 3D
+    Untuk memberikan kesan ruang tiga dimensi yang nyata, program menggunakan proyeksi perspektif, yaitu:
+                gluPerspective(45, rasio, 0.1, 100);
+    Proyeksi perspektif berfungsi untuk:
+        ⦁ Membuat objek yang dekat kamera terlihat lebih besar
+        ⦁ Membuat objek yang jauh terlihat lebih kecil
+        ⦁ Memberikan ilusi kedalaman ruang seperti penglihatan manusia
+    Dengan penggunaan proyeksi perspektif, keseluruhan scene terlihat lebih alami dan realistis.
 
-Efek Visual Lingkungan
 
-Bulan dengan tekstur sebagai objek langit
+KESIMPULAN PROJEK (Kota Kecil)
+Proyek Kota Kecil 3D merupakan sebuah simulasi lingkungan kota berbasis grafika komputer tiga dimensi yang 
+menggabungkan berbagai konsep dasar OpenGL, seperti objek primitif 3D, transformasi, pencahayaan, animasi, 
+dan sistem kamera. Proyek ini berhasil menampilkan suasana kota malam yang interaktif dan dinamis melalui 
+objek jalan raya, mobil, gedung, pohon, lampu jalan, serta elemen langit seperti bulan dan bintang.
 
-Bintang statis dan bintang jatuh yang bergerak
+Melalui penerapan transformasi translasi, rotasi, dan skala, setiap objek dapat ditempatkan dan dianimasikan 
+secara proporsional dalam ruang 3D. Penggunaan depth testing dan proyeksi perspektif membuat tampilan scene 
+menjadi lebih realistis dan memiliki kedalaman visual yang baik. Selain itu, pengelolaan scene dengan hierarki 
+transformasi memungkinkan setiap objek bergerak secara independen tanpa saling memengaruhi.
 
-Transisi kamera halus (smooth camera movement) untuk meningkatkan kenyamanan visual
+Interaksi pengguna menjadi salah satu keunggulan proyek ini, di mana mobil dapat dikendalikan, kamera dapat 
+berpindah sudut pandang secara dinamis, serta pencahayaan lampu jalan dapat diatur dalam beberapa level. 
+Efek visual lingkungan seperti bintang jatuh dengan sistem waktu terjadwal dan transisi kamera yang halus 
+turut meningkatkan kenyamanan visual dan kesan hidup pada simulasi.
 
-Manajemen Scene 3D
-
-Menggunakan transformasi translasi, rotasi, dan skala
-
-Mengatur kedalaman objek dengan depth testing
-
-Menggunakan perspektif 3D agar tampilan terlihat realistis
-
-Tujuan Proyek
-
-Proyek ini bertujuan untuk:
-
-Menerapkan konsep dasar grafika komputer 3D
-
-Memahami penggunaan transformasi objek dalam OpenGL
-
-Mengimplementasikan sistem kamera dan pencahayaan
-
-Mengembangkan simulasi lingkungan virtual yang interaktif dan dinamis
-
-Secara keseluruhan, proyek Kota Kecil 3D ini menjadi media pembelajaran untuk menggabungkan logika pemrograman, matematika grafika, serta kreativitas visual dalam satu aplikasi grafis interaktif.
+Secara keseluruhan, proyek Kota Kecil 3D berhasil menjadi media pembelajaran yang efektif untuk memahami konsep 
+grafika komputer 3D, penerapan logika pemrograman, serta integrasi kreativitas visual dalam sebuah aplikasi 
+grafis interaktif.
