@@ -24,12 +24,13 @@ Proyek ini menyediakan beberapa mode kamera, yaitu:
     ⦁ Kamera samping kanan dan kiri mobil
     ⦁ Kamera atas
     ⦁ Kamera pengemudi (driver view)
-Selain itu, tersedia fitur kamera acak otomatis(Random Camera) yang akan berpindah sudut pandang setiap 2 
-detik dengan menekan tombol Q.
+Selain itu, tersedia fitur kamera acak otomatis(Random Camera) yang akan berpindah sudut pandang dari titik 
+kamera ke titik kamera lain setiap 2 detik dengan menekan tombol Q untuk mengaktifkan dan mematikan 
+(Random Camera).
 
 2. Objek Interaktif
    a. Mobil 
-   Merupakan objek interaktif utama yang dapat dikendalikan menggunakan tombol W, A, S, dan D, dengan 
+   Merupakan objek interaktif utama yang dapat dikendalikan menggunakan tombol W, A, S, D, dengan 
    fungsi sebagai berikut:
         W : Menggerakkan mobil ke depan
         S : Menggerakkan mobil ke belakang
@@ -52,34 +53,36 @@ detik dengan menekan tombol Q.
     d. Pohon
     Pohon merupakan objek interaktif yang dapat digerakkan melalui rotasi daun pada tiga sumbu koordinat 
     (X, Y, dan Z). Rotasi daun dikontrol menggunakan 6 tombol, dengan fungsi sebagai berikut:
-        | Tombol | Fungsi                           |
-        | ------ | -------------------------------- |
-        | `f`    | Rotasi daun ke atas (sumbu X +)  |
-        | `h`    | Rotasi daun ke bawah (sumbu X -) |
-        | `t`    | Rotasi daun ke kanan (sumbu Y +) |
-        | `g`    | Rotasi daun ke kiri (sumbu Y -)  |
-        | `r`    | Rotasi daun searah Z             |
-        | `y`    | Rotasi daun berlawanan Z         |
-        | `ESC`  | Keluar program                   |
+        | Tombol |               Fungsi                |
+        | ------ | ------------------------------------|
+        | `f`    | Rotasi daun ke atas (sumbu X +)     |
+        | `h`    | Rotasi daun ke bawah (sumbu X -)    |
+        | `t`    | Rotasi daun ke kanan (sumbu Y +)    |
+        | `g`    | Rotasi daun ke kiri (sumbu Y -)     |
+        | `r`    | Rotasi daun searah Z (sumbu Z +)    |
+        | `y`    | Rotasi daun berlawanan Z (sumbu Z -)|
+        | `ESC`  | Keluar program                      |
     
     e. Tata Letak Objek
     Pohon, gedung, dan lampu jalan disusun secara simetris di sisi kiri dan kanan jalan, sehingga 
-    menciptakan lingkungan visual yang rapi, seimbang, dan menyerupai kondisi jalan pada dunia nyata.
+    menciptakan lingkungan visual/dunia 3D yang rapi, seimbang, dan menyerupai kondisi jalan pada dunia 
+    nyata (Realistis).
 
 3. Efek Visual Lingkungan
-Efek visual lingkungan dirancang untuk meningkatkan kesan realistis serta dinamika suasana malam pada 
+Efek visual lingkungan dirancang untuk meningkatkan kesan realistis serta pergerakan suasana malam pada 
 simulasi Kota Kecil 3D. Efek visual yang diterapkan meliputi:
     a. Objek Langit (Sky Elements)
-    Bulan ditampilkan sebagai objek langit yang menggunakan tekstur (texture mapping), sehingga permukaannya 
+    Bulan ditampilkan sebagai objek langit yang menggunakan texture (texture mapping), sehingga permukaannya 
     terlihat lebih realistis dan tidak bersifat datar.
-    Bulan berfungsi sebagai elemen visual utama pada langit malam serta sebagai pendukung suasana pencahayaan 
-    lingkungan kota.
+    Bulan berfungsi sebagai elemen visual utama pada langit malam serta sebagai penanda antara posisi depan dan
+    belakang dari dunia 3D ini. Posisi yang ada bulannya adalah posisi bagian depan (Utara), dan posisi yang tidak 
+    ada bulannya adalah bagian belakang (Selatan).
 
     b. Bintang
-    Bintang pada langit dibagi menjadi dua jenis, yaitu bintang statis dan bintang jatuh.
-        ⦁ Bintang statis digunakan sebagai elemen dekoratif langit dengan posisi tetap. Bintang ini diulang 
+    Bintang pada langit dibagi menjadi dua jenis, yaitu bintang statis dan bintang jatuh (Dinamis).
+        ⦁ Bintang statis digunakan sebagai elemen dekorasi langit dengan posisi tetap. Bintang ini diulang 
         secara infinite mengikuti pergerakan mobil, sehingga langit tetap terlihat penuh dan konsisten dari 
-        berbagai posisi.
+        berbagai arah atau sudut pandang.
         ⦁ Bintang jatuh merupakan bintang yang dianimasikan menyerupai meteor yang melintas di langit. Animasi 
         ini dibuat menggunakan perubahan posisi secara bertahap pada setiap frame, sehingga menghasilkan 
         gerakan alami.
@@ -89,13 +92,13 @@ simulasi Kota Kecil 3D. Efek visual yang diterapkan meliputi:
             ⦁ Dalam satu sesi hujan, muncul 30 bintang jatuh
             ⦁ Setiap bintang muncul secara bertahap dengan jeda 0,5 detik
             ⦁ Bintang bergerak turun pada sumbu Y negatif dan maju ke arah Z negatif
-            ⦁ Setiap bintang memiliki efek ekor (trail) dan rotasi, sehingga terlihat lebih dinamis
-    Kehadiran bintang jatuh membuat langit malam terlihat hidup, dinamis, dan tidak monoton.
+            ⦁ Setiap bintang memiliki efek ekor (trail) dan rotasi, sehingga bintang akan jatuh sambil berputar.
+    Kehadiran bintang jatuh membuat langit malam terlihat hidup, dinamis, dan lebih interaktif.
 
     c. Transisi Kamera
     Perpindahan antar mode kamera menggunakan transisi yang halus (smooth camera movement).
     Transisi ini bertujuan untuk menghindari perubahan sudut pandang secara tiba-tiba, sehingga meningkatkan
-    kenyamanan visual dan pengalaman pengguna saat berpindah kamera.
+    kenyamanan visual pengguna saat berpindah kamera.
 
 4. Manajemen Scene 3D
 Manajemen scene 3D berfungsi untuk mengatur posisi, orientasi, ukuran, serta hubungan antar objek dalam 
@@ -112,7 +115,7 @@ lingkungan Kota Kecil 3D, sehingga seluruh objek dapat ditampilkan secara konsis
             ⦁ Rotasi kamera dan scene
         ⦁ Skala (Scaling)
         Digunakan untuk mengatur ukuran objek, misalnya memperbesar atau memperkecil ukuran gedung agar 
-        proporsional terhadap lingkungan.
+        lebih interaktif.
     Transformasi ini dikombinasikan menggunakan hierarki transformasi dengan glPushMatrix() dan glPopMatrix(), 
     sehingga setiap objek memiliki transformasi sendiri tanpa memengaruhi objek lain.
 
@@ -142,9 +145,10 @@ dan sistem kamera. Proyek ini berhasil menampilkan suasana kota malam yang inter
 objek jalan raya, mobil, gedung, pohon, lampu jalan, serta elemen langit seperti bulan dan bintang.
 
 Melalui penerapan transformasi translasi, rotasi, dan skala, setiap objek dapat ditempatkan dan dianimasikan 
-secara proporsional dalam ruang 3D. Penggunaan depth testing dan proyeksi perspektif membuat tampilan scene 
-menjadi lebih realistis dan memiliki kedalaman visual yang baik. Selain itu, pengelolaan scene dengan hierarki 
-transformasi memungkinkan setiap objek bergerak secara independen tanpa saling memengaruhi.
+secara proporsional(Seimbang) dalam dunia 3D. Penggunaan depth testing dan proyeksi perspektif membuat tampilan 
+scene menjadi lebih realistis dan memiliki kedalaman visual yang baik. Selain itu, pengelolaan scene dengan 
+hierarki transformasi memungkinkan setiap objek bergerak secara independen(Berjalan sendiri) tanpa saling 
+memengaruhi.
 
 Interaksi pengguna menjadi salah satu keunggulan proyek ini, di mana mobil dapat dikendalikan, kamera dapat 
 berpindah sudut pandang secara dinamis, serta pencahayaan lampu jalan dapat diatur dalam beberapa level. 
