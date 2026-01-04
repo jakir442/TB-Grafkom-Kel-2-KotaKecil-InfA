@@ -1,6 +1,6 @@
 Judul Proyek: Kota Kecil 3D
 Kelompok: Kelompok 2
-Jumlah Anggota: 4
+Jumlah Anggota: 4 Orang
     -> Jakir Apriyan            - 2406004:
         Peran: Objek Jalan, Lampu, Bintang, Bulan, dan Mainframe {🛣️,💡,⭐,🌕,🗂️}
         Jabatan: Ketua Kelompok 2
