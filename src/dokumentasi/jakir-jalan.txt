@@ -1,0 +1,81 @@
+Nama: JAKIR APRIYAN
+NIM: 2406004
+Membuat Objek Jalan 3D
+
+Objek Jalan (Road System)
+Objek jalan merupakan elemen utama dalam simulasi Kota Kecil 3D yang berfungsi sebagai jalur pergerakan 
+mobil serta pusat penataan objek lingkungan seperti pohon, lampu jalan, dan gedung. Jalan dibuat bersifat 
+infinite (tak terbatas) sehingga seolah-olah memanjang tanpa ujung mengikuti pergerakan mobil.
+
+A. Objek Primitif yang Digunakan
+    1. Quad (GL_QUADS)
+    Digunakan untuk membentuk:
+        ⦁ Badan jalan utama
+        ⦁ Sisi jalan (ketebalan jalan)
+        ⦁ Trotoar kiri dan kanan
+    Quad dipilih karena cocok untuk membentuk permukaan datar seperti aspal dan trotoar.
+
+    2. Cone (Kerucut)
+    Digunakan sebagai:
+        ⦁ Pembatas jalan / cone lalu lintas
+    Cone dibuat dari beberapa bagian kerucut dengan warna berbeda untuk menghasilkan pola belang.
+
+    3. Lines (GL_LINES)
+    Digunakan untuk:
+        ⦁ Garis putus-putus di tengah jalan sebagai marka jalan
+
+B. Struktur dan Komponen Jalan
+    1. Badan Jalan
+        ⦁ Lebar jalan: 4.0 satuan
+        ⦁ Warna: abu-abu gelap
+        ⦁ Terletak di tengah sumbu X
+        ⦁ Menjadi jalur utama mobil
+    2. Sisi Jalan
+        ⦁ Memberikan ketebalan visual pada jalan
+        ⦁ Dibuat sedikit ke bawah (sumbu Y negatif)
+        ⦁ Berfungsi menambah kesan realistis struktur jalan
+    3. Trotoar
+        ⦁ Terletak di sisi kiri dan kanan jalan
+        ⦁ Lebar lebih kecil dari badan jalan
+        ⦁ Warna lebih terang dari aspal
+        ⦁ Berfungsi sebagai pembatas area kendaraan dan lingkungan sekitar
+    4. Cone Pembatas
+        ⦁ Ditempatkan di sisi luar trotoar
+        ⦁ Disusun berselang-seling kiri dan kanan
+        ⦁ Berfungsi sebagai elemen visual keselamatan jalan
+    5. Garis Marka Jalan
+        ⦁ Berupa garis putus-putus di tengah jalan
+        ⦁ Warna kuning
+        ⦁ Memberi indikasi jalur lalu lintas
+
+C. Konsep Jalan Infinite (Tak Terbatas)
+    Jalan dibuat menggunakan teknik pengulangan segmen (tiling) berdasarkan posisi mobil pada sumbu Z.
+        ⦁ Posisi dasar jalan dihitung menggunakan fungsi floor()
+        ⦁ Jalan digambar dalam rentang jarak pandang tertentu (±200 satuan)
+        ⦁ Saat mobil bergerak maju atau mundur, segmen jalan lama akan tergantikan oleh segmen baru
+    Dengan teknik ini:
+        ⦁ Jalan terlihat tidak pernah habis
+        ⦁ Performa tetap efisien karena hanya menggambar area yang terlihat
+
+D. Transformasi yang Digunakan
+    Translasi
+        ⦁ Mengatur posisi setiap segmen jalan berdasarkan nilai Z
+        ⦁ Menempatkan cone dan marka jalan di lokasi yang sesuai
+    Rotasi
+        ⦁ Digunakan pada objek cone agar berdiri tegak (rotasi −90° pada sumbu X)
+    Skala
+        ⦁ Digunakan secara implisit melalui ukuran vertex untuk mengatur proporsi jalan dan objek pendukung
+
+E. Integrasi dengan Objek Mobil
+        ⦁ Posisi jalan selalu menyesuaikan mobilPosZ
+        ⦁ Mobil menjadi pusat referensi pergerakan dunia
+        ⦁ Saat mobil bergerak, jalan dan lingkungan tampak bergeser, bukan mobilnya
+    Pendekatan ini menciptakan ilusi:
+        "Mobil bergerak maju di jalan yang panjang tanpa batas."
+
+F. Tujuan dan Fungsi Objek Jalan
+    Objek jalan dirancang untuk:
+        ⦁ Menjadi elemen utama navigasi dalam scene
+        ⦁ Mendukung sistem pergerakan mobil
+        ⦁ Menjadi acuan penempatan objek lain (lampu, pohon, gedung)
+        ⦁ Meningkatkan realisme(tingkat realistis) simulasi kota kecil 3D
