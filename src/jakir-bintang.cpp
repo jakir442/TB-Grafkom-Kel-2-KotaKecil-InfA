@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include "header/jakir-bintang.h"
+#include "header/putri-mobil.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -84,7 +85,7 @@ void spawnBintangJatuh(int value) {
             // spawn acak di langit, depan mobil (arah -Z)
             bintangJatuh[i].x = randRange(-TILE_SIZE/2, TILE_SIZE/2);
             bintangJatuh[i].y = randRange(20.0f, 22.0f);
-            bintangJatuh[i].z = -randRange(5.0f, 8.0f); // di depan scene (-Z)
+            bintangJatuh[i].z = mobilPosZ + randRange(150.0f, 151.0f); // di depan scene (-Z)
 
 
             bintangJatuh[i].px = bintangJatuh[i].x;
