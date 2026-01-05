@@ -1,6 +1,6 @@
 Nama: AZHARI AHMAD FAUZANI
 NIM: 2406107
-Membuat Objek Gedung
+Membuat Objek Gedung 
 
 A. Primitif yang Digunakan dan Fungsinya
 Dalam pembuatan gedung, program ini tidak langsung membuat bentuk kompleks, tetapi menyusunnya dari primitif 3D.
