@@ -1,0 +1,102 @@
+Nama: JAKIR APRIYAN
+NIM: 2406004
+Membuat Objek Lampu Jalan 3D
+
+Objek Lampu Jalan 
+Objek Lampu Jalan berfungsi sebagai sumber pencahayaan utama pada lingkungan kota malam hari dalam simulasi 
+Kota Kecil 3D. Lampu ini dirancang tidak hanya sebagai objek visual, tetapi juga sebagai sumber cahaya aktif 
+yang memengaruhi pencahayaan objek lain di sekitarnya menggunakan sistem lighting OpenGL.
+
+A. Konsep Dasar Lampu Jalan
+    Lampu jalan terdiri dari dua komponen utama:
+    1. Model Fisik Lampu
+        ⦁ Tiang lampu
+        ⦁ Tangan lampu
+        ⦁ Kepala lampu
+        ⦁ Bohlam
+    2. Sistem Pencahayaan
+        ⦁ Cahaya spotlight OpenGL
+        ⦁ Efek cone cahaya transparan
+        ⦁ Pengaturan intensitas cahaya bertingkat (level)
+
+B. Inisialisasi Sistem Lighting
+    Fungsi initLampuLighting() bertanggung jawab untuk mengatur pencahayaan global dan properti lighting OpenGL.
+    Fitur utama:
+        ⦁ Mengaktifkan Depth Test dan Lighting
+        ⦁ Mengatur ambient global bernuansa malam
+        ⦁ Mengaktifkan color material agar warna objek dipengaruhi cahaya
+        ⦁ Menggunakan smooth shading untuk hasil pencahayaan lebih halus
+        ⦁ Mengaktifkan GL_LIGHT0 sebagai lampu utama
+        ⦁ Menonaktifkan light lain yang tidak digunakan
+    Tujuan pengaturan ini adalah menciptakan suasana malam yang realistis dan tidak terlalu terang.
+
+C. Level Intensitas Lampu
+Lampu jalan memiliki 4 tingkat pencahayaan, yaitu:
+        Level	Kondisi Lampu	Intensitas Cahaya
+          0	        Mati	    Tidak ada cahaya
+          1	        Redup	    Diffuse rendah
+          2	        Normal	    Diffuse sedang
+          3	        Terang	    Diffuse tinggi
+Pengaturan ini memungkinkan simulasi pencahayaan yang fleksibel sesuai kebutuhan visual.
+
+D. Kontrol Lampu (Keyboard)
+Lampu dikontrol melalui keyboard dengan sistem level:
+        Tombol	                      Fungsi
+          L	        Menyalakan lampu / menaikkan level lampu
+          O	        Mematikan lampu / menurunkan level lampu
+Lampu dianggap menyala apabila levelLampu > 0.
+
+E. Model Geometri Lampu Jalan
+    Fungsi drawLampuJalan() menggambar satu unit lampu jalan yang terdiri dari:
+    1. Tiang Lampu
+        ⦁ Dibentuk menggunakan GLU Cylinder
+        ⦁ Berwarna abu-abu
+        ⦁ Tinggi ±2.7 satuan 
+    2. Tangan Lampu
+        ⦁ Dibuat dari kubus
+        ⦁ Menghubungkan tiang dan kepala lampu
+    3. Kepala Lampu
+        ⦁ Berfungsi sebagai rumah bohlam
+        ⦁ Berbentuk kubus pipih
+    4. Bohlam
+        ⦁ Dibuat menggunakan sphere
+        ⦁ Warna berubah sesuai kondisi:
+            ⦁ Kuning terang → lampu menyala
+            ⦁ Abu-abu gelap → lampu mati
+
+F. Sistem Cahaya Spotlight
+    Lampu menggunakan Spotlight OpenGL, sehingga cahaya terfokus ke satu arah.
+    Karakteristik cahaya:
+        ⦁ Posisi cahaya berada di bohlam
+        ⦁ Arah cahaya mengarah ke bawah dan ke depan jalan
+        ⦁ Sudut spotlight (cutoff): 40°
+        ⦁ Efek fokus cahaya diatur dengan GL_SPOT_EXPONENT
+    Intensitas cahaya (ambient & diffuse) disesuaikan dengan level lampu.
+
+G. Efek Visual Cone Cahaya
+    Fungsi drawConeCahaya() digunakan untuk memberikan efek visual cahaya lampu.
+    Karakteristik cone cahaya:
+        ⦁ Dibuat menggunakan GLU Cylinder
+        ⦁ Bersifat transparan (alpha blending)
+        ⦁ Tidak terpengaruh lighting (agar terlihat seperti cahaya)
+        ⦁ Warna kuning lembut
+        ⦁ Hanya muncul saat lampu menyala
+    Efek ini berfungsi untuk memperkuat kesan visual bahwa lampu benar-benar memancarkan cahaya.
+
+H. Integrasi dengan Scene Kota
+    Lampu jalan:
+        ⦁ Ditempatkan secara simetris di kiri dan kanan jalan
+        ⦁ Menggunakan light ID berbeda (misalnya GL_LIGHT0, GL_LIGHT1)
+        ⦁ Berperan penting dalam pencahayaan:
+            ⦁ Jalan
+            ⦁ Mobil
+            ⦁ Gedung
+            ⦁ Pohon
+    Dengan sistem ini, pencahayaan kota terasa hidup dan realistis.
+
+I. Mode Standalone (Pengujian Mandiri)
+    Pada mode STANDALONE, lampu dapat diuji secara terpisah dengan fitur:
+        ⦁ Rotasi scene menggunakan tombol arah
+        ⦁ Grid 3D sebagai referensi posisi
+        ⦁ Kontrol level lampu secara langsung
+    Mode ini memudahkan debugging dan pengembangan lampu tanpa bergantung pada objek lain.
