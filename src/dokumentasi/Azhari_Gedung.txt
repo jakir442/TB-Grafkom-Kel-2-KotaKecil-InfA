@@ -21,12 +21,20 @@ Digunakan untuk:
 2. Silinder (gluCylinder)
 Silinder digunakan untuk:
 - Badan atap gedung: Dibuat dengan GLUquadric, diputar agar berdiri tegak, memiliki radius bawah, radius atas, dan tinggi ada pada fungsi "atapgedung()"
+  > Radius bawah : menentukan lebar bagian bawah atap
+  > Radius atas : menentukan lebar bagian atas atap
+  > Tinggi silinder : menentukan ketebalan atap
+Silinder tidak langsung berdiri secara vertikal. Oleh karena itu, dilakukan rotasi sebesar -90 derajat terhadap sumbu X menggunakan glRotatef(-90.0f, 1, 0, 0) agar silinder berada dalam posisi tegak dan sesuai dengan bentuk atap gedung.
 
 3. Disk (gluDisk)
 Disk digunakan untuk penutup atas atap, Penutup bawah atap tujuannya Menutup bagian silinder agar tidak berlubang
 
 4. Torus (glutSolidTorus)
-Torus digunakan untuk lingkaran helipad di atas gedung yang ada pada fungsi "ringHelipadTorus()"
+Torus digunakan pada program ini untuk membuat lingkaran helipad yang berada di atas atap gedung.
+Pada fungsi ringHelipadTorus(), torus dibentuk menggunakan glutSolidTorus(). Torus memiliki dua ukuran utama:
+  > Radius kecil : menentukan ketebalan garis lingkaran helipad
+  > Radius besar : menentukan ukuran lingkaran helipad
+Torus diputar sebesar 90 derajat agar posisinya sejajar dengan permukaan atap, kemudian dipindahkan ke atas atap menggunakan glTranslatef().
 
 B. Penyusunan Gedung 
 Gedung disusun dalam fungsi drawGedung() dengan urutan:
