@@ -224,7 +224,6 @@ void drawGedung() {
 
 void handleKeyboardGedung(unsigned char key) {
     switch (key) {
-        case 27: exit(0); break; // Tombol ESC
         case '+': case '=':
             scaleFactor += SCALE_STEP;
             if (scaleFactor > SCALE_MAX) scaleFactor = SCALE_MAX;
@@ -249,6 +248,10 @@ void handleKeyboardGedung(unsigned char key) {
     float rotSceneX = 0.0f; // atas-bawah
 
     void keyboardPrivate(unsigned char key, int x, int y) {
+		
+		if (key == 27) { // ESC
+        exit(0);
+    }
         handleKeyboardGedung(key);
 
         glutPostRedisplay();
