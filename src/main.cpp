@@ -199,7 +199,7 @@ void drawGedungInfinite() {
     }
 
     for (int i = baseIndex - JUMLAH_TILE / 2;
-         i <= baseIndex + JUMLAH_TILE / 2; i++) {
+        i <= baseIndex + JUMLAH_TILE / 2; i++) {
 
         float z = i * JARAK_TILE;
 
@@ -228,7 +228,7 @@ void drawPohonInfinite() {
     int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
 
     for (int i = baseIndex - JUMLAH_TILE / 2;
-             i <= baseIndex + JUMLAH_TILE / 2; i++) {
+            i <= baseIndex + JUMLAH_TILE / 2; i++) {
 
         float z = i * JARAK_TILE;
 
