@@ -143,8 +143,7 @@ void controlMobil(unsigned char key) {
         case 'w': case 'W': updateMobil(-moveSpeed); break;            //maju
         case 's': case 'S': updateMobil(moveSpeed); break;           //mundur
         case 'd': case 'D': mobilYaw -= turnSpeed; break;             //belok kiri
-        case 'a': case 'A': mobilYaw += turnSpeed; break;             //belok kanan
-        case 27: exit(0);                                             //esc
+        case 'a': case 'A': mobilYaw += turnSpeed; break;             //belok kanan                                           //esc
     }
     glutPostRedisplay();
 }
@@ -157,7 +156,9 @@ void controlMobil(unsigned char key) {
 
     void keyboardPrivate(unsigned char key, int x, int y) {
         controlMobil(key);
-
+		switch (key){
+		    case 27: exit(0);
+		}
         glutPostRedisplay();
     }
 

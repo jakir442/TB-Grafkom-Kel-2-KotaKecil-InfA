@@ -40,13 +40,6 @@ void drawPohon() {
         glRotatef(-90, 1, 0, 0);
         drawSilinder(0.11f, 0.6f);
     glPopMatrix();
-    
-    // ================= APEL TENGAH  =================
-//	glPushMatrix();
-//    	glTranslatef(0.18f, 2.72f, 0.8f); 
-//    	glColor3f(1.0f, 0.0f, 0.0f);
-//    	glutSolidSphere(0.15f, 32, 32);
-//	glPopMatrix();
 	
     // DAUN TENGAH
     glColor3f(0.1f, 0.75f, 0.1f);
@@ -183,8 +176,6 @@ void keyboardPohon(unsigned char key) {
         case 'y': 
 			sudutDaunZ -= 5; 
 			break;
-
-        case 27: exit(0);
     }
     glutPostRedisplay();
 }
@@ -197,7 +188,10 @@ void keyboardPohon(unsigned char key) {
 
     void keyboardPrivate(unsigned char key, int x, int y) {
         keyboardPohon(key);
-
+        
+        switch (key){
+        	case 27: exit(0); //esc
+		}
         glutPostRedisplay();
     }
 

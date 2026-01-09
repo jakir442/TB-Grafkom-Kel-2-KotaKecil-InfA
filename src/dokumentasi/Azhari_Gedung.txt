@@ -1,0 +1,69 @@
+Nama: AZHARI AHMAD FAUZANI
+NIM: 2406107
+Membuat Objek Gedung 
+
+A. Primitif yang Digunakan dan Fungsinya
+Dalam pembuatan gedung, program ini tidak langsung membuat bentuk kompleks, tetapi menyusunnya dari primitif 3D.
+
+1. Kubus (glutSolidCube)
+Kubus adalah primitif utama yang paling banyak digunakan.
+Digunakan untuk:
+- Badan utama gedung: kubus di-scale menjadi balok menggunakan fungsi Prisma() Prisma dibuat dari: 
+
+  glutSolidCube(1.0f);
+  glScalef(width, height, depth);
+
+- Pintu gedung
+- Jendela depan
+- Jendela belakang
+- Huruf “H” pada helipad
+
+2. Silinder (gluCylinder)
+Silinder digunakan untuk:
+- Badan atap gedung: Dibuat dengan GLUquadric, diputar agar berdiri tegak, memiliki radius bawah, radius atas, dan tinggi ada pada fungsi "atapgedung()"
+  > Radius bawah : menentukan lebar bagian bawah atap
+  > Radius atas : menentukan lebar bagian atas atap
+  > Tinggi silinder : menentukan ketebalan atap
+Silinder tidak langsung berdiri secara vertikal. Oleh karena itu, dilakukan rotasi sebesar -90 derajat terhadap sumbu X menggunakan glRotatef(-90.0f, 1, 0, 0) agar silinder berada dalam posisi tegak dan sesuai dengan bentuk atap gedung.
+
+3. Disk (gluDisk)
+Disk digunakan untuk penutup atas atap, Penutup bawah atap tujuannya Menutup bagian silinder agar tidak berlubang
+
+4. Torus (glutSolidTorus)
+Torus digunakan pada program ini untuk membuat lingkaran helipad yang berada di atas atap gedung.
+Pada fungsi ringHelipadTorus(), torus dibentuk menggunakan glutSolidTorus(). Torus memiliki dua ukuran utama:
+  > Radius kecil : menentukan ketebalan garis lingkaran helipad
+  > Radius besar : menentukan ukuran lingkaran helipad
+Torus diputar sebesar 90 derajat agar posisinya sejajar dengan permukaan atap, kemudian dipindahkan ke atas atap menggunakan glTranslatef().
+
+B. Penyusunan Gedung 
+Gedung disusun dalam fungsi drawGedung() dengan urutan:
+- Badan utama gedung (prisma besar)
+- Atap silinder
+- Lingkaran helipad
+- Huruf H
+- Pintu
+- Jendela depan
+- Jendela belakang
+
+Setiap bagian:
+- Diposisikan dengan glTranslatef
+- Diatur ukurannya dengan glScalef
+- Diwarnai dengan glColor3fv
+
+C. Transformasi yang Digunakan
+Program menggunakan transformasi Scale, bisa mengatur besar kecil nya gedung
+
+D. Kontrol Keyboard yang digunakan
+1) + / = : Memperbesar ukuran gedung
+2) - / _ : Memperkecil ukuran gedung
+3) R / r : Reset rotasi dan skala ke kondisi awal
+4) ESC : Keluar dari program
+Yang ada pada fungsi "handleKeyboardGedung()"
+
+Tombol Panah (Special Keyboard)
+- Panah Kiri : Rotasi gedung ke kiri (sumbu Y)
+- Panah Kanan : Rotasi gedung ke kanan (sumbu Y)
+- Panah Atas : Rotasi gedung ke atas (sumbu X)
+- Panah Bawah : Rotasi gedung ke bawah (sumbu X)
+Yang ada pada fungsi "specialKeyboardRotasi()"

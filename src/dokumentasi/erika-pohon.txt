@@ -1,7 +1,9 @@
 NAMA	: ERIKA ALVIA NURFADILAH
 NIM	: 2406030
+
 MEMBUAT OBJEK POHON 3D
-objek pohon 3D. Pohon terdiri dari batang, ranting, daun berbentuk dodecahedron, serta buah apel berbentuk bola. Objek dapat dilihat dari berbagai sudut menggunakan keyboard dan sebagian objek memiliki interaksi rotasi.
+objek pohon 3D. Pohon terdiri dari batang, ranting, daun berbentuk dodecahedron, serta buah apel berbentuk bola.
+Objek dapat dilihat dari berbagai sudut menggunakan keyboard dan sebagian objek memiliki interaksi rotasi.
 
 A. OBJEK PRIMITIF YANG DIGUNAKAN
 Program ini menggunakan beberapa objek primitif 3D OpenGL, yaitu:
