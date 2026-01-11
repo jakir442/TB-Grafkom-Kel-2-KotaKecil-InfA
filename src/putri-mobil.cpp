@@ -86,7 +86,7 @@ void drawMobil() {
 			glColor3f(1, 1, 0);
 			glTranslatef(-0.5f, 0.4f, 0.0f);
     		glScalef(0.1f, 0.002f, 0.002f);
-    		glRotatef(-90, 0, 1, 0); //Rotate(angle, x, y, z)
+    		glRotatef(-90, 0, 1, 0); //(angle, x, y, z)
     		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'R'); // -> Objek untuk menggambar huruf
 		glPopMatrix();
 
@@ -141,7 +141,7 @@ void drawMobil() {
         //lampu kanan
         glPushMatrix();
             glTranslatef(0.27f, 0.22f, 1.05f); //posisi depan kanan
-            glRotatef(90, 0, 0, 1);            //sejajar sumbu X
+            glRotatef(90, 0, 0, 1);            //sudut(x,y,z)
             glutSolidTorus(0.03, 0.12, 20, 30);
         glPopMatrix();
 
