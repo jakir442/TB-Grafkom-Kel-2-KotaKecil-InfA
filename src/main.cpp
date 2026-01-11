@@ -60,13 +60,6 @@ float smoothTargetZ = 0.0f;
 
 int camIndex = 0;
 
-
-// static int lastMouseX = 0;
-// static int lastMouseY = 0;
-// static bool firstMouse = true;
-// static float mouseSensitivity = 0.15f;
-
-
 // void handleKeyboard(unsigned char key, int x, int y) {
 //     controlMobil(key);
 //     handleKeyboardGedung(key);
@@ -375,6 +368,13 @@ void display() {
         smoothTargetX, smoothTargetY, smoothTargetZ, // arah pandang
         0.0f, 1.0f, 0.0f // arah atas (up vektor)
     );
+
+    // Gunakan ini untuk mematikan infiniti atau kamera nya tertinggal di belakang
+    // gluLookAt(
+    //     0.0f, 6.0f, 20.0f,   // POSISI KAMERA (tetap/static)
+    //     0.0f, 1.0f, 0.0f,    // TITIK PANDANG (tetap/static)
+    //     0.0f, 1.0f, 0.0f
+    // );
 
 
     drawJalan();           // dasar
