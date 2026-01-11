@@ -22,7 +22,7 @@ void initMobil() {
 
 // KUBUS
 void drawCube(float r, float g, float b) {
-    glColor3f(r, g, b);     //warna objek
+    glColor3f(r, g, b);     
     glutSolidCube(1.0);     //kubus solid uk 1x1x1 (ke diubah di scale) -> Objek Mobil 1 
 }
 
@@ -55,7 +55,7 @@ void drawWheel() {
     gluDeleteQuadric(quad);
 }
 
-// MOBIL
+// MOBI
 void drawMobil() {
     glPushMatrix();                                      //simpan transformasi mobil
         glTranslatef(mobilPosX, mobilPosY, mobilPosZ);   //posisi mobil (mobil pindah, roda ikut pindah boz)
