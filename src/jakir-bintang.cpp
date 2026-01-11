@@ -18,9 +18,6 @@ const float TILE_SIZE = 80.0f;
 const float TINGGI_MIN = 10.0f;
 const float TINGGI_MAX = 15.0f;
 
-// zona tengah kosong (bulan)
-const float ZONA_TENGAH = 3.0f;
-
 // kontrol hujan bintang
 int jumlahSpawned = 0;
 bool hujanAktif = false;

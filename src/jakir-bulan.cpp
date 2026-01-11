@@ -108,7 +108,7 @@ void initTextureBulan() {
     texture_Moon_ID  = loadTexture("D:/2406004-KULIAH-TEKNIK-INFORMATIKA-A/semester_3/Praktikum-Grafik-Komputer-1-SKS/UAS/UAS-KotaKecil/src/texture/bulan.jpg"); // Bulan
 }
 
-#if standalone 
+#ifdef standalone 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();

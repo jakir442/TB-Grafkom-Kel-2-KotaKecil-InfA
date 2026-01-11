@@ -371,8 +371,8 @@ void display() {
 
     // Gunakan ini untuk mematikan infiniti atau kamera nya tertinggal di belakang
     // gluLookAt(
-    //     0.0f, 6.0f, 20.0f,   // POSISI KAMERA (tetap/static)
-    //     0.0f, 1.0f, 0.0f,    // TITIK PANDANG (tetap/static)
+    //     0.0f, 6.0f, 20.0f,   // posisi kamera (tetap/static)
+    //     0.0f, 1.0f, 0.0f,    // titik pandang (tetap/static)
     //     0.0f, 1.0f, 0.0f
     // );
 

@@ -112,7 +112,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidCube(1.0f);
     glPopMatrix();
 
-    // kepala lampu (RUMAH)
+    // kepala lampu
     glPushMatrix();
         glTranslatef(0.0f, 2.7f, 0.75f);
         glColor3f(0.18f, 0.18f, 0.18f);
