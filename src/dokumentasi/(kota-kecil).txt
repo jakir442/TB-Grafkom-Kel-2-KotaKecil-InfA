@@ -16,6 +16,9 @@ serta objek langit seperti Bulan dan Bintang. Lingkungan kota dibuat bersifat in
 teknik pengulangan objek berdasarkan posisi mobil. Pengguna dapat mengontrol mobil, berpindah mode kamera, 
 serta menikmati efek visual pencahayaan dan animasi langit.
 
+CARA BUILD PROJECT
+ctrl+shift+p->Run Task->Pilih mau All atau hanya satu objek saja
+
 FITUR UTAMA PROJEK
 1. Sistem Kamera Dinamis
 Proyek ini menyediakan beberapa mode kamera, yaitu:

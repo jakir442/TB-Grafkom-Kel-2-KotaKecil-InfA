@@ -371,9 +371,9 @@ void display() {
 
     // kamera smooth
     gluLookAt(
-        smoothCamX, smoothCamY, smoothCamZ,
-        smoothTargetX, smoothTargetY, smoothTargetZ,
-        0.0f, 1.0f, 0.0f
+        smoothCamX, smoothCamY, smoothCamZ, // posisi kamera
+        smoothTargetX, smoothTargetY, smoothTargetZ, // arah pandang
+        0.0f, 1.0f, 0.0f // arah atas (up vektor)
     );
 
 
