@@ -6,9 +6,7 @@
 
 GLuint textureBulan;
 
-// =====================
 // LOAD TEXTURE DENGAN FREEIMAGE
-// =====================
 GLuint loadTexture(const char* filename) {
     FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename, 0);
     if (format == FIF_UNKNOWN)
@@ -32,9 +30,9 @@ GLuint loadTexture(const char* filename) {
     int height = FreeImage_GetHeight(bitmap32);
     BYTE* data = FreeImage_GetBits(bitmap32);
 
-    // =====================
+
     // KONVERSI BGRA → RGBA
-    // =====================
+
     for (int i = 0; i < width * height * 4; i += 4) {
         std::swap(data[i + 0], data[i + 2]); // B <-> R
     }
@@ -63,17 +61,13 @@ GLuint loadTexture(const char* filename) {
 }
 
 
-// =====================
 // INIT TEXTURE BULAN
-// =====================
 void initTextureBulan() {
     FreeImage_Initialise();
-    textureBulan = loadTexture("C:/Users/taufi/Downloads/TB-Grafkom-Kel-2-KotaKecil-InfA/src/texture/bulan.jpg"); // PNG / JPG / BMP
+    textureBulan = loadTexture("D:/2406004-KULIAH-TEKNIK-INFORMATIKA-A/semester_3/Praktikum-Grafik-Komputer-1-SKS/UAS/UAS-KotaKecil/src/texture/bulan.jpg"); // PNG / JPG / BMP
 }
 
-// =====================
 // DRAW BULAN DENGAN TEKSTUR
-// =====================
 void drawBulan(float mobilX, float mobilZ) {
     glPushMatrix();
 
