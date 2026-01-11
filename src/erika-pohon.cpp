@@ -9,7 +9,7 @@ float sudutDaunX = 0.0f;
 float sudutDaunY = 0.0f;
 float sudutDaunZ = 0.0f;
 
-void drawSilinder(float radius, float tinggi) {
+void drawSilinder(float radius, float tinggi) { // ini untuk menggambar silinder
     GLUquadric *objek = gluNewQuadric();
     gluCylinder(objek, radius, radius, tinggi, 32, 32); // -> Objek Pohon 1
     gluDeleteQuadric(objek);

@@ -68,7 +68,7 @@ GLuint loadTexture(const char* filename) {
 // =====================
 void initTextureBulan() {
     FreeImage_Initialise();
-    textureBulan = loadTexture("D:/2406004-KULIAH-TEKNIK-INFORMATIKA-A/semester_3/Praktikum-Grafik-Komputer-1-SKS/UAS/UAS-KotaKecil/src/texture/bulan.jpg"); // PNG / JPG / BMP
+    textureBulan = loadTexture("C:/Users/taufi/Downloads/TB-Grafkom-Kel-2-KotaKecil-InfA/src/texture/bulan.jpg"); // PNG / JPG / BMP
 }
 
 // =====================
