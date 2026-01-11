@@ -19,6 +19,9 @@ serta menikmati efek visual pencahayaan dan animasi langit.
 CARA BUILD PROJECT
 ctrl+shift+p->Run Task->Pilih mau All atau hanya satu objek saja
 
+COMPAILER YANG DIGUNAKAN
+kami menggunakan MinGW untuk compailer projek ini
+
 FITUR UTAMA PROJEK
 1. Sistem Kamera Dinamis
 Proyek ini menyediakan beberapa mode kamera, yaitu:
