@@ -22,15 +22,6 @@ float kecepatanBelok  = 1.0f;
 
 float jalanOffset = 0.0f;
 
-void getCameraDir(float &dx, float &dy, float &dz) {
-    float yaw   = camYaw   * M_PI / 180.0f;
-    float pitch = camPitch * M_PI / 180.0f;
-
-    dx = sin(yaw) * cos(pitch);
-    dy = sin(pitch);
-    dz = -cos(yaw) * cos(pitch);
-}
-
 void drawConeBelang(float x, float z) {
     glPushMatrix();
         glTranslatef(x, 0.01f, z);
@@ -82,23 +73,23 @@ void drawJalan() {
 
     // kamera ngambil dari objek mobil
     float baseZ = std::floor(mobilPosZ  / 10.0f) * 10.0f - jarakPandang;
-
     // langsung kamera yang gerak
     // float baseZ = std::floor(camZ / 10.0f) * 10.0f - jarakPandang; 
-    // jika mau build file mobil saja, aktif kan yg cameraPosZ
+    // std floor digunakan untuk membulatkan nilai kebawah misal 3.9 -> 3.0
+    // jika mau build file mobil saja, aktif kan yg camZ
     // Untuk pergerakan kamera agar jalannya tanpa batas saat di running sendiri
 
-    for(float z = baseZ; z < baseZ + jarakPandang*2; z += 10.0f){
+    for(float z = baseZ; z < baseZ + jarakPandang*2; z += 10.0f) {
         float z2 = z + 10;
 
         // badan jalan
         glColor3f(0.15f,0.15f,0.15f);
         drawQuad(
-            -setengahJalan, 0, z, setengahJalan,0,z,
-            setengahJalan, 0, z2, -setengahJalan,0,z2
+            -setengahJalan, 0, z, setengahJalan, 0, z,
+            setengahJalan, 0, z2, -setengahJalan,0, z2
         );
 
-        // sisi jalan
+        // sisi jalan (untuk ketebalan trotoar)
         glColor3f(0.1f,0.1f,0.1f);
         drawQuad(
             -setengahJalan, -ketebalanJalan, z, -setengahJalan, 0, z,
@@ -120,7 +111,7 @@ void drawJalan() {
             (setengahJalan + lebarTrotoar), 0, z2, setengahJalan, 0, z2
         );
 
-        // cone
+        // cone -> tx = translasi X
         float tx = setengahJalan + lebarTrotoar * 0.5f;
         drawConeBelang( tx, z+3);
         drawConeBelang(-tx, z+6);
@@ -136,11 +127,22 @@ void drawJalan() {
 }
 
 #ifdef STANDALONE
+    // Camera Direction(arah)
+    void getCameraDir(float &dx, float &dy, float &dz) { // & untuk pointer ke variabel dx untuk merubah nilainya
+        float yaw   = camYaw   * M_PI / 180.0f; // yaw(kiri-kanan)
+        float pitch = camPitch * M_PI / 180.0f; // pitch(atas-bawah)
+
+        dx = sin(yaw) * cos(pitch);
+        dy = sin(pitch);
+        dz = -cos(yaw) * cos(pitch);
+    }
+
     // update kamera
     void updateCamera() {
-        float dx, dy, dz;
-        getCameraDir(dx, dy, dz);
+        float dx, dy, dz; // d disini adalah untuk delta(deltaX, deltaY, deltaZ)
+        getCameraDir(dx, dy, dz); // delta digunakan untuk selisih perubahan
 
+        
         float rightX = sin((camYaw + 90) * M_PI / 180.0f);
         float rightZ = -cos((camYaw + 90) * M_PI / 180.0f);
 

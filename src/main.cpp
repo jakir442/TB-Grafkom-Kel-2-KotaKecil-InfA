@@ -423,8 +423,6 @@ int main(int argc, char** argv) {
     glutKeyboardUpFunc(keyUp);
     glutIdleFunc(update);
 
-    srand(time(NULL));
-
     glutMainLoop();
     return 0;
 }
