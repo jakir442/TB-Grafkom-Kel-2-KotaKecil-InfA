@@ -5,9 +5,6 @@
 bool lampuNyala = false; // pengaturan nyala lampu awal
 int  levelLampu = 0;
 
-float rotLampuY = 0.0f; // kiri-kanan
-float rotLampuX = 0.0f; // atas-bawah
-
 // inisialisasi lighting
 void initLampuLighting() {
     glEnable(GL_DEPTH_TEST);
@@ -17,13 +14,14 @@ void initLampuLighting() {
     GLfloat ambientGlobal[] = {0.2f, 0.2f, 0.25f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientGlobal);
 
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL); // untuk mengizinkan warna dari glColor*() dipakai material(objek), ini untuk merubah warna bohlam, jika ini tidak ada warna objek akan full hitam
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE); // warna dasar & saat kena cahaya
     glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
 
     glEnable(GL_LIGHT0);
     glDisable(GL_LIGHT1);
+    glDisable(GL_LIGHT2);
     glDisable(GL_LIGHT3);
     glDisable(GL_LIGHT4);
     glDisable(GL_LIGHT5);
@@ -50,7 +48,7 @@ void drawConeCahaya() {
         glRotatef(-15, 1, 0, 0); // ke depan jalan
 
         GLUquadric* q = gluNewQuadric();
-        gluCylinder(
+        gluCylinder( // arah cahaya
             q,
             0.05f,   // ujung atas (kecil)
             2.1f,    // bawah (lebar ke jalan)
@@ -112,7 +110,7 @@ void drawLampuJalan(float x, float z, GLenum lightID) {
         glutSolidCube(1.0f);
     glPopMatrix();
 
-    // kepala lampu
+    // kepala lampu (atas lampu)
     glPushMatrix();
         glTranslatef(0.0f, 2.7f, 0.75f);
         glColor3f(0.18f, 0.18f, 0.18f);
@@ -191,8 +189,8 @@ void keyboardLampu(unsigned char key) {
 // AKSES PRIVATE
 #ifdef STANDALONE
     // untuk keyboard Arrow
-    float rotSceneY = 0.0f; // kiri-kanan
-    float rotSceneX = 0.0f; // atas-bawah
+    float rotSceneY = 0.0f; // rotasi kiri-kanan
+    float rotSceneX = 0.0f; // rotasi atas-bawah
 
     void keyboardPrivate(unsigned char key, int x, int y) {
         keyboardLampu(key);
