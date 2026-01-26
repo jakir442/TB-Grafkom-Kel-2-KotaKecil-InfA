@@ -16,40 +16,40 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-// konfigurasi dunia 3D
-const float JARAK_TILE      = 8.0f;   // satu segmen dunia
-const int   JUMLAH_TILE     = 14;     // segmen aktif
+// -> konfigurasi 3D (lingkungan kota) <-
+const float JARAK_OBJEK  = 8.0f;   // jarak antar objek (gedung, pohon, lampu)
+const int   JUMLAH_AKTIF = 14;     // jumlah objek aktif di sekitar kamera
 
-const float LAMPU_X         = 3.0f;
-const float POHON_X         = 4.5f;
-const float GEDUNG_X        = 7.0f;
+// -> posisi objek di sumbu X <-
+const float LAMPU_X  = 3.0f;       // posisi lampu jalan
+const float POHON_X  = 4.5f;       // posisi pohon
+const float GEDUNG_X = 7.0f;       // posisi gedung
 
-float driverViewYaw = 180.0f; 
+// -> input keyboard <-
+bool keyState[256] = { false };    // status tombol keyboard (pressed / released)
 
-bool keyState[256] = { false };
+// -> sistem kamera <-
+float driverViewYaw = 180.0f;      // arah pandang kamera driver
 
-// mode kamera
+// -> mode kamera <-
 enum ModeCamera {
     CAM_BELAKANG = 1,
-    CAM_DEPAN    = 2,
-    CAM_KANAN    = 3,
-    CAM_KIRI     = 4,
-    CAM_ATAS     = 5,
-    CAM_DRIVER   = 6
+    CAM_DEPAN,
+    CAM_KANAN,
+    CAM_KIRI,
+    CAM_ATAS,
+    CAM_DRIVER
 };
 
-ModeCamera kameraAktif = CAM_BELAKANG;
-ModeCamera prevModeCamera = CAM_BELAKANG;
+ModeCamera kameraAktif     = CAM_BELAKANG; // kamera yang sedang aktif
+ModeCamera prevModeCamera = CAM_BELAKANG; // kamera sebelum mode acak
 
-bool randomActiveCam = false;
-bool qButton = false;
+bool randomActiveCam = false;      // status kamera acak
+bool qButton         = false;      // debounce tombol Q
 
+// -> transisi kamera (smooth movement) <-
 float cameraSmooth = 0.08f;
 
-int waktuTerakhirGantiCam = 0;
-const int DURASI_kAMERA = 2000; // 2 detik per titik kamera
-
-// variabel transisi kamera
 float smoothCamX = 0.0f;
 float smoothCamY = 0.0f;
 float smoothCamZ = 0.0f;
@@ -58,7 +58,34 @@ float smoothTargetX = 0.0f;
 float smoothTargetY = 0.0f;
 float smoothTargetZ = 0.0f;
 
+// -> timer & index kamera <-
+int waktuTerakhirGantiCam = 0;
+const int DURASI_kAMERA = 2000; // 2 detik per titik kamera
 int camIndex = 0;
+
+// -> sistem jumpsacre mobil <-
+float posisiMobilJumpscareZ = 0.0f; // posisi mobil penabrak
+bool  mobilJumpscareSiap   = false; // status mobil jumpscare
+
+// -> mode scane <-
+enum SceneMode {
+    SCENE_KOTA_NORMAL,
+    SCENE_JUMPSCARE
+};
+SceneMode sceneAktif = SCENE_KOTA_NORMAL;
+
+// -> tahapan jumpscare <-
+enum TahapJumpscare {
+    JUMPSCARE_LIHAT_KANAN_KIRI,
+    JUMPSCARE_DIAM,
+    JUMPSCARE_MUNCUL
+};
+TahapJumpscare tahapAktifJumpscare = JUMPSCARE_LIHAT_KANAN_KIRI;
+
+// -> timer jumpscare <-
+int   waktuMulaiJumpscare = 0;
+float sceneTimer          = 0.0f;
+float offsetYawJumpscare  = 0.0f;  // offset rotasi kamera saat panik
 
 // void handleKeyboard(unsigned char key, int x, int y) {
 //     controlMobil(key);
@@ -98,7 +125,16 @@ void keyDown(unsigned char key, int x, int y) {
         if (key == '6') kameraAktif = CAM_DRIVER;
     }
 
-    if (key == 27) exit(0); // ESC
+    if (key == 27 && sceneAktif == SCENE_KOTA_NORMAL) {
+        sceneAktif = SCENE_JUMPSCARE;
+        kameraAktif = CAM_DRIVER;
+
+        waktuMulaiJumpscare = glutGet(GLUT_ELAPSED_TIME);
+        tahapAktifJumpscare = JUMPSCARE_LIHAT_KANAN_KIRI;
+
+        mobilJumpscareSiap = false; // reset mobil penabrak
+        posisiMobilJumpscareZ = 0.0f;
+    }
 }
 
 void keyUp(unsigned char key, int x, int y) {
@@ -110,6 +146,11 @@ void keyUp(unsigned char key, int x, int y) {
 }
 
 void update() {
+    if (sceneAktif == SCENE_JUMPSCARE) {
+        glutPostRedisplay();
+        // return; // SEMUA GERAK BERHENTI
+    }
+
     // mobil (translasi)
     if (keyState['w'] || keyState['W']) controlMobil('w');
     if (keyState['s'] || keyState['S']) controlMobil('s');
@@ -181,7 +222,7 @@ void drawAlasKotaGlobal() {
 }
 
 void drawGedungInfinite() {
-    int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
+    int baseIndex = (int)floor(mobilPosZ / JARAK_OBJEK);
 
     float kiriX  = -GEDUNG_X;
     float kananX =  GEDUNG_X;
@@ -191,10 +232,10 @@ void drawGedungInfinite() {
         std::swap(kiriX, kananX);
     }
 
-    for (int i = baseIndex - JUMLAH_TILE / 2;
-        i <= baseIndex + JUMLAH_TILE / 2; i++) {
+    for (int i = baseIndex - JUMLAH_AKTIF / 2;
+        i <= baseIndex + JUMLAH_AKTIF / 2; i++) {
 
-        float z = i * JARAK_TILE;
+        float z = i * JARAK_OBJEK;
 
         // gedung kiri (tampilan depan jika kamera belakang)
         glPushMatrix();
@@ -218,38 +259,38 @@ void drawGedungInfinite() {
 }
 
 void drawPohonInfinite() {
-    int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
+    int baseIndex = (int)floor(mobilPosZ / JARAK_OBJEK);
 
-    for (int i = baseIndex - JUMLAH_TILE / 2;
-            i <= baseIndex + JUMLAH_TILE / 2; i++) {
+    for (int i = baseIndex - JUMLAH_AKTIF / 2;
+            i <= baseIndex + JUMLAH_AKTIF / 2; i++) {
 
-        float z = i * JARAK_TILE;
+            float z = i * JARAK_OBJEK;
 
-        // pohon kiri
-        glPushMatrix();
-            glTranslatef(-POHON_X, -0.6f, z);
-            glRotatef(90, 0, 1, 0);
-            glScalef(0.8f, 0.8f, 0.8f);
-            drawPohon();
-        glPopMatrix();
+            // pohon kiri
+            glPushMatrix();
+                glTranslatef(-POHON_X, -0.6f, z);
+                glRotatef(90, 0, 1, 0);
+                glScalef(0.8f, 0.8f, 0.8f);
+                drawPohon();
+            glPopMatrix();
 
-        // pohon kanan
-        glPushMatrix();
-            glTranslatef( POHON_X, -0.6f, z);
-            glRotatef(-90, 0, 1, 0);
-            glScalef(0.8f, 0.8f, 0.8f);
-            drawPohon();
-        glPopMatrix();
-    }
+            // pohon kanan
+            glPushMatrix();
+                glTranslatef( POHON_X, -0.6f, z);
+                glRotatef(-90, 0, 1, 0);
+                glScalef(0.8f, 0.8f, 0.8f);
+                drawPohon();
+            glPopMatrix();
+        }
 }
 
 void drawLampuInfinite() {
-    int baseIndex = (int)floor(mobilPosZ / JARAK_TILE);
+    int baseIndex = (int)floor(mobilPosZ / JARAK_OBJEK);
 
-    for (int i = baseIndex - JUMLAH_TILE / 2;
-            i <= baseIndex + JUMLAH_TILE / 2; i++) {
+    for (int i = baseIndex - JUMLAH_AKTIF / 2;
+            i <= baseIndex + JUMLAH_AKTIF / 2; i++) {
 
-        float z = i * JARAK_TILE;
+        float z = i * JARAK_OBJEK;
 
         // lampu kiri (menghadap ke jalan)
         glPushMatrix();
@@ -267,7 +308,83 @@ void drawLampuInfinite() {
     }
 }
 
+void drawJumpscareCar() {
+    if (tahapAktifJumpscare != JUMPSCARE_MUNCUL) return;
+
+    const float JARAK_DEPAN = 70.0f;
+    const float KECEPATAN_NABRAK = 4.8f;
+
+    static bool posisiAwalDitetapkan = false;
+    static float posisiAwalZ; 
+    static float targetMobilZ; // posisi pemain saat jumpscare mulai
+
+    // Tentukan posisi awal jumpscare hanya sekali saat mulai muncul
+    if (!posisiAwalDitetapkan && tahapAktifJumpscare == JUMPSCARE_MUNCUL) {
+        targetMobilZ = mobilPosZ;          // simpan posisi pemain saat jumpscare mulai
+        posisiAwalZ = targetMobilZ - JARAK_DEPAN; // mobil muncul 70 unit di depan
+        posisiMobilJumpscareZ = posisiAwalZ;
+        posisiAwalDitetapkan = true;
+    }
+
+    // Gerakkan mobil jumpscare maju ke mobil pemain
+    if (tahapAktifJumpscare == JUMPSCARE_MUNCUL) {
+        posisiMobilJumpscareZ += KECEPATAN_NABRAK;
+
+        // cek tabrakan dengan posisi pemain saat jumpscare mulai
+        if (posisiMobilJumpscareZ >= targetMobilZ - 1.2f) {
+            exit(0);
+        }
+    }
+
+    // gambar mobil
+    glPushMatrix();
+        glTranslatef(mobilPosX, mobilPosY, posisiMobilJumpscareZ);
+        glRotatef(180, 0, 1, 0);
+        drawMobil();
+    glPopMatrix();
+
+    // reset saat jumpscare berakhir
+    if (tahapAktifJumpscare != JUMPSCARE_MUNCUL) {
+        posisiAwalDitetapkan = false;
+    }
+}
+
 void display() {
+    if (sceneAktif == SCENE_JUMPSCARE) {
+        int now = glutGet(GLUT_ELAPSED_TIME);
+        sceneTimer = (now - waktuMulaiJumpscare) / 1000.0f;
+
+        if (sceneTimer < 5.5f) {
+            // lihat kiri kanan secara berulang
+            tahapAktifJumpscare = JUMPSCARE_LIHAT_KANAN_KIRI;
+            offsetYawJumpscare = sin(sceneTimer * 1.6f) * 35.0f;
+
+            // 💡 lampu berkedip otomatis: level 1 ↔ 0
+            if ((now / 250) % 2 == 0) {
+                levelLampu = 1;
+                lampuNyala = true;
+            } else {
+                levelLampu = 0;
+                lampuNyala = false;
+            }
+        }
+        else if (sceneTimer < 6.2f) {
+            // ❄ FREEZE
+            tahapAktifJumpscare = JUMPSCARE_DIAM;
+            offsetYawJumpscare = 0.0f;
+
+            // 💡 lampu nyala stabil
+            levelLampu = 2; 
+            lampuNyala = true;
+        }
+        else {
+            // 👻 APPEAR
+            tahapAktifJumpscare = JUMPSCARE_MUNCUL;
+            levelLampu = 2; 
+            lampuNyala = true;
+        }
+    }
+
     // clear buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -286,6 +403,14 @@ void display() {
     float targetX = mobilPosX;
     float targetY = 1.0f;
     float targetZ = mobilPosZ;
+
+    float effectiveYaw = mobilYaw;
+
+    if (sceneAktif == SCENE_JUMPSCARE &&
+        tahapAktifJumpscare == JUMPSCARE_LIHAT_KANAN_KIRI) {
+
+        effectiveYaw += offsetYawJumpscare;
+    }
 
     // posisi kamera berdasarkan mode
     switch (kameraAktif) {
@@ -313,7 +438,7 @@ void display() {
             break;
         
         case CAM_DRIVER: {
-            float rad = (mobilYaw + 180.0f) * M_PI / 180.0f;
+            float rad = (effectiveYaw  + 180.0f) * M_PI / 180.0f;
 
             // arah depan mobil (sama dengan logika gerak)
             float dirX = -sin(rad);
@@ -364,17 +489,10 @@ void display() {
 
     // kamera smooth
     gluLookAt(
-        smoothCamX, smoothCamY, smoothCamZ, // posisi kamera
-        smoothTargetX, smoothTargetY, smoothTargetZ, // arah pandang
-        0.0f, 1.0f, 0.0f // arah atas (up vektor)
+        smoothCamX, smoothCamY, smoothCamZ,
+        smoothTargetX, smoothTargetY, smoothTargetZ,
+        0.0f, 1.0f, 0.0f
     );
-
-    // Gunakan ini untuk mematikan infiniti atau kamera nya tertinggal di belakang
-    // gluLookAt(
-    //     0.0f, 6.0f, 20.0f,   // posisi kamera (tetap/static)
-    //     0.0f, 1.0f, 0.0f,    // titik pandang (tetap/static)
-    //     0.0f, 1.0f, 0.0f
-    // );
 
 
     drawJalan();           // dasar
@@ -382,6 +500,9 @@ void display() {
     drawPohonInfinite();   // transisi
     drawGedungInfinite();  // background  
     drawMobil();
+    if (sceneAktif == SCENE_JUMPSCARE) {
+        drawJumpscareCar();
+    }
     drawBulan(mobilPosX, mobilPosZ);
 
     drawBintang();
@@ -422,6 +543,8 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyDown);
     glutKeyboardUpFunc(keyUp);
     glutIdleFunc(update);
+
+    srand(time(NULL));
 
     glutMainLoop();
     return 0;

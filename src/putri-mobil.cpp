@@ -84,15 +84,15 @@ void drawMobil() {
 
         glPushMatrix();
 			glColor3f(1, 1, 0);
-			glTranslatef(-0.5f, 0.4f, 0.0f);
-    		glScalef(0.1f, 0.002f, 0.002f);
+			glTranslatef(-0.53f, 0.4f, 0.0f);
+    		glScalef(0.002f, 0.002f, 0.002f);
     		glRotatef(-90, 0, 1, 0); //(angle, x, y, z)
     		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'R'); // -> Objek untuk menggambar huruf
 		glPopMatrix();
 
         glPushMatrix();
     		glColor3f(1, 1, 0);
-    		glTranslatef(0.5f, 0.4f, 0.0f);
+    		glTranslatef(0.53f, 0.4f, 0.0f);
     		glScalef(0.002f, 0.002f, 0.002f);
     		glRotatef(90, 0, 1, 0); 
     	    glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
@@ -199,12 +199,12 @@ void controlMobil(unsigned char key) {
 
     void specialKeyboardRotasi(int key, int x, int y) {
         switch (key) {
-            case GLUT_KEY_LEFT:
-                rotSceneY -= 5.0f;
-                break;
-            case GLUT_KEY_RIGHT:
-                rotSceneY += 5.0f;
-                break;
+            // case GLUT_KEY_LEFT:
+            //     rotSceneY -= 5.0f;
+            //     break;
+            // case GLUT_KEY_RIGHT:
+            //     rotSceneY += 5.0f;
+            //     break;
             case GLUT_KEY_UP:
                 rotSceneX -= 5.0f;
                 break;
