@@ -63,7 +63,7 @@ void drawMobil() {
 
         //atap
         glPushMatrix();
-            glTranslatef(0, 0.5, 0);     //geser keatas body (perubahan)
+            glTranslatef(0, 0.5, 0);     //geser keatas body
             glScalef(1.0, 0.5, 1.0);     //ukuran atap 
             drawCube(0.0, 0.0, 1.0);   
         glPopMatrix();
@@ -71,7 +71,7 @@ void drawMobil() {
         //kaca
         glPushMatrix();
         	glColor3f(0.5f, 0.8f, 1.0f);   //warnaaaaaaaa
-            glTranslatef(0.0f, 0.55f, 0.55f);     //geser keatas body (perubahan)
+            glTranslatef(0.0f, 0.55f, 0.55f);     //geser keatas body
             glScalef(0.8f, 0.3f, 0.05f);      //ukuran atap 
             drawCube(1.0f, 1.0f, 1.0f);
         glPopMatrix();
@@ -123,17 +123,12 @@ void drawMobil() {
 		    drawWheel();
 		glPopMatrix();
 
-        
-		//looping pergerakan roda
         //for (int i = 0; i < 2; i++) {               //lopingan buat roda best i(kanan,kiri)j(depan,belakang)
             //for (int j = 0; j < 2; j++) {
                // glPushMatrix();
                    // glTranslatef(x[i], -0.4, z[j]);       //posisi roda biar dibawah di badan na
                     //glRotatef(mobilWheelAngle, 1, 0, 0);  //muter roda na
-                    //drawWheel();
-                //glPopMatrix();
-           // }
-        //} 
+                
 
         //lampu depan (torus)
         glColor3f(1.0f, 1.0f, 0.0f); //warna lampu kuning
