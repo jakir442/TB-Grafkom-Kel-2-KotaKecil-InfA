@@ -139,6 +139,28 @@
         "-L${workspaceFolder}/lib"
       ],
       "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "build Taman only",
+      "type": "shell",
+      "command": "C:/MinGW/bin/g++.exe",
+      "args": [
+        "-std=c++17",
+        "-g",
+        "-DSTANDALONE",
+        "${workspaceFolder}/src/taman.cpp",
+        "-o",
+        "${workspaceFolder}/bin/taman.exe",
+        "-lfreeglut",
+        "-lopengl32",
+        "-lglu32",
+        "-IC:/freeglut/include",
+        "-IC:/glm",
+        "-I${workspaceFolder}/include",
+        "-LC:/freeglut/lib",
+        "-L${workspaceFolder}/lib"
+      ],
+      "problemMatcher": ["$gcc"]
     }
   ]
 }

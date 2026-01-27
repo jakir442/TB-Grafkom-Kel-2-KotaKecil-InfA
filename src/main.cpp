@@ -10,6 +10,7 @@
 #include "header/jakir-lampu.h"
 #include "header/jakir-bulan.h"
 #include "header/jakir-bintang.h"
+#include "header/taman.h"
 
 // rumus variabel phi
 #ifndef M_PI
@@ -205,7 +206,7 @@ void drawAlasBidang(float width, float depth) {
 
 void drawAlasKotaGlobal() {
     float panjangZ = 3000.0f; // super panjang
-    float lebarAlas = 10.0f;  // lebar ke samping
+    float lebarAlas = 17.0f;  // lebar ke samping
     float overlap = 0.9f;    // MASUK ke jalan (anti-celah)
 
     // alas kiri
@@ -282,6 +283,234 @@ void drawPohonInfinite() {
                 drawPohon();
             glPopMatrix();
         }
+}
+
+void drawAirDepan(float x, float z) {
+    float panjang = 18.1f;      // PANJANG KE SAMPING (X)
+    float lebar   = 13.0f;      // LEBAR KE DEPAN-BELAKANG (Z)
+    float yAir    = -0.2f;    // AIR NAIK (lebih dekat jembatan)
+
+    glColor3f(0.1f, 0.4f, 0.7f); // warna air
+
+    glBegin(GL_QUADS);
+        // kiri bawah
+        glVertex3f(x - panjang / 2, yAir, z - lebar / 2);
+        // kanan bawah
+        glVertex3f(x + panjang / 2, yAir, z - lebar / 2);
+        // kanan atas
+        glVertex3f(x + panjang / 2, yAir, z + lebar / 2);
+        // kiri atas
+        glVertex3f(x - panjang / 2, yAir, z + lebar / 2);
+    glEnd();
+}
+
+void drawPembatasJembatan(float panjang) {
+    float tinggi = 0.40f;
+    float tebal  = 0.12f;
+    float offset = 1.5f;
+
+    glColor3f(0.45f, 0.45f, 0.45f); 
+
+    // kiri
+    glPushMatrix();
+        glTranslatef(-offset, tinggi / 2, 0);
+        glScalef(tebal, tinggi, panjang * 0.95f);
+        glutSolidCube(1);
+    glPopMatrix();
+
+    // kanan
+    glPushMatrix();
+        glTranslatef( offset, tinggi / 2, 0);
+        glScalef(tebal, tinggi, panjang * 0.95f);
+        glutSolidCube(1);
+    glPopMatrix();
+}
+
+void drawJembatanDepan(float x, float y, float z) {
+    float panjang = JARAK_OBJEK * 1.0f;
+    float lebar   = 3.0f;
+    float tinggi  = 0.22f;
+
+    glPushMatrix();
+        glTranslatef(x, y, z);   // Y dari luar (bisa dinaikkan)
+
+        // badan jembatan
+        glColor3f(0.55f, 0.38f, 0.20f);   // coklat kayu alami
+        glPushMatrix();
+            glScalef(lebar, tinggi, panjang);
+            glutSolidCube(1);
+        glPopMatrix();
+
+        // lapisan atas
+        glColor3f(0.35f, 0.23f, 0.12f);   // coklat tua (papan kayu)
+        glPushMatrix();
+            glTranslatef(0, tinggi / 2 + 0.02f, 0);
+            glScalef(lebar * 0.95f, 0.05f, panjang * 0.95f);
+            glutSolidCube(1);
+        glPopMatrix();
+
+        drawPembatasJembatan(panjang);
+    glPopMatrix();
+}
+
+void drawPohonUjungJembatan(float xJembatan, float zJembatan) {
+    const float offsetXPohon = 2.3f;   // kiri - kanan dari jembatan
+    const float offsetZPohon = 4.2f;   // depan & belakang jembatan
+    const float yPohon = -0.75f;
+
+    // ===== DEPAN JEMBATAN (Z +) =====
+    // kiri
+    glPushMatrix();
+        glTranslatef(xJembatan - offsetXPohon, yPohon, zJembatan + offsetZPohon);
+        glScalef(0.9f, 0.9f, 0.9f);
+        drawPohon();
+    glPopMatrix();
+
+    // kanan
+    glPushMatrix();
+        glTranslatef(xJembatan + offsetXPohon, yPohon, zJembatan + offsetZPohon);
+        glScalef(0.9f, 0.9f, 0.9f);
+        drawPohon();
+    glPopMatrix();
+
+    // ===== BELAKANG JEMBATAN (Z -) =====
+    // kiri
+    glPushMatrix();
+        glTranslatef(xJembatan - offsetXPohon, yPohon, zJembatan - offsetZPohon);
+        glScalef(0.9f, 0.9f, 0.9f);
+        drawPohon();
+    glPopMatrix();
+
+    // kanan
+    glPushMatrix();
+        glTranslatef(xJembatan + offsetXPohon, yPohon, zJembatan - offsetZPohon);
+        glScalef(0.9f, 0.9f, 0.9f);
+        drawPohon();
+    glPopMatrix();
+}
+
+void drawPembatasAir() {
+    float tinggi = 2.1f;
+    float tebal  = 0.25f;
+
+    glColor3f(0.42f, 0.42f, 0.42f); // beton alam
+
+    glPushMatrix();
+        glScalef(tebal, tinggi, 6.3f);
+        glutSolidCube(1);
+    glPopMatrix();
+}
+
+void drawJembatanTamanInfinite() {
+    const float jarakBelakangGedung = 10.0f;
+    const float tamanKananX =  GEDUNG_X + jarakBelakangGedung;
+    const float tamanKiriX  = -GEDUNG_X - jarakBelakangGedung;
+
+    const int STEP_TAMAN = 3;
+
+    float tinggiJembatan = -0.24f;
+
+    // OFFSET Z TERPISAH
+    float offsetZJembatanKiri  = -6.1f;  // maju
+    float offsetZJembatanKanan =  6.1f;  // mundur
+
+    // OFFSET X → MENJAUH DARI GEDUNG
+    float offsetXJembatan = 10.0f;
+
+    int baseIndex = (int)floor(mobilPosZ / JARAK_OBJEK);
+
+    for (int i = baseIndex - JUMLAH_AKTIF;
+         i <= baseIndex + JUMLAH_AKTIF;
+         i++) {
+
+        if (i % STEP_TAMAN != 0) continue;
+
+        float zTaman1 = i * JARAK_OBJEK;
+        float zTaman2 = (i + STEP_TAMAN) * JARAK_OBJEK;
+        float zJembatan = (zTaman1 + zTaman2) * 0.5f;
+
+        // ===== KANAN =====
+        float jembatanKananX = tamanKananX + offsetXJembatan;
+        float zKanan = zJembatan + offsetZJembatanKanan;
+
+        // ===== PEMBATAS AIR TAMAN KANAN =====
+        glPushMatrix();
+            glTranslatef(
+                jembatanKananX - 7.9f,  // ujung kiri air ->
+                -0.65f,
+                zJembatan + offsetZJembatanKanan
+            );
+            drawPembatasAir();
+        glPopMatrix();
+
+        drawAirDepan(jembatanKananX, zKanan);
+        drawJembatanDepan(jembatanKananX, tinggiJembatan, zKanan);
+        drawPohonUjungJembatan(jembatanKananX, zKanan);   // 🌳
+
+        // ===== KIRI =====
+        float jembatanKiriX = tamanKiriX - offsetXJembatan;
+        float zKiri = zJembatan + offsetZJembatanKiri;
+
+        // ===== PEMBATAS AIR TAMAN KIRI =====
+        glPushMatrix();
+            glTranslatef(
+                jembatanKiriX + 7.9f,   // ujung kanan air <-
+                -0.65f,
+                zJembatan + offsetZJembatanKiri
+            );
+            drawPembatasAir();
+        glPopMatrix();
+
+        drawAirDepan(jembatanKiriX, zKiri);
+        drawJembatanDepan(jembatanKiriX, tinggiJembatan, zKiri);
+        drawPohonUjungJembatan(jembatanKiriX, zKiri);     // 🌳
+    }
+}
+
+void drawTamanInfinite() {
+    const float jarakBelakangGedung = 20.0f;
+    const float tamanKananX =  GEDUNG_X + jarakBelakangGedung;
+    const float tamanKiriX  = -GEDUNG_X - jarakBelakangGedung;
+
+    const int STEP_TAMAN = 3;
+
+    // TAMAN KIRI
+    int baseIndexKiri = (int)floor(mobilPosZ / JARAK_OBJEK);
+
+    for (int i = baseIndexKiri - JUMLAH_AKTIF;
+         i <= baseIndexKiri + JUMLAH_AKTIF;
+         i++) {
+
+        if (i % STEP_TAMAN != 0) continue;
+
+        float z = i * JARAK_OBJEK;
+
+        glPushMatrix();
+            glTranslatef(tamanKiriX, -0.1f, z);
+            glRotatef(180, 0, 1, 0);
+            glScalef(0.9f, 0.9f, 0.9f);
+            drawTaman();
+        glPopMatrix();
+    }
+
+    // TAMAN KANAN
+    int baseIndexKanan = (int)floor((mobilPosZ + JARAK_OBJEK * 0.5f) / JARAK_OBJEK);
+    // OFFSET SETENGAH GRID → BIKIN STABIL
+
+    for (int i = baseIndexKanan - JUMLAH_AKTIF;
+         i <= baseIndexKanan + JUMLAH_AKTIF;
+         i++) {
+
+        if (i % STEP_TAMAN != 0) continue;
+
+        float z = i * JARAK_OBJEK;
+
+        glPushMatrix();
+            glTranslatef(tamanKananX, -0.1f, z);
+            glScalef(0.9f, 0.9f, 0.9f);
+            drawTaman();
+        glPopMatrix();
+    }
 }
 
 void drawLampuInfinite() {
@@ -499,6 +728,8 @@ void display() {
     drawAlasKotaGlobal();
     drawPohonInfinite();   // transisi
     drawGedungInfinite();  // background  
+    drawTamanInfinite();
+    drawJembatanTamanInfinite();
     drawMobil();
     if (sceneAktif == SCENE_JUMPSCARE) {
         drawJumpscareCar();
