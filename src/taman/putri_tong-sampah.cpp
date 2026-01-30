@@ -170,14 +170,14 @@ void drawTrashSetOrganik() {
 
     // teks
     glPushMatrix();
-        glTranslatef(-1.8f, 1.6f, 0);
-        glColor3f(0.1f, 0.4f, 0.1f);
+        glTranslatef(-2.2f, 1.6f, 0);
+        glColor3f(0.0f, 1.0f, 0.0f);
         drawText3D("ORGANIK");
     glPopMatrix();
 
     // logo
     glPushMatrix();
-        glTranslatef(-1.7f, 0.6f, 0.5f);
+        glTranslatef(-1.6f, 0.6f, 0.5f);
         glScalef(1.1f,1.1f,1.1f);
         logoOrganik();
     glPopMatrix();
@@ -191,7 +191,7 @@ void drawTrashSetAnorganik() {
 
     glPushMatrix();
         glTranslatef(-0.6f, 1.6f, 0);
-        glColor3f(0.25f, 0.25f, 0.25f);
+        glColor3f(0.0f, 0.0f, 1.0f);
         drawText3D("ANORGANIK");
     glPopMatrix();
 
@@ -210,13 +210,13 @@ void drawTrashSetB3() {
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(1.0f, 1.6f, 0);
-        glColor3f(0.7f, 0.6f, 0.1f);
+        glTranslatef(1.3f, 1.6f, 0);
+        glColor3f(1.0f, 0.0f, 0.0f);
         drawText3D("B3");
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(1.3f, 0.6f, 0.5f);
+        glTranslatef(1.4f, 0.6f, 0.5f);
         logoB3();
     glPopMatrix();
 }

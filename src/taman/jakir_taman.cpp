@@ -12,6 +12,7 @@
 #include "../header/taman/azhari_kursi.h"
 #include "../header/taman/rizal_kolam-air.h"
 #include "../header/taman/rizal_jungkat-jungkit.h"
+#include "../header/taman/rizal_prosotan.h"
 
 #include "../header/erika-pohon.h"
 
@@ -301,6 +302,14 @@ void drawTaman() {
         jungkat_jungkit();
     glPopMatrix();
 
+    // prosotan
+    glPushMatrix();
+        glTranslatef(7.5f, 0.0f, -15.5f);
+        glRotatef(30, 0, 1, 0);
+        drawPerosotan();
+    glPopMatrix();
+
+    // ayunan
     glPushMatrix();
         glTranslatef(5.5, 3, -13); // posisi ayunan di taman
         ayunan();

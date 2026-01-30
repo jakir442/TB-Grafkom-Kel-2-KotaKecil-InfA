@@ -2,6 +2,8 @@
 #include <GL/glu.h>
 #include <cmath>
 
+#include "../header/taman/rizal_prosotan.h"
+
 #ifdef STANDALONE 
 // Variabel Kamera
 float kameraX = 0.0f;
@@ -25,51 +27,58 @@ void buat_tiang(float x, float y, float z, float h) {
 // Fungsi Menggambar Perosotan
 // -------------------------------------------------------------
 void drawPerosotan() {
+    glPushMatrix();
+
+    // ================= SKALA GLOBAL PEROSOTAN =================
+    glScalef(0.5f, 0.5f, 0.5f); // SAMA dengan jungkat-jungkit
+
     // 1. Tiang Penyangga Platform (4 Tiang)
-    glColor3f(0.6f, 0.3f, 0.1f); // Warna Kayu Cokelat
+    glColor3f(0.6f, 0.3f, 0.1f);
     buat_tiang(-1.0f, -1.0f, -1.0f, 3.0f);
     buat_tiang(1.0f, -1.0f, -1.0f, 3.0f);
     buat_tiang(-1.0f, -1.0f, 1.0f, 3.0f);
     buat_tiang(1.0f, -1.0f, 1.0f, 3.0f);
 
-    // 2. Platform Atas (Tempat Duduk)
+    // 2. Platform Atas
     glColor3f(0.8f, 0.4f, 0.1f);
     glPushMatrix();
-    glTranslatef(0.0f, 2.0f, 0.0f);
-    glScalef(2.2f, 0.2f, 2.2f);
-    glutSolidCube(1.0f);
+        glTranslatef(0.0f, 2.0f, 0.0f);
+        glScalef(2.2f, 0.2f, 2.2f);
+        glutSolidCube(1.0f);
     glPopMatrix();
 
-    // 3. Tangga (Anak Tangga)
+    // 3. Tangga
     glColor3f(0.5f, 0.25f, 0.1f);
     for(float i = -1.0f; i <= 2.0f; i += 0.6f) {
         glPushMatrix();
-        glTranslatef(0.0f, i, 1.0f);
-        glScalef(1.8f, 0.1f, 0.2f);
-        glutSolidCube(1.0f);
+            glTranslatef(0.0f, i, 1.0f);
+            glScalef(1.8f, 0.1f, 0.2f);
+            glutSolidCube(1.0f);
         glPopMatrix();
     }
 
-    // 4. Papan Seluncur (Warna Biru)
+    // 4. Papan Seluncur
     glColor3f(0.0f, 0.5f, 0.8f);
     glPushMatrix();
-    glTranslatef(0.0f, 0.8f, -2.5f); // Posisi papan seluncur
-    glRotatef(-40, 1, 0, 0);         // Kemiringan seluncur
-    glScalef(1.8f, 0.15f, 5.0f);     // Panjang seluncur
-    glutSolidCube(1.0f);
+        glTranslatef(0.0f, 0.8f, -2.5f);
+        glRotatef(-40, 1, 0, 0);
+        glScalef(1.8f, 0.15f, 5.0f);
+        glutSolidCube(1.0f);
     glPopMatrix();
 
-    // Pinggiran Papan Seluncur (Kanan & Kiri)
+    // Pinggiran
     glColor3f(0.0f, 0.4f, 0.7f);
     float sidePos[] = {-0.9f, 0.9f};
     for(int i=0; i<2; i++) {
         glPushMatrix();
-        glTranslatef(sidePos[i], 0.9f, -2.5f);
-        glRotatef(-40, 1, 0, 0);
-        glScalef(0.1f, 0.4f, 5.0f);
-        glutSolidCube(1.0f);
+            glTranslatef(sidePos[i], 0.9f, -2.5f);
+            glRotatef(-40, 1, 0, 0);
+            glScalef(0.1f, 0.4f, 5.0f);
+            glutSolidCube(1.0f);
         glPopMatrix();
     }
+
+    glPopMatrix();
 }
 
 #ifdef STANDALONE 
