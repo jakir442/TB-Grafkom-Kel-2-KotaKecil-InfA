@@ -9,5 +9,6 @@ extern float kAyunan;
 
 // ================= FUNGSI AYUNAN =================
 void ayunan();
+void keyboardAyunan(unsigned char key);
 
 #endif // AYUNAN_H

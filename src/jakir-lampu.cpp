@@ -177,7 +177,7 @@ void keyboardLampu(unsigned char key) {
     }
 
     // tombol O untuk menurunkan levelLampu
-    if (key == 'o' || key == 'O') {
+    if (key == 'i' || key == 'I') {
         if (levelLampu > 0) {
             levelLampu--;
         }

@@ -25,4 +25,6 @@ void bola(float tX, float tY, float tZ,
 // ================= FUNGSI UTAMA =================
 void jungkat_jungkit();
 
+void keyboardJungkatJungkit(unsigned char key);
+
 #endif

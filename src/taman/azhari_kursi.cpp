@@ -23,7 +23,7 @@ void balok(float w,float h,float d){
 }
 
 
-void kursiTaman(){
+void drawKursiTaman(){
 
     glColor3fv(wood);
 

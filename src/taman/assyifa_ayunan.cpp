@@ -71,6 +71,16 @@ void ayunan() {
     glPopMatrix();
 }
 
+// ================= KEYBOARD =================
+void keyboardAyunan(unsigned char key) {
+    if (key == 'k') {
+        rAyunan += kAyunan;
+        if (rAyunan > 8 || rAyunan < -8)
+            kAyunan = -kAyunan;
+    }
+    glutPostRedisplay();
+}
+
 // AKSES PRIVATE
 #ifdef STANDALONE 
 // ================= DISPLAY =================
@@ -105,16 +115,6 @@ void reshape(int w, int h) {
     glLoadIdentity();
     gluPerspective(60, (float)w / h, 1, 100);
     glMatrixMode(GL_MODELVIEW);
-}
-
-// ================= KEYBOARD =================
-void keyboard(unsigned char key, int x, int y) {
-    if (key == 'k') {
-        rAyunan += kAyunan;
-        if (rAyunan > 30 || rAyunan < -30)
-            kAyunan = -kAyunan;
-    }
-    glutPostRedisplay();
 }
 
 // ================= MAIN =================

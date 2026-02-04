@@ -5,6 +5,6 @@
 
 // deklarasi saja (TANPA isi)
 void leaf(float x, float y, float r);
-void bush();
+void drawSemak();
 
 #endif // ERIKA_SEMAK_H

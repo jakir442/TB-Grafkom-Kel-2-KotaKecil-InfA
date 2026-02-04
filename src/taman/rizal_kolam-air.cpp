@@ -67,7 +67,7 @@ void kolam_bulat()
 // ===============================
 // WRAPPER: KOLAM AIR LENGKAP
 // ===============================
-void kolam_air() {
+void drawKolamAir() {
     kolam_bulat();
 
     // Daun lili

@@ -1,58 +1,90 @@
 #include <GL/glut.h>
 #include <math.h>
 
-void drawFlower() {
-	
-	glPushMatrix();
-    glTranslatef(0.0f, 2.85f, 0.0f);
+#include "../header/taman/erika_bunga.h"
 
-    // KELOPAK
-    //glColor3f(1.0f, 0.85f, 0.2f);
-    for (int i = 0; i < 8; i++) {
+//BUNGA SATUAN 
+void drawSingleFlower() {
+
+    glPushMatrix();
+    	glScalef(0.25f, 0.25f, 0.25f);
+
+        // KELOPAK
+        for (int i = 0; i < 8; i++) {
+            glPushMatrix();
+                glRotatef(i * 45.0f, 0, 0, 1);
+                glTranslatef(0.0f, 0.7f, 0.0f);
+                glScalef(0.3f, 0.6f, 0.2f);
+                glutSolidSphere(1.0, 30, 30);
+            glPopMatrix();
+        }
+
+        // PUTIK
+        glColor3f(0.45f, 0.25f, 0.1f);
+        glutSolidSphere(0.2, 30, 30);
+
+        // BATANG
+        GLUquadric* quad = gluNewQuadric();
+        glColor3f(0.0f, 0.6f, 0.0f);
         glPushMatrix();
-        glRotatef(i * 45.0f, 0, 0, 1);
-        glTranslatef(0.0f, 0.7f, 0.0f);
-        glScalef(0.3f, 0.6f, 0.2f);
-        glutSolidSphere(1.0, 30, 30);
+            glTranslatef(0.0f, -5.0f, 0.0f);
+            glRotatef(-90, 1, 0, 0);
+            gluCylinder(quad, 0.05, 0.05, 5.0, 30, 30);
         glPopMatrix();
-    }
 
-    // PUTIK 
-    glColor3f(0.45f, 0.25f, 0.1f);
-    glutSolidSphere(0.2, 30, 30);
+        // DAUN KIRI
+        glColor3f(0.0f, 0.7f, 0.0f);
+        glPushMatrix();
+            glTranslatef(0.25f, -2.0f, 0.0f);
+            glRotatef(30, 0, 0, 1);
+            glScalef(0.4f, 0.15f, 0.05f);
+            glutSolidSphere(1.0, 20, 20);
+        glPopMatrix();
 
-    // BATANG 
-    GLUquadric* quad = gluNewQuadric();
-    gluQuadricNormals(quad, GLU_SMOOTH);
-    gluQuadricOrientation(quad, GLU_OUTSIDE);
-
-    glColor3f(0.0f, 0.6f, 0.0f);
-    glPushMatrix();
-        glTranslatef(0.0f, -5.0f, 0.0f);
-        glRotatef(-90, 1, 0, 0);
-        gluCylinder(quad, 0.05, 0.05, 5.0, 30, 30);
+        // DAUN KANAN
+        glPushMatrix();
+            glTranslatef(-0.25f, -3.0f, 0.0f);
+            glRotatef(-30, 0, 0, 1);
+            glScalef(0.4f, 0.15f, 0.05f);
+            glutSolidSphere(1.0, 20, 20);
+        glPopMatrix();
     glPopMatrix();
-
-    // DAUN KIRI
-    glColor3f(0.0f, 0.7f, 0.0f);
-    glPushMatrix();
-        glTranslatef(0.25f, -2.0f, 0.0f);
-        glRotatef(30, 0, 0, 1);
-        glScalef(0.4f, 0.15f, 0.05f);
-        glutSolidSphere(1.0, 20, 20);
-    glPopMatrix();
-
-    //  DAUN KANAN
-    glPushMatrix();
-        glTranslatef(-0.25f, -3.0f, 0.0f);
-        glRotatef(-30, 0, 0, 1);
-        glScalef(0.4f, 0.15f, 0.05f);
-        glutSolidSphere(1.0, 20, 20);
-    glPopMatrix(); 
-	
-	glPopMatrix(); 
-    
 }
+
+void drawFlower() {
+
+    float jarak = 0.4f;
+    float belakang = -1.2f;
+
+    // DEPAN KIRI - PINK
+    glPushMatrix();
+        glTranslatef(-jarak, 0.0f, 0.0f);
+        glColor3f(1.0f, 0.4f, 0.7f);
+        drawSingleFlower();
+    glPopMatrix();
+
+    // DEPAN KANAN - KUNING
+    glPushMatrix();
+        glTranslatef(jarak, 0.0f, 0.0f);
+        glColor3f(1.0f, 0.9f, 0.2f);
+        drawSingleFlower();
+    glPopMatrix();
+
+    // BELAKANG KIRI - BIRU
+    glPushMatrix();
+        glTranslatef(-jarak, 0.0f, belakang);
+        glColor3f(0.3f, 0.5f, 1.0f);
+        drawSingleFlower();
+    glPopMatrix();
+
+    // BELAKANG KANAN - MERAH
+    glPushMatrix();
+        glTranslatef(jarak, 0.0f, belakang);
+        glColor3f(1.0f, 0.2f, 0.2f);
+        drawSingleFlower();
+    glPopMatrix();
+}
+
 
 #ifdef STANDALONE 
 void display() {

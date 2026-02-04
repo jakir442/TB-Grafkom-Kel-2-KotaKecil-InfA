@@ -9,12 +9,18 @@
 #include "../header/taman/putri_tong-sampah.h"
 #include "../header/taman/assyifa_ayunan.h"
 #include "../header/taman/erika_semak.h"
+#include "../header/taman/erika_bunga.h"
 #include "../header/taman/azhari_kursi.h"
 #include "../header/taman/rizal_kolam-air.h"
 #include "../header/taman/rizal_jungkat-jungkit.h"
 #include "../header/taman/rizal_prosotan.h"
 
 #include "../header/erika-pohon.h"
+
+// rumus variabel phi
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 // AIR DI DEPAN JEMBATAN
 void drawAirDepan(float x, float z) {
@@ -169,7 +175,7 @@ void drawSemakKeliling() {
         glPushMatrix();
             glTranslatef(x, 0.0f, -10.0f);
             glScalef(scale, scale, scale);
-            bush();
+            drawSemak();
         glPopMatrix();
     }
 
@@ -178,7 +184,7 @@ void drawSemakKeliling() {
         glPushMatrix();
             glTranslatef(x, 0.0f, -30.0f);
             glScalef(scale, scale, scale);
-            bush();
+            drawSemak();
         glPopMatrix();
     }
 
@@ -188,7 +194,7 @@ void drawSemakKeliling() {
             glTranslatef(-10.0f, 0.0f, z);
             glRotatef(90, 0, 1, 0);
             glScalef(scale, scale, scale);
-            bush();
+            drawSemak();
         glPopMatrix();
     }
 
@@ -198,11 +204,34 @@ void drawSemakKeliling() {
             glTranslatef(10.0f, 0.0f, z);
             glRotatef(90, 0, 1, 0);
             glScalef(scale, scale, scale);
-            bush();
+            drawSemak();
         glPopMatrix();
     }
 }
 
+void drawKurvaPolar() {
+    glColor3f(1.0f, 0.3f, 0.7f); // pink biar keliatan
+    glBegin(GL_LINE_LOOP);
+    for (float t = 0; t < 2*M_PI; t += 0.01f) {
+        float r = 0.6f * sin(5 * t);
+        float x = r * cos(t);
+        float y = r * sin(t);
+        glVertex3f(x, y + 3.0f, -5.0f); // posisi di atas taman
+    }
+    glEnd();
+}
+
+void drawKurvaParametrik3D() {
+    glColor3f(0.3f, 0.8f, 1.0f); // biru
+    glBegin(GL_LINE_STRIP);
+    for (float t = 0; t <= 6*M_PI; t += 0.05f) {
+        float x = cos(t);
+        float y = 0.15f * t;
+        float z = sin(t);
+        glVertex3f(x + 5.0f, y, z - 5.0f); // geser ke samping
+    }
+    glEnd();
+}
 
 void drawTaman() {
     // Lantai rumput
@@ -227,7 +256,7 @@ void drawTaman() {
         glTranslatef(-8.7f, 0.0f, -25.5f);
         glScalef(0.6f, 0.6f, 1.2f);
         glRotatef(-90, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // semak kiri belakang
@@ -235,7 +264,7 @@ void drawTaman() {
         glTranslatef(-8.7f, 0.0f, -14.0f);
         glScalef(0.6f, 0.6f, 1.2f);
         glRotatef(-90, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // semak Z+ Kiri
@@ -243,7 +272,7 @@ void drawTaman() {
         glTranslatef(-5.5f, 0.0f, -3.0f);
         glScalef(1.0f, 0.6f, 1.1f);
         glRotatef(-180, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // semak Z- Kiri
@@ -251,7 +280,7 @@ void drawTaman() {
         glTranslatef(-5.5f, 0.0f, -10.0f);
         glScalef(1.0f, 0.6f, 1.1f);
         glRotatef(-180, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // semak Z+ Kanan
@@ -259,7 +288,7 @@ void drawTaman() {
         glTranslatef(5.5f, 0.0f, -3.0f);
         glScalef(1.1f, 0.6f, 1.0f);
         glRotatef(-180, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // semak Z- kanan
@@ -267,7 +296,7 @@ void drawTaman() {
         glTranslatef(5.5f, 0.0f, -10.0f);
         glScalef(1.1f, 0.6f, 1.0f);
         glRotatef(-180, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // semak kanan
@@ -275,7 +304,7 @@ void drawTaman() {
         glTranslatef(10.0f, 0.0f, 6.0f);
         glScalef(1.1f, 0.6f, 3.4f);
         glRotatef(-90, 0, 1, 0);
-        bush();
+        drawSemak();
     glPopMatrix();
 
     // kolam pasir
@@ -283,7 +312,7 @@ void drawTaman() {
         glTranslatef(0.0, -0.1, 0.0); // posisi di taman
         
         // kolam pasir anak-anak
-        drawKolam(5.0f, 1.7f);
+        drawkolamPasir(5.0f, 1.7f);
     glPopMatrix();
 
     // tong sampah
@@ -315,10 +344,21 @@ void drawTaman() {
         ayunan();
     glPopMatrix();
 
-    // --- POSISI KOLAM BARU ---
+    // kolam air
     glPushMatrix();
         glTranslatef(-5.0f, 3.1f, 2.5f);
-        kolam_air();
+        drawKolamAir();
+        glPushMatrix();
+            glTranslatef(1.5f, -4.7f, 5.5f);
+            glRotatef(20, 0, 0, 1);
+            drawKurvaPolar();
+        glPopMatrix();
+    glPopMatrix();
+
+    // bunga
+    glPushMatrix();
+        glTranslatef(-2.7f, 0.7f, 9.8f);
+        drawFlower();
     glPopMatrix();
 
     // Panggil jalan batu
@@ -328,7 +368,7 @@ void drawTaman() {
     glPushMatrix();
         glTranslatef(-5.0f, 0.4f, -18.0f);
         glScalef(0.5f, 0.5f, 0.5f);
-        kursiTaman();
+        drawKursiTaman();
     glPopMatrix();
 
     // kursi kedua
@@ -336,7 +376,7 @@ void drawTaman() {
         glTranslatef(-5.0f, 0.4f, -12.0f);
         glRotatef(180, 0, 1, 0);
         glScalef(0.5f, 0.5f, 0.5f);
-        kursiTaman();
+        drawKursiTaman();
     glPopMatrix();
 }
 

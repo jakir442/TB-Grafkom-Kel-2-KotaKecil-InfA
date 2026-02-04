@@ -113,6 +113,19 @@ void jungkat_jungkit()
     glPopMatrix();
 }
 
+void keyboardJungkatJungkit(unsigned char key) {
+    switch (key) {
+        case 'j': 
+            if (naik) rotPapan += rotSpeed;
+            else      rotPapan -= rotSpeed;
+            
+            if (rotPapan > 20) naik = false;
+            if (rotPapan < -20) naik = true;
+            break;
+    }
+    glutPostRedisplay();
+}
+
 
 // AKSES PRIVATE
 #ifdef STANDALONE 
@@ -217,26 +230,6 @@ void reshape(int w, int h) {
     glLoadIdentity();
     gluPerspective(60, (float)w / h, 1, 1000);
     glMatrixMode(GL_MODELVIEW);
-}
-
-// -------------------------------------------------------------
-void keyboard(unsigned char key, int x, int y) {
-    switch (key) {
-        case 'w': kameraZ -= camSpeed; break;
-        case 's': kameraZ += camSpeed; break;
-        case 'a': kameraX -= camSpeed; break;
-        case 'd': kameraX += camSpeed; break;
-        case 'q': kameraY += camSpeed; break;
-        case 'e': kameraY -= camSpeed; break;
-        case 'p': 
-            if (naik) rotPapan += rotSpeed;
-            else      rotPapan -= rotSpeed;
-            
-            if (rotPapan > 20) naik = false;
-            if (rotPapan < -20) naik = true;
-            break;
-    }
-    glutPostRedisplay();
 }
 
 // -------------------------------------------------------------

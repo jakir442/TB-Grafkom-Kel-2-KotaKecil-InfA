@@ -48,7 +48,7 @@ void drawPasir(float radius)
 // ===============================
 // KOLAM PASIR ANAK-ANAK
 // ===============================
-void drawKolam(float x, float z)
+void drawkolamPasir(float x, float z)
 {
     glPushMatrix();
     glTranslatef(x, 0.0f, z);

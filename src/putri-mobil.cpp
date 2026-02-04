@@ -55,11 +55,41 @@ void drawWheel() {
     gluDeleteQuadric(quad);
 }
 
+void drawKurvaParametrik3D_Mobil() {
+    const float RADIUS = 0.25f;   // diameter per
+    const float PITCH  = 0.05f;   // jarak antar lilitan
+    const int   TURN   = 2.5;      // jumlah lilitan
+    const int   SEG    = 12;      // kehalusan
+
+    glDisable(GL_LIGHTING);
+    glLineWidth(3.0f);
+    glColor3f(0.0f, 1.0f, 1.0f); // cyan futuristik
+
+    glBegin(GL_LINE_STRIP);
+    for (int i = 0; i <= TURN * SEG; i++) {
+        float t = i * (2.0f * M_PI / SEG);
+
+        float x = RADIUS * cos(t);
+        float z = RADIUS * sin(t);
+        float y = PITCH * t;   // NAIK KE ATAS
+
+        glVertex3f(x, y, z);
+    }
+    glEnd();
+
+    glEnable(GL_LIGHTING);
+}
+
 //mobil
 void drawMobil() {
     glPushMatrix();                                      //simpan transformasi mobil
         glTranslatef(mobilPosX, mobilPosY, mobilPosZ);   //posisi mobil (mobil pindah, roda ikut pindah boz)
         glRotatef(mobilYaw, 0, 1, 0);                    //arah hadap mobil (mobil belok, roda ikut belok)
+
+        glPushMatrix();
+            glTranslatef(0.0f, 0.7f, 0.0f); // atas kap + ke depan
+            drawKurvaParametrik3D_Mobil();
+        glPopMatrix();
 
         //atap
         glPushMatrix();

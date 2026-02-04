@@ -10,7 +10,7 @@ void leaf(float x, float y, float r) {
     glPopMatrix();
 }
 
-void bush() {
+void drawSemak() {
     // bawah
     leaf(-3.0, 0.0, 0.6);
     leaf(-2.2, 0.0, 0.7);
@@ -43,7 +43,7 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     gluLookAt(0, 2, 8, 0, 0.6, 0, 0, 1, 0);
-    bush();
+    drawSemak();
     glutSwapBuffers();
 }
 

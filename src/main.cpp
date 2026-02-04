@@ -11,6 +11,8 @@
 #include "header/jakir-bulan.h"
 #include "header/jakir-bintang.h"
 #include "header/taman/jakir_taman.h"
+#include "header/taman/rizal_jungkat-jungkit.h"
+#include "header/taman/assyifa_ayunan.h"
 
 // rumus variabel phi
 #ifndef M_PI
@@ -83,6 +85,13 @@ enum TahapJumpscare {
 };
 TahapJumpscare tahapAktifJumpscare = JUMPSCARE_LIHAT_KANAN_KIRI;
 
+enum ProjectionMode {
+    PROJ_PERSPECTIVE,
+    PROJ_ORTHOGRAPHIC
+};
+
+ProjectionMode projectionMode = PROJ_PERSPECTIVE;
+
 // -> timer jumpscare <-
 int   waktuMulaiJumpscare = 0;
 float sceneTimer          = 0.0f;
@@ -110,7 +119,19 @@ void keyDown(unsigned char key, int x, int y) {
         }
     }
 
+    // toggle proyeksi
+    if (key == 'o' || key == 'O') {
+        projectionMode = PROJ_ORTHOGRAPHIC;
+    }
+
+    if (key == 'p' || key == 'P') {
+        projectionMode = PROJ_PERSPECTIVE;
+    }
+
     keyState[key] = true;
+
+    keyboardJungkatJungkit(key);
+    keyboardAyunan(key);
 
     keyboardLampu(key);
 
@@ -161,6 +182,10 @@ void update() {
     // gedung (scaling)
     if (keyState['+'] || keyState['=']) handleKeyboardGedung('+');
     if (keyState['-'] || keyState['_']) handleKeyboardGedung('-');
+
+
+    if (keyState['j'] || keyState['J']) keyboardJungkatJungkit('j');
+    if (keyState['k'] || keyState['K']) keyboardAyunan('k');
 
     // auto random kamera (per 2 detik)
     if (randomActiveCam) {
@@ -401,7 +426,39 @@ void drawJumpscareCar() {
     }
 }
 
+void setProjection() {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    if (projectionMode == PROJ_PERSPECTIVE) {
+        gluPerspective(
+            60.0,
+            1280.0 / 720.0,
+            0.1,
+            2000.0
+        );
+    } else {
+        // Orthographic view (tampak teknis / denah)
+        glOrtho(
+            -25.0, 25.0,   // kiri, kanan
+            -15.0, 15.0,   // bawah, atas
+            -2000.0, 2000.0
+        );
+    }
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // SET PROJECTION SESUAI MODE
+    setProjection();
+
+    // reset model view
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     if (sceneAktif == SCENE_JUMPSCARE) {
         int now = glutGet(GLUT_ELAPSED_TIME);
         sceneTimer = (now - waktuMulaiJumpscare) / 1000.0f;
@@ -545,7 +602,6 @@ void display() {
         smoothTargetX, smoothTargetY, smoothTargetZ,
         0.0f, 1.0f, 0.0f
     );
-
 
     drawJalan();           // dasar
     drawAlasKotaGlobal();
