@@ -85,8 +85,10 @@ void drawJalan() {
         // badan jalan
         glColor3f(0.15f,0.15f,0.15f);
         drawQuad(
-            -setengahJalan, 0, z, setengahJalan, 0, z,
-            setengahJalan, 0, z2, -setengahJalan,0, z2
+            -setengahJalan, 0, z, 
+            setengahJalan, 0, z,
+            setengahJalan, 0, z2, 
+            -setengahJalan,0, z2
         );
 
         // sisi jalan (untuk ketebalan trotoar)
@@ -102,13 +104,17 @@ void drawJalan() {
 
         // trotoar
         glColor3f(0.32f,0.32f,0.32f);
-        drawQuad(
-            -(setengahJalan + lebarTrotoar), 0, z, -setengahJalan, 0, z,
-            -setengahJalan, 0, z2, -(setengahJalan + lebarTrotoar), 0, z2
+        drawQuad( // Kiri
+            -(setengahJalan + lebarTrotoar), 0, z, 
+            -setengahJalan, 0, z,
+            -setengahJalan, 0, z2, 
+            -(setengahJalan + lebarTrotoar), 0, z2
         );
-        drawQuad( 
-            setengahJalan, 0, z, (setengahJalan+lebarTrotoar), 0, z,
-            (setengahJalan + lebarTrotoar), 0, z2, setengahJalan, 0, z2
+        drawQuad( // Kanan
+            setengahJalan, 0, z, 
+            (setengahJalan + lebarTrotoar), 0, z,
+            (setengahJalan + lebarTrotoar), 0, z2, 
+            setengahJalan, 0, z2
         );
 
         // cone -> tx = translasi X

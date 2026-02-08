@@ -3,9 +3,7 @@
 
 static const float PI = 3.1415926535f;
 
-// ===============================
 // PERMUKAAN PASIR (BERGELOMBANG)
-// ===============================
 void drawPasir(float radius)
 {
     glColor3f(0.85f, 0.75f, 0.45f);
@@ -45,9 +43,7 @@ void drawPasir(float radius)
     }
 }
 
-// ===============================
-// KOLAM PASIR ANAK-ANAK
-// ===============================
+// KOLAM PASIR UNTUK ANAK-ANAK
 void drawkolamPasir(float x, float z)
 {
     glPushMatrix();
@@ -67,7 +63,7 @@ void drawkolamPasir(float x, float z)
         float z1 = sin(a) * radius;
 
         glVertex3f(x1, 0.0f, z1);
-        glVertex3f(x1, 0.4f, z1); // tinggi dinding rendah (aman anak)
+        glVertex3f(x1, 0.4f, z1); // tinggi dinding rendah
     }
     glEnd();
 
